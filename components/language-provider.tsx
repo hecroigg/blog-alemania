@@ -7,6 +7,7 @@ type LanguageContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   copy: (typeof uiCopy)[Locale];
+  translations: TranslationCatalog | null;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -84,6 +85,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, updateLocale] = useState<Locale>("en");
   const observerRef = useRef<MutationObserver | null>(null);
   const originalTitleRef = useRef<string | null>(null);
+  const [translations, setTranslations] = useState<TranslationCatalog | null>(null);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
@@ -105,6 +107,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       ]);
       const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
       if (cancelled) return;
+      setTranslations(catalog);
       if (!originalTitleRef.current) originalTitleRef.current = document.title;
       document.title = catalog?.[originalTitleRef.current] || originalTitleRef.current;
       translateRoot(document.body, catalog, locale);
@@ -132,7 +135,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.lang = next;
     },
     copy: uiCopy[locale],
-  }), [locale]);
+    translations,
+  }), [locale, translations]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
