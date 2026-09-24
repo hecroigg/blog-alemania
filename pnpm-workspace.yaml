@@ -1,0 +1,5 @@
+allowBuilds:
+  # Optional native postinstall is not needed for this prebuilt resolver package.
+  esbuild: true
+  unrs-resolver: false
+  workerd: true
