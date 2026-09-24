@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/site";
 
 export function Header() {
   const { copy } = useLanguage();
+  const labelFor = (href: string, fallback: string) => copy.navigation[href] || fallback;
   return (
     <header className="site-header">
       <div className="shell header-inner">
@@ -18,11 +19,11 @@ export function Header() {
         <nav className="desktop-nav" aria-label="Main navigation">
           <Link className="nav-primary" href="/plan">{copy.plan}</Link>
           <Link href="/visas-residence">{copy.visa}</Link>
-          {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").slice(0, 4).map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+          {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").slice(0, 4).map((item) => <Link key={item.href} href={item.href}>{labelFor(item.href, item.label)}</Link>)}
           <details className="nav-more">
-            <summary>More</summary>
+            <summary>{copy.more}</summary>
             <div className="nav-popover">
-              {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").slice(4).map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+              {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").slice(4).map((item) => <Link key={item.href} href={item.href}>{labelFor(item.href, item.label)}</Link>)}
               <Link href="/tools">{copy.tools}</Link>
               <Link href="/guides">{copy.guides}</Link>
             </div>
@@ -36,10 +37,10 @@ export function Header() {
             <nav aria-label="Mobile navigation">
               <Link href="/plan">{copy.plan}</Link>
               <Link href="/visas-residence">{copy.visa}</Link>
-              {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+              {siteConfig.mainNavigation.filter((item) => item.href !== "/plan" && item.href !== "/visas-residence").map((item) => <Link key={item.href} href={item.href}>{labelFor(item.href, item.label)}</Link>)}
               <Link href="/guides">{copy.guides}</Link>
               <Link href="/tools">{copy.tools}</Link>
-              <Link href="/about">About</Link>
+              <Link href="/about">{copy.about}</Link>
             </nav>
           </details>
         </div>
