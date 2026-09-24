@@ -3,52 +3,54 @@
 import { useEffect, useMemo, useState } from "react";
 import { cityProfiles, getCitizenshipGroup, nationalityOptions, trackedFacts } from "@/lib/platform-data";
 
-function money(value: number) { return new Intl.NumberFormat("en-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value); }
+function money(value: number) { return new Intl.NumberFormat("en-DE", { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
 
 export function CostOfLivingCalculator() {
   const [city, setCity] = useState("Berlin");
   const [household, setHousehold] = useState("One person");
   const [lifestyle, setLifestyle] = useState("Normal");
-  const [transport, setTransport] = useState("Public transport");
+  const [transport, setTransport] = useState("Deutschlandticket");
+  const [broadcastPaid, setBroadcastPaid] = useState(true);
   const [rent, setRent] = useState(900);
 
   const result = useMemo(() => {
     const people = household === "Couple" ? 1.65 : household === "Couple + children" ? 2.55 : household === "WG" ? .9 : household === "Student" ? .82 : 1;
+    const adultTravellers = household === "Couple" || household === "Couple + children" ? 2 : 1;
     const style = lifestyle === "Minimum" ? .72 : lifestyle === "Budget" ? .86 : lifestyle === "Comfortable" ? 1.35 : 1;
     const publicTicket = trackedFacts.deutschlandticketMonthly.value || 63;
-    const transportRange = transport === "Bike" ? [15, 45] : transport === "Car" ? [300, 650] : transport === "Mixed" ? [110, 300] : [publicTicket, publicTicket];
+    const semesterTicket = trackedFacts.deutschlandSemesterTicketMonthly.value || 37.8;
+    const transportAmount = transport === "Bike" ? 30 : transport === "Car" ? 475 : transport === "Mixed" ? 205 : transport === "Deutschlandsemesterticket" ? semesterTicket : publicTicket;
     const broadcastFee = trackedFacts.rundfunkbeitragMonthly.value || 0;
-    const broadcastRange = household === "WG" ? [0, broadcastFee] : [broadcastFee, broadcastFee];
     const rows = [
-      ["Housing (your input)", rent, rent],
-      ["Utilities & electricity", 95 * people, 175 * people],
-      ["Internet & mobile", 35, 75],
-      ["Groceries", 220 * people * style, 360 * people * style],
-      ["Transport", transportRange[0] * people, transportRange[1] * people],
-      ["Rundfunkbeitrag household amount", broadcastRange[0], broadcastRange[1]],
-      ["Eating out & leisure", 90 * people * style, 260 * people * style],
-      ["Personal & household", 70 * people * style, 180 * people * style],
-      ["Buffer", 80 * people, 180 * people],
+      ["Housing (your input)", rent],
+      ["Utilities & electricity", 135 * people],
+      ["Internet & mobile", 55],
+      ["Groceries", 290 * people * style],
+      ["Transport", transportAmount * (transport === "Deutschlandticket" ? adultTravellers : 1)],
+      ["Rundfunkbeitrag household amount", broadcastPaid ? broadcastFee : 0],
+      ["Eating out & leisure", 175 * people * style],
+      ["Personal & household", 125 * people * style],
+      ["Contingency", 130 * people],
     ] as const;
-    const low = rows.reduce((sum, row) => sum + row[1], 0);
-    const high = rows.reduce((sum, row) => sum + row[2], 0);
-    return { rows, low, high };
-  }, [household, lifestyle, rent, transport]);
+    const total = rows.reduce((sum, row) => sum + row[1], 0);
+    return { rows, total };
+  }, [broadcastPaid, household, lifestyle, rent, transport]);
 
   return <div className="calculator-layout">
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
       <label className="form-field"><span>City or region</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug}>{item.name}</option>)}</select></label>
       <label className="form-field"><span>Household</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item}>{item}</option>)}</select></label>
       <label className="form-field"><span>Lifestyle</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Budget", "Normal", "Comfortable"].map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="form-field"><span>Transport</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Public transport", "Bike", "Car", "Mixed"].map((item) => <option key={item}>{item}</option>)}</select></label>
+      <label className="form-field"><span>Transport</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item}>{item}</option>)}</select></label>
+      <label className="calculator-check"><input type="checkbox" checked={broadcastPaid} onChange={(event) => setBroadcastPaid(event.target.checked)}/><span><strong>Add Rundfunkbeitrag (€18.36 per dwelling)</strong><small>Switch this off if another person in your dwelling already pays.</small></span></label>
       <label className="range-field"><span>Expected warm rent <strong>{money(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>Use a current listing or offer. This is the largest source of variation.</small></label>
     </form>
     <section className="calculator-result" aria-live="polite">
       <span className="eyebrow">Planning estimate · {city}</span>
-      <h2>{money(result.low)}–{money(result.high)}<small>/month</small></h2>
-      <p>Annual planning range: {money(result.low * 12)}–{money(result.high * 12)}. Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.</p>
-      <div className="cost-bars">{result.rows.map(([label, low, high]) => <div key={label}><span>{label}</span><div><i style={{ width: `${Math.min(100, (high / result.high) * 180)}%` }}/></div><strong>{money(low)}–{money(high)}</strong></div>)}</div>
-      <aside className="method-note"><strong>How this works</strong><p>Housing is your own input. Other categories are broad planning assumptions adjusted by household and lifestyle—not live market quotes. Replace them with actual offers and bills before making a financial commitment.</p></aside>
+      <h2>≈ {money(result.total)}<small>/month</small></h2>
+      <p>Approximate annual budget: {money(result.total * 12)}. Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.</p>
+      <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{label}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{money(amount)}</strong></div>)}</div>
+      <aside className="method-note"><strong>One useful estimate, with the assumptions visible</strong><p>Housing is your input. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts. Food, utilities, car, leisure and other personal spending are central planning assumptions—not regulated prices or live quotes.</p></aside>
     </section>
   </div>;
 }
@@ -125,7 +127,7 @@ export function RentalScamChecker() {
 const arrivalTasks = [
   ["Day 1", "mailbox", "Put your name on the mailbox and confirm how post is delivered."],
   ["Day 1", "provider-confirmation", "Collect the Wohnungsgeberbestätigung from the responsible provider."],
-  ["Week 1", "registration", "Check and complete the municipality's current Anmeldung process."],
+  ["Week 1", "registration", "Start the municipality's Anmeldung process; the standard deadline is 14 days after moving in."],
   ["Week 1", "insurance", "Confirm that your health-insurance coverage is active and correctly recorded."],
   ["Weeks 2–4", "bank", "Set up the bank account or payment access you actually need."],
   ["Weeks 2–4", "tax-id", "Store your Tax ID safely when it arrives or use the official retrieval route if needed."],

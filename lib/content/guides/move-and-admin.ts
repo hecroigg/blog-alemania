@@ -4,6 +4,7 @@ const makeIt = { name: "Make it in Germany", url: "https://www.make-it-in-german
 const bmi = { name: "Federal Ministry of the Interior — registration", url: "https://www.bmi.bund.de/EN/topics/administrative-reform/passports-identity-cards/passports-identity-cards-node.html", note: "Federal administrative context" };
 const service = { name: "Germany's federal service portal", url: "https://verwaltung.bund.de/portal/EN", note: "Find responsible authorities and public services" };
 const taxOffice = { name: "Federal Central Tax Office", url: "https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html", note: "Official Tax ID information" };
+const registrationAct = { name: "Federal Registration Act", url: "https://www.gesetze-im-internet.de/englisch_bmg/englisch_bmg.html", note: "Official text of the national registration deadline and temporary-stay exceptions" };
 
 export const moveAndAdminGuides: Guide[] = [
   {
@@ -12,7 +13,7 @@ export const moveAndAdminGuides: Guide[] = [
     description: "Plan your move to Germany in the right order—from eligibility and documents to housing, insurance, registration, and work.",
     category: "moving-to-germany",
     eyebrow: "Moving",
-    updated: "2026-09-23",
+    updated: "2026-09-24",
     readingMinutes: 11,
     featured: true,
     summary: "A successful move is mostly about sequencing. Confirm your legal route first, then connect housing, insurance, registration, work, and finances around the dates that each step becomes possible.",
@@ -41,10 +42,10 @@ export const moveAndAdminGuides: Guide[] = [
     readingMinutes: 9,
     featured: true,
     summary: "Your first month is easier when you separate urgent legal or health tasks from conveniences. Start with your right to stay, safe accommodation, insurance, and local registration; then complete the systems that depend on them.",
-    takeaways: ["Check deadlines against an official source for your specific situation.", "Registration depends on having moved into an address and receiving the accommodation-provider confirmation.", "Your Tax ID normally follows registration; protect it as a long-term identifier.", "Keep a written record of appointments, submissions, and documents sent."],
+    takeaways: ["The standard Anmeldung deadline is 14 days after moving into a dwelling; statutory temporary-stay exceptions exist.", "Registration depends on having moved into an address and receiving the accommodation-provider confirmation.", "Your Tax ID normally follows registration; protect it as a long-term identifier.", "Keep a written record of appointments, submissions, and documents sent."],
     sections: [
       { heading: "Days 1–3: make the basics reliable", paragraphs: ["Confirm you can access your accommodation, receive post, use a working phone connection, and pay for essentials. Put your name on the mailbox if appropriate. If your health coverage requires activation or an employer or university needs evidence, address that immediately.", "Review the conditions attached to your immigration status before starting work. Arrival itself does not automatically grant every form of employment."], bullets: ["Safe access to accommodation", "Mailbox and reliable contact details", "Health coverage pathway", "Backup payment method", "Copies of key documents"] },
-      { heading: "Week 1: handle address registration", paragraphs: ["Check the registration process on your municipality's official website. You will generally need valid identification and a Wohnungsgeberbestätigung from the accommodation provider. The exact booking system and accepted documents are local.", "Keep the confirmation you receive. It may be useful for banking, insurance, immigration, and other records."], callout: { title: "The municipality is the source of truth", text: "Appointment release patterns and document lists can change. Use the live city service page, not an old forum post.", tone: "note" } },
+      { heading: "Days 1–14: handle address registration", paragraphs: ["The standard national deadline is two weeks after moving into a dwelling. Check the registration process on your municipality's official website. You will generally need valid identification and a Wohnungsgeberbestätigung from the accommodation provider. The exact booking system and accepted documents are local.", "Keep the confirmation you receive. It may be useful for banking, insurance, immigration, and other records. The Federal Registration Act has exceptions for certain temporary stays, including people already registered in Germany who use another dwelling for no longer than six months."], callout: { title: "The deadline is national; the process is local", text: "Book or follow the municipality's published route as early as possible and keep evidence of attempts if appointments are unavailable.", tone: "note" } },
       { heading: "Weeks 1–2: connect the systems", paragraphs: ["Once registered, watch the mailbox for official post, including your Tax ID when issued. Provide employers or institutions only the identifiers they legitimately require and store originals securely.", "Set up a suitable bank account and mobile plan based on your needs, not a rushed comparison. Check fees, identification method, customer support, and cancellation terms."], bullets: ["Tax ID correspondence", "Bank or payment account", "Mobile connection", "Employer or university records", "Residence appointment where applicable"] },
       { heading: "Weeks 3–4: stabilise daily life", paragraphs: ["Learn your local transport system, waste separation rules, essential shops, medical access, and emergency contacts. Review your budget using actual spending rather than pre-move estimates.", "Set one monthly admin session. Germany generates important physical and digital correspondence; reading it early is easier than fixing missed deadlines later."] },
     ],
@@ -53,7 +54,7 @@ export const moveAndAdminGuides: Guide[] = [
       { question: "What if I cannot get an Anmeldung appointment immediately?", answer: "Use your municipality's official guidance, retain evidence of attempts where useful, and avoid relying on another city's procedure. Do not fabricate an address or document." },
       { question: "Should I buy every service in the first week?", answer: "No. Prioritise necessities and commitments with deadlines. Compare longer-term contracts once your address, budget, and likely length of stay are clearer." },
     ],
-    sources: [service, makeIt],
+    sources: [registrationAct, service, makeIt],
     related: ["anmeldung-germany", "wohnungsgeberbestaetigung", "german-tax-id", "german-bank-account"],
   },
   {
@@ -62,22 +63,25 @@ export const moveAndAdminGuides: Guide[] = [
     description: "Understand what Anmeldung is, who handles it, what to prepare, and what happens after you register your German address.",
     category: "bureaucracy",
     eyebrow: "Bureaucracy",
-    updated: "2026-09-23",
+    updated: "2026-09-24",
     readingMinutes: 8,
     featured: true,
-    summary: "Anmeldung is the registration of your place of residence with the local authority after you move into an address. The process is municipal, so appointment systems and document details vary by city.",
-    takeaways: ["Register the address where you actually live.", "The Wohnungsgeberbestätigung is separate from your rental contract.", "Use the official website for your municipality.", "Store your registration confirmation safely."],
+    summary: "Anmeldung is the registration of your place of residence with the local authority after you move into an address. The standard deadline is 14 days after moving in and the service is free, while appointment systems and document details vary by municipality.",
+    takeaways: ["The standard deadline is 14 days after moving into a dwelling.", "The standard registration service is free.", "The Wohnungsgeberbestätigung is separate from your rental contract.", "Use the official website for your municipality and store the confirmation safely."],
     sections: [
       { heading: "What Anmeldung does", paragraphs: ["Address registration records your residence in the local population register. It is not a visa, residence permit, rental approval, or Tax ID application, although it can connect to later processes.", "When you move within Germany, you normally register the new address; the competent office handles the record. If you leave Germany without keeping a residence, a separate deregistration process may apply."], callout: { title: "Not an immigration decision", text: "Completing Anmeldung does not create a right to live or work in Germany. Immigration status is a separate matter.", tone: "warning" } },
+      { heading: "The exact deadline and the exceptions", paragraphs: ["Section 17 of the Federal Registration Act sets the standard deadline at two weeks after moving into a dwelling. The standard registration service costs €0. Make the appointment or use the municipality's published submission route promptly after moving in.", "Section 27 contains temporary-stay exceptions. If you are already registered in Germany and use another dwelling for no longer than six months, you generally do not register it. If you normally live abroad and are not registered in Germany, the duty generally arises once the stay exceeds three months. Check the official wording when an exception may apply."], callout: { title: "14 days, not 14 working days", text: "The law says two weeks. Local appointment availability does not change the statutory wording, so follow the municipality's official instructions and retain evidence of timely attempts where useful.", tone: "note" } },
       { heading: "Prepare for the appointment", paragraphs: ["Check the exact service page for your municipality. Typical core items include valid identification and the accommodation provider's confirmation. Additional evidence can depend on the people registering and the local procedure.", "Complete forms accurately and keep names consistent with identity documents. If you need an interpreter or accessibility support, investigate the city's arrangements before the appointment."], bullets: ["Official booking confirmation", "Valid identity document", "Completed local form if required", "Wohnungsgeberbestätigung", "Additional civil-status evidence only when the official checklist requires it"] },
       { heading: "At and after registration", paragraphs: ["Review the details on the registration confirmation before leaving if possible. Your name and address should match the documents you use elsewhere.", "After registration, official correspondence may arrive by post. Make sure your name is visible on the mailbox and do not discard letters you do not recognise before understanding them."], bullets: ["Secure the registration confirmation", "Monitor the mailbox", "Update relevant providers", "Keep the Tax ID letter when it arrives"] },
     ],
     faqs: [
       { question: "Is Anmeldung the same everywhere?", answer: "The underlying duty is national, but appointments, forms, and practical document checks are handled locally. Always consult your municipality." },
+      { question: "How many days do I have for Anmeldung?", answer: "The standard rule is two weeks—14 calendar days—after moving into a dwelling. Federal law contains exceptions for certain temporary stays, so check §27 if your stay is temporary." },
+      { question: "How much does Anmeldung cost?", answer: "The standard address-registration service is free. A municipality may charge separately for optional certificates or different services." },
       { question: "Is a rental contract enough?", answer: "The official process generally distinguishes the contract from the Wohnungsgeberbestätigung. Follow the current local checklist." },
       { question: "Does Anmeldung give me a residence permit?", answer: "No. Address registration and immigration permission are separate processes." },
     ],
-    sources: [service, bmi],
+    sources: [registrationAct, service, bmi],
     related: ["wohnungsgeberbestaetigung", "german-tax-id", "first-30-days-germany", "finding-housing-germany"],
   },
   {

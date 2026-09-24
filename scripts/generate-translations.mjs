@@ -22,7 +22,7 @@ function clean(value) {
 
 function collect(source, fileName, output) {
   const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, fileName.endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
-  const isContent = fileName.startsWith("lib/content/");
+  const isContent = fileName.startsWith("lib/content/") || fileName === "lib/platform-data.ts";
   const publicCollections = new Set(["trustLinks", "scamSignals", "arrivalTasks", "universal", "routeItems", "purposeItems", "rows"]);
   const hasPublicAncestor = (node) => {
     let current = node.parent;
@@ -77,7 +77,7 @@ async function translateBatch(values, locale) {
   return parts;
 }
 
-const files = (await Promise.all(sourceDirs.map(filesUnder))).flat();
+const files = [...(await Promise.all(sourceDirs.map(filesUnder))).flat(), "lib/platform-data.ts"];
 const strings = new Set();
 for (const file of files) collect(await fs.readFile(path.join(root, file), "utf8"), file, strings);
 const values = [...strings].sort((a, b) => a.localeCompare(b));
