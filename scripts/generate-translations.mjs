@@ -23,7 +23,7 @@ function clean(value) {
 function collect(source, fileName, output) {
   const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, fileName.endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
   const isContent = fileName.startsWith("lib/content/") || fileName === "lib/platform-data.ts";
-  const publicCollections = new Set(["trustLinks", "scamSignals", "arrivalTasks", "universal", "routeItems", "purposeItems", "rows"]);
+  const publicCollections = new Set(["trustLinks", "scamSignals", "arrivalTasks", "universal", "routeItems", "purposeItems", "rows", "groups"]);
   const hasPublicAncestor = (node) => {
     let current = node.parent;
     while (current) {

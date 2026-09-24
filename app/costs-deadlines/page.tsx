@@ -28,11 +28,12 @@ const groups = [
   },
 ] as const;
 
-function displayValue(value: number | null, unit: string) {
-  if (value === null) return "Individual calculation required";
-  const formatted = new Intl.NumberFormat("en-DE", { maximumFractionDigits: 2 }).format(value);
-  return `${formatted} ${unit}`;
+function displayNumber(value: number | null) {
+  if (value === null) return null;
+  return new Intl.NumberFormat("en-DE", { maximumFractionDigits: 2 }).format(value);
 }
+
+const preservedLabels = new Set(["deutschlandticketMonthly", "deutschlandSemesterTicketMonthly", "bahnCard25Annual", "bahnCard50Annual", "bahnCard100Annual", "myBahnCard25Annual", "rundfunkbeitragMonthly", "childBenefitMonthly"]);
 
 export default function CostsDeadlinesPage() {
   return <>
@@ -40,7 +41,7 @@ export default function CostsDeadlinesPage() {
 
     <section className="section shell exact-facts">
       <div className="safety-notice"><strong>Exact does not mean universal</strong><p>A ticket price can be fixed while eligibility is conditional. A tax rate can be exact while your final bill depends on taxable income and personal circumstances. Each figure below states its scope and links to the official source.</p></div>
-      {groups.map((group) => <section className="fact-group" key={group.title}><div className="section-heading"><div><span className="eyebrow">Verified values</span><h2>{group.title}</h2><p>{group.intro}</p></div></div><div className="fact-card-grid">{group.keys.map((key) => { const fact = trackedFacts[key]; return <article className="fact-card" key={fact.key}><span>{fact.geography}</span><h3>{fact.label}</h3><strong>{displayValue(fact.value, fact.unit)}</strong><p>{fact.notes}</p><a href={fact.sourceUrl} target="_blank" rel="noreferrer">Official source ↗</a><small>Last checked: {fact.lastVerified}</small></article>; })}</div></section>)}
+      {groups.map((group) => <section className="fact-group" key={group.title}><div className="section-heading"><div><span className="eyebrow">Verified values</span><h2>{group.title}</h2><p>{group.intro}</p></div></div><div className="fact-card-grid">{group.keys.map((key) => { const fact = trackedFacts[key]; const number = displayNumber(fact.value); return <article className="fact-card" key={fact.key}><span>{fact.geography}</span><h3 data-no-translate={preservedLabels.has(key) ? "true" : undefined}>{fact.label}</h3><strong>{number === null ? "Individual calculation required" : <><span data-no-translate>{number}</span>{" "}<span>{fact.unit}</span></>}</strong><p>{fact.notes}</p><a href={fact.sourceUrl} target="_blank" rel="noreferrer">Official source ↗</a><small>Last checked: {fact.lastVerified}</small></article>; })}</div></section>)}
     </section>
 
     <section className="section section-tint"><div className="shell split-heading"><div><span className="eyebrow">Income tax · 2026</span><h2>The exact formula, not a fake flat percentage</h2></div><div><p>German income tax is calculated from taxable income, not directly from gross salary. For a single assessment under §32a EStG, the 2026 basic allowance is €12,348. Above it, the statutory formula is progressive.</p><div className="tax-brackets"><div><strong>€0–€12,348</strong><span>€0 income tax</span></div><div><strong>€12,349–€17,799</strong><span>(914.51 × y + 1,400) × y</span></div><div><strong>€17,800–€69,878</strong><span>(173.10 × z + 2,397) × z + 1,034.87</span></div><div><strong>€69,879–€277,825</strong><span>42% × x − €11,135.63</span></div><div><strong>From €277,826</strong><span>45% × x − €19,470.38</span></div></div><p className="table-caption">Here x is taxable income rounded down to full euros; y and z are the statutory ten-thousand-euro scaling variables. Joint assessment and personal deductions change the result. <a className="text-link" href="https://ksth.bundesfinanzministerium.de/lsth/2026/A-Einkommensteuergesetz/IV-Tarif-31-34b/Paragraf-32a/inhalt.html" target="_blank" rel="noreferrer">Read the official §32a formula.</a></p></div></div></section>
