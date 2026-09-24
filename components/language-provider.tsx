@@ -25,6 +25,7 @@ const catalogLoaders: Record<Exclude<Locale, "en">, () => Promise<{ default: Tra
 
 const originalText = new WeakMap<Text, string>();
 const translatedText = new WeakMap<Text, string>();
+const attributeState = new WeakMap<Element, Map<string, { source: string; translated: string }>>();
 const translatableAttributes = ["aria-label", "placeholder", "title"] as const;
 
 function replaceKeepingWhitespace(value: string, replacement: string) {
@@ -49,7 +50,7 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const source = originalText.get(node) || current;
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
-    const next = catalog?.[key] ? replaceKeepingWhitespace(source, catalog[key]) : source;
+    const next = key !== "Living Germany" && catalog?.[key] ? replaceKeepingWhitespace(source, catalog[key]) : source;
     if (current !== next) node.nodeValue = next;
     translatedText.set(node, next);
   }
@@ -58,12 +59,15 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
   const elements = root instanceof Element ? [root, ...descendants] : descendants;
   for (const element of elements) {
     for (const attribute of translatableAttributes) {
-      const storedName = `data-lg-original-${attribute}`;
       const current = element.getAttribute(attribute);
       if (!current) continue;
-      const source = element.getAttribute(storedName) || current;
-      if (!element.hasAttribute(storedName)) element.setAttribute(storedName, source);
-      element.setAttribute(attribute, catalog?.[source] || source);
+      const state = attributeState.get(element) || new Map<string, { source: string; translated: string }>();
+      const previous = state.get(attribute);
+      const source = previous && current === previous.translated ? previous.source : current;
+      const translated = catalog?.[source] || source;
+      element.setAttribute(attribute, translated);
+      state.set(attribute, { source, translated });
+      attributeState.set(element, state);
     }
     if (element instanceof HTMLTimeElement && element.dateTime) {
       const date = new Date(`${element.dateTime}T12:00:00Z`);
@@ -94,7 +98,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     observerRef.current?.disconnect();
 
     const apply = async () => {
-      const catalog = locale === "en" ? null : (await catalogLoaders[locale]()).default;
+      const baseCatalog = locale === "en" ? null : (await catalogLoaders[locale]()).default;
+      const navigationCatalog = locale === "en" ? null : Object.fromEntries([
+        ...Object.entries(uiCopy.en.navigation).map(([path, label]) => [label, uiCopy[locale].navigation[path]]),
+        ["Plan", uiCopy[locale].plan], ["Visas", uiCopy[locale].visa], ["Tools", uiCopy[locale].tools], ["Cities", uiCopy[locale].cities],
+      ]);
+      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
       if (cancelled) return;
       if (!originalTitleRef.current) originalTitleRef.current = document.title;
       document.title = catalog?.[originalTitleRef.current] || originalTitleRef.current;
