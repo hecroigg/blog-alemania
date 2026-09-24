@@ -62,6 +62,41 @@ export const cities: City[] = [
     sections: [{ heading: "A compact city in a wider region", paragraphs: ["Heidelberg is closely linked to Mannheim and other Rhine-Neckar centres. Housing searches can include nearby municipalities when the transport connection works."] }, { heading: "Academic arrivals", paragraphs: ["University processes do not replace municipal or immigration requirements. Keep enrolment, insurance, housing, address registration, and residence tasks as separate checklist items."] }],
     sources: citySources("https://www.heidelberg.de/english/Home.html", "Heidelberg"),
   },
+  {
+    slug: "freiburg", name: "Freiburg", region: "Baden-Württemberg", description: "A university city beside the Black Forest, known for cycling, sustainability research, and strong regional links.", bestFor: "Students, research, healthcare, sustainability, and outdoor access", character: "Compact, green, and closely connected to the surrounding landscape.",
+    sections: [{ heading: "A city shaped by location", paragraphs: ["Freiburg combines a compact urban core with direct access to the Black Forest and cross-border routes. Housing pressure can be significant, so compare nearby municipalities and the real commute."] }, { heading: "Plan the practical route", paragraphs: ["Use the official city portal for address registration and local services. University processes, municipal registration and immigration requirements remain separate tasks."] }],
+    sources: citySources("https://www.freiburg.de/pb/,Lde/225797.html", "Freiburg"),
+  },
+  {
+    slug: "karlsruhe", name: "Karlsruhe", region: "Baden-Württemberg", description: "A technology and public-institutions centre with a distinctive fan-shaped plan and an extensive tram-train network.", bestFor: "Technology, engineering, research, and public-sector careers", character: "Technical, well connected, and regionally oriented.",
+    sections: [{ heading: "Technology and regional mobility", paragraphs: ["Karlsruhe's university and technology ecosystem shapes the labour market. The tram-train network makes some surrounding locations realistic housing options, but test the full journey."] }, { heading: "Local administration", paragraphs: ["Check the municipal portal for the current registration service, appointments and accepted documents before attending."] }],
+    sources: citySources("https://www.karlsruhe.de/", "Karlsruhe"),
+  },
+  {
+    slug: "leipzig", name: "Leipzig", region: "Saxony", description: "A growing eastern German city with logistics, manufacturing, universities, creative industries, and extensive tram links.", bestFor: "Creative work, logistics, manufacturing, students, and lake access", character: "Energetic, spacious, and changing quickly.",
+    sections: [{ heading: "Neighbourhood and commute", paragraphs: ["Leipzig's districts differ widely in urban feel and connection. Compare tram or S-Bahn routes, warm rent, and the location of work or study before choosing."] }, { heading: "Arriving in Leipzig", paragraphs: ["Use the city's official English information and service pages for local registration. Do not use older housing-cost assumptions as a substitute for current listings."] }],
+    sources: citySources("https://english.leipzig.de/", "Leipzig"),
+  },
+  {
+    slug: "dresden", name: "Dresden", region: "Saxony", description: "An Elbe city with a major semiconductor and research cluster, extensive tram network, and fast access to dramatic landscapes.", bestFor: "Semiconductors, engineering, research, culture, and nature", character: "Historic, technical, and closely tied to the Elbe valley.",
+    sections: [{ heading: "Employment geography", paragraphs: ["Major workplaces and research institutions are distributed across the city. Map the specific commute and shift times before fixing a housing area."] }, { heading: "Set up through official channels", paragraphs: ["The city portal publishes local service information. Immigration and registration procedures are related but distinct."] }],
+    sources: citySources("https://www.dresden.de/en/", "Dresden"),
+  },
+  {
+    slug: "nuremberg", name: "Nuremberg", region: "Bavaria", description: "A Franconian employment and transport centre with industry, technology, services, and a large surrounding metropolitan region.", bestFor: "Industry, technology, regional careers, and compact urban life", character: "Historic, practical, and metropolitan beyond its city boundary.",
+    sections: [{ heading: "Think metropolitan region", paragraphs: ["Nuremberg, Fürth and Erlangen form an interconnected employment and study area. Housing decisions should reflect the actual U-Bahn, S-Bahn or regional route."] }, { heading: "Local setup", paragraphs: ["Use the official city portal for registration and municipal services, and confirm immigration requirements from the responsible authority."] }],
+    sources: citySources("https://www.nuernberg.de/internet/stadtportal_e/", "Nuremberg"),
+  },
+  {
+    slug: "hannover", name: "Hannover", region: "Lower Saxony", description: "A central transport and trade-fair city with industry, insurance, universities, and a strong regional transit network.", bestFor: "Industry, insurance, trade fairs, study, and national rail access", character: "Green, well connected, and often more practical than showy.",
+    sections: [{ heading: "Connections are a major advantage", paragraphs: ["Hannover is an important rail interchange and regional centre. Compare neighbourhoods and nearby towns through the actual Stadtbahn or S-Bahn journey."] }, { heading: "Administrative start", paragraphs: ["Use the official regional portal for up-to-date registration and municipal guidance. Keep confirmation documents after each completed process."] }],
+    sources: citySources("https://www.hannover.de/en", "Hannover"),
+  },
+  {
+    slug: "bremen", name: "Bremen", region: "Bremen", description: "A compact Hanseatic city with aerospace, logistics, manufacturing, universities, and fast access to northern Germany.", bestFor: "Aerospace, logistics, manufacturing, students, and a compact city", character: "Independent, maritime, and manageable in scale.",
+    sections: [{ heading: "A compact northern base", paragraphs: ["Bremen's tram network and cycling distances can simplify daily life, while the wider region expands housing and employment options. Verify the commute rather than relying on city boundaries."] }, { heading: "Your official starting point", paragraphs: ["Use Bremen's official portal for local registration, appointments and service information. Check immigration matters separately when applicable."] }],
+    sources: citySources("https://www.bremen.eu/", "Bremen"),
+  },
 ];
 
 export const cityMap = new Map(cities.map((city) => [city.slug, city]));

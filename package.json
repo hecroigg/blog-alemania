@@ -11,7 +11,7 @@
     "dev:cloudflare": "vinext dev --port 3001",
     "build:cloudflare": "vinext build",
     "preview:cloudflare": "pnpm build:cloudflare && wrangler dev --config dist/server/wrangler.json",
-    "deploy:cloudflare": "vinext-cloudflare deploy --config dist/server/wrangler.json",
+    "deploy:cloudflare": "wrangler deploy --config dist/server/wrangler.json",
     "deploy": "pnpm build:cloudflare && pnpm deploy:cloudflare",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },

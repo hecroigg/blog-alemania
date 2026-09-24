@@ -1,6 +1,6 @@
 # Living Germany
 
-Living Germany is an independent English-language platform that explains the practical systems behind moving to and living in Germany. The product is designed as an editorial-quality, SEO-ready foundation rather than a high-volume content farm.
+Living Germany is an independent practical platform for moving to, understanding, and living in Germany. It combines editorial guidance with personalised planning, interactive checklists, city decision tools, and transparent calculators.
 
 ## Stack
 
@@ -60,14 +60,21 @@ app/
   [slug]/                 Category, audience, and trust-policy template
   cities/[slug]/          Scalable city template
   guides/[slug]/          Article template
-  search/                 Lightweight build-time content search
-  tools/                  Tool roadmap
+  plan/                   Personal Germany plan and immigration starting point
+  tools/                  Live calculators, comparisons, and checklists
+  visas-residence/        EU, EEA, Swiss, and non-EU route hub
+  explore-germany/        16-state explorer and city pathways
+  glossary/               Plain-language bureaucracy glossary
+  authorities/            Authority finder and official city portals
+  emergency/              Verified emergency and urgent-care information
+  data-status/            Public source and last-verification register
   layout.tsx              Global metadata, schemas, header, footer, consent
   sitemap.ts              Generated sitemap
   robots.ts               Crawl directives
-components/               Reusable editorial, navigation, consent, and commercial UI
+components/               Reusable editorial, interactive, navigation, consent, and commercial UI
 lib/
   content/                Typed categories, audiences, cities, guides, policies
+  platform-data.ts        Locales, citizenship groups, city profiles, states, and sources
   site.ts                 Central brand, URL, locale, and navigation config
   types.ts                Content model
 CONTENT_STRATEGY.md        Editorial roadmap and internal-linking plan
@@ -77,7 +84,7 @@ CONTENT_STRATEGY.md        Editorial roadmap and internal-linking plan
 
 Edit `lib/site.ts` for the name, description, canonical URL, email, locales, and navigation. Update `app/icon.svg` and `app/opengraph-image.tsx` if the visual identity changes.
 
-The current name, public URL, and email are intentionally centralised placeholders. Replace `livinggermany.example` before launch.
+The current name, public URL, and email are centralised. The default canonical URL is the production Workers domain; set `NEXT_PUBLIC_SITE_URL` when connecting a custom domain.
 
 ## Add a guide
 
@@ -90,6 +97,8 @@ The current name, public URL, and email are intentionally centralised placeholde
 
 Do not publish a placeholder article. Keep time-sensitive numbers out unless they are dated, sourced, and assigned an update owner.
 
+Changing national values are stored once in `lib/platform-data.ts` under `trackedFacts`. Each record includes its unit, geography, official source, source URL, verification date, status, and notes. `/data-status` exposes that register. Unknown local or individual values remain `null` and trigger an honest “data required” state instead of a fabricated number.
+
 ## Add a city
 
 Add one typed object to `lib/content/cities.ts`. Each city needs a unique introduction, useful local framing, at least one section, and an official municipal source. The `/cities/[slug]` page and sitemap entry are automatic.
@@ -98,7 +107,20 @@ Do not create near-duplicate city pages by replacing a city name. A city page sh
 
 ## Internationalisation
 
-`lib/site.ts` defines `en` as the default locale and reserves `es`. Content models are independent from page markup so a future `/es/` route group or locale segment can load adapted Spanish datasets without rewriting templates. Spanish pages are deliberately not generated until translated, locally adapted content exists.
+The language layer supports English, Spanish, German, French, Italian, Portuguese, Polish, and Ukrainian. The selector persists the preference locally and uses English as the safe fallback. UI translations live in `lib/platform-data.ts`, separated from content and components so additional languages can be added without changing the interaction logic.
+
+Long-form editorial content currently falls back to English when a reviewed translation is unavailable. Do not generate hreflang entries for untranslated articles; add them only when a real localized URL and reviewed content exist.
+
+## Live platform tools
+
+- `/plan`: personalised route by nationality, purpose, stay, destination, housing, work/study, insurance, and household.
+- `/tools/cost-of-living`: editable monthly and annual budget with visible assumptions.
+- `/tools/compare-cities`: 2–4 city comparison without an arbitrary ranking.
+- `/tools/document-checklist`: route-aware checklist with local progress storage and no account.
+- `/tools/rental-scam-checker`: cautious warning-sign assessment that never claims a definitive fraud result.
+- `/tools/first-30-days`: locally saved arrival checklist grouped by practical periods rather than invented universal deadlines.
+- `/explore-germany`: accessible 16-state explorer and 16 initial city pathways.
+- `/visas-residence` and `/glossary`: official-source-led immigration starting points and plain-language terminology.
 
 ## Analytics and consent
 
@@ -125,12 +147,13 @@ The repository is already prepared for Cloudflare's recommended Next.js path: vi
 ### From the Cloudflare dashboard
 
 1. In **Workers & Pages**, create an application by importing `hecroigg/blog-alemania` from GitHub.
-2. Use `pnpm install --frozen-lockfile` as the install command.
+2. Cloudflare detects `pnpm-lock.yaml` and installs dependencies automatically; there is no install-command field in the current Workers Builds screen.
 3. Use `pnpm build:cloudflare` as the build command.
-4. Use `pnpm deploy:cloudflare` as the deploy command.
-5. Keep the project root as `/` and the production branch as `main`.
-6. Add `NEXT_PUBLIC_SITE_URL` as a build variable using the final `https://` origin. Add the optional analytics and advertising IDs only when their consent flows are ready.
-7. Deploy, connect the final custom domain, then redeploy so canonical URLs, sitemap, robots rules, and structured data use that domain.
+4. Use `pnpm exec wrangler deploy --config dist/server/wrangler.json` as the deploy command.
+5. Disable preview builds unless you intentionally configure a separate preview workflow. Do not use the generic `npx wrangler preview` default for this vinext output.
+6. Keep the project root as `/` and the production branch as `main`.
+7. Add `NEXT_PUBLIC_SITE_URL` as a build variable using the final `https://` origin. Add the optional analytics and advertising IDs only when their consent flows are ready.
+8. Deploy, connect the final custom domain, then redeploy so canonical URLs, sitemap, robots rules, and structured data use that domain.
 
 ### From a local terminal
 
@@ -156,7 +179,7 @@ Before announcing the launch, verify `/`, a category, a guide, `/cities/mannheim
 
 ## Pre-launch checklist
 
-- Replace placeholder domain and email.
+- Replace the placeholder contact email with a monitored address.
 - Obtain legal review for policies, imprint requirements, cookie wording, and the owner/controller identity.
 - Verify every time-sensitive guide against its linked official source.
 - Connect and test a newsletter provider before changing the current no-storage message.

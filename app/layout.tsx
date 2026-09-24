@@ -4,6 +4,7 @@ import { CookieBanner } from "@/components/cookie-banner";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { JsonLd } from "@/components/json-ld";
+import { LanguageProvider } from "@/components/language-provider";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -23,5 +24,5 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const organization = { "@context": "https://schema.org", "@type": "Organization", name: siteConfig.name, url: siteConfig.url, description: siteConfig.description };
   const website = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url, inLanguage: "en", potentialAction: { "@type": "SearchAction", target: `${absoluteUrl("/search")}?q={search_term_string}`, "query-input": "required name=search_term_string" } };
-  return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content">{children}</main><Footer/><CookieBanner/><Analytics/><JsonLd data={[organization, website]}/></body></html>;
+  return <html lang="en"><body><LanguageProvider><a className="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content">{children}</main><Footer/><CookieBanner/><Analytics/><JsonLd data={[organization, website]}/></LanguageProvider></body></html>;
 }

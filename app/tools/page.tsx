@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { Icon } from "@/components/icon";
 import { absoluteUrl } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Tools and calculators", description: "A roadmap of transparent tools for moving costs, rent affordability, salary, and everyday decisions in Germany.", alternates: { canonical: absoluteUrl("/tools") } };
+export const metadata: Metadata = { title: "Tools and calculators", description: "Personalised, transparent tools for moving documents, living costs, city choices and safer renting in Germany.", alternates: { canonical: absoluteUrl("/tools") } };
 
 const tools = [
-  ["Moving checklist", "A personal, local-first checklist with dependencies and progress. No account required."],
-  ["Cost-of-living planner", "Build a dated budget from your rent, household, transport, and insurance inputs."],
-  ["Rent affordability", "Compare warm-rent scenarios without presenting one ratio as universal advice."],
-  ["Gross-to-net salary", "A future calculator only after reliable, maintainable tax data is connected."],
-  ["Deutschlandticket comparison", "Compare a known set of local journeys against current transport products."],
-  ["Move savings planner", "Estimate deposits, setup costs, overlapping housing, and a personal safety buffer."],
+  ["Personal Germany plan", "Turn your nationality, purpose, housing and insurance status into an ordered arrival plan.", "/plan", "Live"],
+  ["Cost-of-living calculator", "Build a monthly and annual budget from your own rent and transparent planning assumptions.", "/tools/cost-of-living", "Live"],
+  ["Compare cities", "Compare two to four cities by housing pressure, transport, sectors, study, access and nature.", "/tools/compare-cities", "Live"],
+  ["Document checklist", "Generate a route-aware checklist, tick documents off and save progress locally.", "/tools/document-checklist", "Live"],
+  ["Rental scam checklist", "Review common warning signs before sharing sensitive information or transferring money.", "/tools/rental-scam-checker", "Live"],
+  ["First 30 days checklist", "Track a careful arrival sequence across day one, week one and the first three months.", "/tools/first-30-days", "Live"],
+  ["Gross-to-net salary", "Reserved until reliable, maintainable tax rules can support a trustworthy result.", "/guides/cost-of-living-germany", "Researching"],
 ];
 
-export default function ToolsPage() { return <><section className="page-hero"><div className="shell"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tools" }]}/><div className="page-hero-copy"><span className="eyebrow">Tools roadmap</span><h1>Useful calculations, built carefully</h1><p>These tools are intentionally marked as planned. We will not publish a tax, salary, or affordability result until its assumptions and data can be maintained responsibly.</p></div></div></section><section className="section shell"><div className="tools-grid">{tools.map(([name, description]) => <article className="tool-card" key={name}><span>Planned</span><h2>{name}</h2><p>{description}</p></article>)}</div></section></> }
+export default function ToolsPage() { return <><section className="page-hero"><div className="shell"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Tools" }]}/><div className="page-hero-grid"><div className="page-hero-copy"><span className="eyebrow">Practical applications</span><h1>Turn information into a plan</h1><p>Use interactive tools without creating an account. Assumptions are visible, progress stays on your device, and high-risk answers point back to official sources.</p></div><div className="page-stat"><span>Available now</span><strong>6</strong><small>Planning · costs · cities · documents · arrival · housing safety</small></div></div></div></section><section className="section shell"><div className="tools-grid">{tools.map(([name, description, href, status]) => <Link className="tool-card" href={href} key={name}><span>{status}</span><h2>{name}</h2><p>{description}</p><em>Open tool <Icon name="arrow" size={16}/></em></Link>)}</div></section></> }
