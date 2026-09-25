@@ -71,6 +71,7 @@ async function translateBatch(values, locale) {
   if (!response.ok) throw new Error(`Translation failed (${locale}): ${response.status}`);
   const data = await response.json();
   const translated = data[0].map((part) => part[0]).join("");
+  if (values.length === 1) return [clean(translated)];
   const splitter = new RegExp(`\\s*${markers.map((marker) => marker.replace(/[\[\]]/g, "\\$&")).join("|\\s*")}\\s*`);
   const parts = translated.split(splitter).map(clean);
   if (parts.length !== values.length) throw new Error(`Translation split mismatch (${locale}): ${parts.length}/${values.length}`);

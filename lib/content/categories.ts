@@ -87,7 +87,7 @@ export const categories: Category[] = [
       "Small systems shape everyday life: Pfand deposits, Sunday opening rules, mobile plans, bins, payments, and appointments. Learn the patterns once and spend less energy decoding them later.",
     icon: "sun",
     color: "orange",
-    featuredTopics: ["SIM cards", "Supermarkets", "Recycling", "Everyday etiquette"],
+    featuredTopics: ["SIM cards", "Home internet", "Supermarkets", "Everyday etiquette"],
   },
 ];
 

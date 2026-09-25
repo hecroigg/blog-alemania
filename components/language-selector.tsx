@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { localeLabels, supportedLocales, type Locale } from "@/lib/platform-data";
 import { useLanguage } from "@/components/language-provider";
 
@@ -11,6 +11,20 @@ export function LanguageSelector() {
     setLocale(next);
     detailsRef.current?.removeAttribute("open");
   };
+  useEffect(() => {
+    const close = (event: PointerEvent) => {
+      if (detailsRef.current?.open && !detailsRef.current.contains(event.target as Node)) detailsRef.current.open = false;
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && detailsRef.current) detailsRef.current.open = false;
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   return <details className="language-selector" ref={detailsRef}>
     <summary aria-label={`${copy.language}: ${localeLabels[locale].label}`}>

@@ -14,7 +14,7 @@ function guideStrings(guide: SearchGuide) {
   return [
     guide.title, guide.description, guide.category, guide.eyebrow, guide.summary,
     ...guide.takeaways,
-    ...guide.sections.flatMap((section) => [section.heading, ...section.paragraphs, ...(section.bullets || []), section.callout?.title || "", section.callout?.text || ""]),
+    ...guide.sections.flatMap((section) => [section.heading, ...section.paragraphs, ...(section.bullets || []), ...(section.resources || []).flatMap((resource) => [resource.label, resource.note]), section.callout?.title || "", section.callout?.text || ""]),
     ...guide.faqs.flatMap((faq) => [faq.question, faq.answer]),
   ].filter(Boolean);
 }

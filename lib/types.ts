@@ -34,6 +34,7 @@ export type ContentBlock = {
   heading: string;
   paragraphs: string[];
   bullets?: string[];
+  resources?: { label: string; url: string; note: string }[];
   callout?: { title: string; text: string; tone?: "note" | "warning" | "success" };
 };
 

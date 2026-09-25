@@ -16,21 +16,24 @@ export function CostOfLivingCalculator() {
   const result = useMemo(() => {
     const people = household === "Couple" ? 1.65 : household === "Couple + children" ? 2.55 : household === "WG" ? .9 : household === "Student" ? .82 : 1;
     const adultTravellers = household === "Couple" || household === "Couple + children" ? 2 : 1;
-    const style = lifestyle === "Minimum" ? .72 : lifestyle === "Budget" ? .86 : lifestyle === "Comfortable" ? 1.35 : 1;
+    const profile = lifestyle === "Minimum"
+      ? { utilities: 95, connectivity: 25, groceries: 220, leisure: 70, household: 35 }
+      : lifestyle === "Comfortable"
+        ? { utilities: 150, connectivity: 65, groceries: 380, leisure: 260, household: 125 }
+        : { utilities: 125, connectivity: 45, groceries: 290, leisure: 145, household: 70 };
     const publicTicket = trackedFacts.deutschlandticketMonthly.value || 63;
     const semesterTicket = trackedFacts.deutschlandSemesterTicketMonthly.value || 37.8;
     const transportAmount = transport === "Bike" ? 30 : transport === "Car" ? 475 : transport === "Mixed" ? 205 : transport === "Deutschlandsemesterticket" ? semesterTicket : publicTicket;
     const broadcastFee = trackedFacts.rundfunkbeitragMonthly.value || 0;
     const rows = [
       ["Housing (your input)", rent],
-      ["Utilities & electricity", 135 * people],
-      ["Internet & mobile", 55],
-      ["Groceries", 290 * people * style],
+      ["Utilities & electricity", profile.utilities * Math.max(1, people * .75)],
+      ["Internet & mobile", profile.connectivity * Math.max(1, adultTravellers * .72)],
+      ["Groceries", profile.groceries * people],
       ["Transport", transportAmount * (transport === "Deutschlandticket" ? adultTravellers : 1)],
       ["Rundfunkbeitrag household amount", broadcastPaid ? broadcastFee : 0],
-      ["Eating out & leisure", 175 * people * style],
-      ["Personal & household", 125 * people * style],
-      ["Contingency", 130 * people],
+      ["Eating out & leisure", profile.leisure * people],
+      ["Hygiene & household basics", profile.household * people],
     ] as const;
     const total = rows.reduce((sum, row) => sum + row[1], 0);
     return { rows, total };
@@ -40,7 +43,7 @@ export function CostOfLivingCalculator() {
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
       <label className="form-field"><span>City or region</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug}>{item.name}</option>)}</select></label>
       <label className="form-field"><span>Household</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="form-field"><span>Lifestyle</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Budget", "Normal", "Comfortable"].map((item) => <option key={item}>{item}</option>)}</select></label>
+      <label className="form-field"><span>Lifestyle</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item}>{item}</option>)}</select></label>
       <label className="form-field"><span>Transport</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item}>{item}</option>)}</select></label>
       <label className="calculator-check"><input type="checkbox" checked={broadcastPaid} onChange={(event) => setBroadcastPaid(event.target.checked)}/><span><strong>Add Rundfunkbeitrag (€18.36 per dwelling)</strong><small>Switch this off if another person in your dwelling already pays.</small></span></label>
       <label className="range-field"><span>Expected warm rent <strong>{money(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>Use a current listing or offer. This is the largest source of variation.</small></label>
@@ -50,7 +53,7 @@ export function CostOfLivingCalculator() {
       <h2>≈ {money(result.total)}<small>/month</small></h2>
       <p>Approximate annual budget: {money(result.total * 12)}. Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.</p>
       <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{label}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{money(amount)}</strong></div>)}</div>
-      <aside className="method-note"><strong>One useful estimate, with the assumptions visible</strong><p>Housing is your input. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts. Food, utilities, car, leisure and other personal spending are central planning assumptions—not regulated prices or live quotes.</p></aside>
+      <aside className="method-note"><strong>One useful estimate, with the assumptions visible</strong><p>Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.</p></aside>
     </section>
   </div>;
 }

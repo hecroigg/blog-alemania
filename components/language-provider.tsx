@@ -35,6 +35,14 @@ function replaceKeepingWhitespace(value: string, replacement: string) {
   return `${leading}${replacement}${trailing}`;
 }
 
+function capitaliseFirstLetter(value: string) {
+  return value.replace(/\p{L}/u, (letter) => letter.toLocaleUpperCase());
+}
+
+function startsAVisibleLabel(element: Element) {
+  return Boolean(element.closest("h1, h2, h3, h4, h5, h6, th, summary, .desktop-nav, .mobile-menu nav, .toc, .topic-list, .site-footer a"));
+}
+
 function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: Locale) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes: Text[] = [];
@@ -51,7 +59,9 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const source = originalText.get(node) || current;
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
-    const next = key !== "Living Germany" && catalog?.[key] ? replaceKeepingWhitespace(source, catalog[key]) : source;
+    const replacement = key !== "Living Germany" && catalog?.[key] ? catalog[key] : key;
+    const polished = startsAVisibleLabel(parent) ? capitaliseFirstLetter(replacement) : replacement;
+    const next = replacement !== key || polished !== key ? replaceKeepingWhitespace(source, polished) : source;
     if (current !== next) node.nodeValue = next;
     translatedText.set(node, next);
   }
