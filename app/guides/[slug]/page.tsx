@@ -5,6 +5,7 @@ import { AdSlot, PartnerDisclosure } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { SafetyNotice } from "@/components/source-stamp";
 import { categoryMap } from "@/lib/content/categories";
 import { getRelatedGuides, guideMap, guides } from "@/lib/content/guides";
 import { absoluteUrl, siteConfig } from "@/lib/site";
@@ -45,7 +46,7 @@ export default async function GuidePage({ params }: Props) {
           <section className="sources-section" id="sources"><h2>Official and primary sources</h2><ul className="source-list">{guide.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span><strong>{source.name}</strong>{source.note && <small>{source.note}</small>}</span><Icon name="external" size={17}/></a></li>)}</ul></section>
           {related.length > 0 && <section className="related-section"><h2>Continue with</h2><div className="related-grid">{related.map((item) => <Link href={`/guides/${item.slug}`} key={item.slug}><span>{item.title}</span><Icon name="arrow"/></Link>)}</div></section>}
         </div>
-        <aside className="article-side"><div className="article-side-note"><strong>Independent information</strong><p>We are not a German authority. Verify time-sensitive rules with the linked official source or a qualified adviser.</p></div><AdSlot placement="sidebar"/></aside>
+        <aside className="article-side"><SafetyNotice/><AdSlot placement="sidebar"/></aside>
       </div>
     </article>
     <JsonLd data={[articleSchema, faqSchema, breadcrumbSchema]}/>

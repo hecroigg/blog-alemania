@@ -9,8 +9,8 @@ export function SourceStamp({ source }: { source: VerifiedSource }) {
 }
 
 export function SafetyNotice() {
-  return <aside className="safety-notice">
-    <strong>Important</strong>
-    <p>Rules may depend on nationality and individual circumstances. Always verify important immigration, tax, legal and insurance requirements with the relevant German authority.</p>
+  return <aside className="safety-notice trust-block">
+    <strong>Use this as your practical starting point</strong>
+    <p>We explain the usual route and link the source. Your nationality, city or personal situation can change the answer, so check time-sensitive legal, tax, immigration and insurance details with the responsible authority.</p>
   </aside>;
 }

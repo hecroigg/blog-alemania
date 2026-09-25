@@ -1,12 +1,14 @@
 import { citiesGuides } from "./cities-guide";
 import { lifeServicesGuides } from "./life-services";
 import { moveAndAdminGuides } from "./move-and-admin";
+import { newcomerReferenceGuides } from "./newcomer-reference";
 import { workAndHousingGuides } from "./work-and-housing";
 
 export const guides = [
   ...moveAndAdminGuides,
   ...workAndHousingGuides,
   ...lifeServicesGuides,
+  ...newcomerReferenceGuides,
   ...citiesGuides,
 ];
 

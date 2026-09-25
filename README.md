@@ -1,6 +1,6 @@
-# Living Germany
+# GermanyBase
 
-Living Germany is an independent practical platform for moving to, understanding, and living in Germany. It combines editorial guidance with personalised planning, interactive checklists, city decision tools, and transparent calculators.
+GermanyBase is an independent practical platform for moving to, understanding, and living in Germany. It combines editorial guidance with personalised planning, interactive checklists, city decision tools, and transparent calculators.
 
 ## Stack
 
@@ -49,7 +49,10 @@ The production build has no required environment variables. Without analytics or
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Recommended for production | Canonical origin used by metadata, sitemap, robots, and structured data |
 | `NEXT_PUBLIC_GA_ID` | No | Loads GA4 only after the visitor accepts analytics cookies |
-| `NEXT_PUBLIC_ADSENSE_ID` | No | Enables dormant ad-placement containers; no ad script is included yet |
+| `NEXT_PUBLIC_ADSENSE_ID` | No | AdSense publisher ID; advertising still waits for user consent and configured slot IDs |
+| `NEXT_PUBLIC_ADSENSE_SLOT_INTRO` | No | Responsive slot after an article introduction |
+| `NEXT_PUBLIC_ADSENSE_SLOT_BODY` | No | Responsive slot inside a long article |
+| `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` | No | Desktop sidebar slot |
 
 Never commit real secrets. These variables are public by design; server-side secrets should use non-`NEXT_PUBLIC_` names when future services are added.
 
@@ -128,7 +131,7 @@ Set `NEXT_PUBLIC_GA_ID` as a Cloudflare Workers build variable. `components/anal
 
 ## AdSense
 
-`AdSlot` supports article-introduction, article-body, and desktop-sidebar placements and returns nothing when `NEXT_PUBLIC_ADSENSE_ID` is empty. Before activation:
+`AdSlot` supports article-introduction, article-body, and desktop-sidebar placements. It reserves layout space and loads AdSense only when the publisher ID, the matching slot ID and advertising consent are all present. Before activation:
 
 1. complete publisher approval and legal review;
 2. add the official script through `next/script` only after advertising consent;

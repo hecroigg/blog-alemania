@@ -1,10 +1,11 @@
 export const siteConfig = {
-  name: "Living Germany",
-  shortName: "LG",
+  name: "GermanyBase",
+  shortName: "GB",
   description:
-    "Independent, practical guides for moving to Germany and building your life here.",
+    "Friendly, practical guides and tools for moving to Germany and building your life here.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://blog-alemania.linkedlab-web.workers.dev",
-  email: "hello@livinggermany.example",
+  futureDomain: "https://germanybase.de",
+  email: "hello@germanybase.de",
   defaultLocale: "en",
   locales: ["en", "es"] as const,
   social: {},

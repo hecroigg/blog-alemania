@@ -1,4 +1,4 @@
-# Living Germany content strategy
+# GermanyBase content strategy
 
 ## Editorial north star
 

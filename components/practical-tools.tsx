@@ -128,17 +128,21 @@ export function RentalScamChecker() {
 }
 
 const arrivalTasks = [
-  ["Day 1", "mailbox", "Put your name on the mailbox and confirm how post is delivered."],
-  ["Day 1", "provider-confirmation", "Collect the Wohnungsgeberbestätigung from the responsible provider."],
-  ["Week 1", "registration", "Start the municipality's Anmeldung process; the standard deadline is 14 days after moving in."],
-  ["Week 1", "insurance", "Confirm that your health-insurance coverage is active and correctly recorded."],
-  ["Weeks 2–4", "bank", "Set up the bank account or payment access you actually need."],
-  ["Weeks 2–4", "tax-id", "Store your Tax ID safely when it arrives or use the official retrieval route if needed."],
-  ["Weeks 2–4", "employer", "Complete employer or university onboarding and keep copies of submitted records."],
-  ["Weeks 2–4", "broadcast", "Clarify the household Rundfunkbeitrag account; in a WG, check whether someone already pays."],
-  ["Months 1–3", "residence", "Complete route-specific residence steps before the applicable document expires."],
-  ["Months 1–3", "utilities", "Review electricity, internet, mobile and transport contracts and cancellation dates."],
+  ["Before arrival", "identity", "Check passport or ID validity, work or study route, and the health cover needed from your first day."],
+  ["Before arrival", "housing-proof", "Confirm that your accommodation is real and that the provider can issue a Wohnungsgeberbestätigung."],
+  ["Arrival", "mailbox", "Put your name on the mailbox, collect keys and photograph meter readings and the handover record."],
+  ["Arrival", "provider-confirmation", "Collect the Wohnungsgeberbestätigung and check the address, names and move-in date."],
+  ["Anmeldung", "registration", "Register your address. The standard deadline is 14 days after moving in, subject to statutory exceptions."],
+  ["Health insurance", "insurance", "Confirm your health-insurance route, effective date and the proof your employer or university needs."],
+  ["Tax ID", "tax-id", "Store your 11-digit Tax ID when it arrives; use the official BZSt retrieval route if it does not."],
+  ["Bank", "bank", "Set up the SEPA account and payment access you actually need; compare fees, support and deposit protection."],
+  ["Work or study", "employer", "Complete employer or university onboarding and keep a copy of every document submitted."],
+  ["Broadcast fee", "broadcast", "Clarify the household Rundfunkbeitrag account; in a WG, ask whether another resident already pays."],
+  ["SIM and internet", "connectivity", "Activate a verified SIM first, then compare full home-internet contract cost and installation time."],
+  ["Transport", "transport", "Choose a local ticket, €63 Deutschlandticket or eligible €37.80 Deutschlandsemesterticket and save the cancellation date."],
 ] as const;
+
+const arrivalPeriods = ["Before arrival", "Arrival", "Anmeldung", "Health insurance", "Tax ID", "Bank", "Work or study", "Broadcast fee", "SIM and internet", "Transport"] as const;
 
 export function ArrivalChecklist() {
   const storageKey = "living-germany-arrival-v1";
@@ -146,5 +150,31 @@ export function ArrivalChecklist() {
   useEffect(() => { let saved: string[] = []; try { saved = JSON.parse(window.localStorage.getItem(storageKey) || "[]"); } catch { saved = []; } queueMicrotask(() => setCompleted(saved)); }, []);
   const toggle = (id: string) => setCompleted((current) => { const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id]; window.localStorage.setItem(storageKey, JSON.stringify(next)); return next; });
   const progress = Math.round((completed.length / arrivalTasks.length) * 100);
-  return <div className="checklist-tool"><div className="progress-card"><div><span>Germany setup</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>Saved on this device. Deadlines vary; verify time-sensitive tasks with the responsible authority.</small></div><div className="arrival-checklist">{["Day 1", "Week 1", "Weeks 2–4", "Months 1–3"].map((period) => <section key={period}><h2>{period}</h2>{arrivalTasks.filter(([group]) => group === period).map(([, id, task]) => <label className={completed.includes(id) ? "is-complete" : ""} key={id}><input type="checkbox" checked={completed.includes(id)} onChange={() => toggle(id)}/><span>{task}</span></label>)}</section>)}</div></div>;
+  return <div className="checklist-tool"><div className="progress-card"><div><span>Your Germany setup</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>Saved on this device. You can leave and return without creating an account.</small></div><div className="arrival-checklist arrival-timeline">{arrivalPeriods.map((period, index) => <section key={period}><h2><span>{String(index + 1).padStart(2, "0")}</span>{period}</h2>{arrivalTasks.filter(([group]) => group === period).map(([, id, task]) => <label className={completed.includes(id) ? "is-complete" : ""} key={id}><input type="checkbox" checked={completed.includes(id)} onChange={() => toggle(id)}/><span>{task}</span></label>)}</section>)}</div></div>;
+}
+
+export function ApartmentAffordabilityCalculator() {
+  const [income, setIncome] = useState(2600);
+  const [warmRent, setWarmRent] = useState(900);
+  const [excludedUtilities, setExcludedUtilities] = useState(90);
+  const [fixedCommitments, setFixedCommitments] = useState(250);
+  const housing = warmRent + excludedUtilities;
+  const housingShare = income > 0 ? Math.round((housing / income) * 100) : 0;
+  const leftAfterHousing = income - housing;
+  const flexibleAmount = income - housing - fixedCommitments;
+  const label = housingShare <= 30 ? "More breathing room" : housingShare <= 40 ? "Tight but possible" : "High housing pressure";
+  return <div className="calculator-layout affordability-tool">
+    <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
+      <label className="form-field"><span>Monthly household net income</span><input type="number" min="0" step="50" value={income} onChange={(event) => setIncome(Number(event.target.value))}/></label>
+      <label className="form-field"><span>Warm rent (Warmmiete)</span><input type="number" min="0" step="25" value={warmRent} onChange={(event) => setWarmRent(Number(event.target.value))}/></label>
+      <label className="form-field"><span>Electricity, internet and costs outside warm rent</span><input type="number" min="0" step="10" value={excludedUtilities} onChange={(event) => setExcludedUtilities(Number(event.target.value))}/></label>
+      <label className="form-field"><span>Debt, insurance and other fixed commitments</span><input type="number" min="0" step="10" value={fixedCommitments} onChange={(event) => setFixedCommitments(Number(event.target.value))}/></label>
+    </form>
+    <section className="calculator-result" aria-live="polite">
+      <span className="eyebrow">Apartment affordability check</span><h2>{housingShare}%<small>of net income for housing</small></h2>
+      <div className={`affordability-status affordability-${housingShare <= 30 ? "good" : housingShare <= 40 ? "medium" : "high"}`}><strong>{label}</strong><span>{money(leftAfterHousing)} remains after housing; {money(flexibleAmount)} after the fixed commitments you entered.</span></div>
+      <div className="cost-bars"><div><span>Warm rent</span><div><i style={{ width: `${Math.min(100, (warmRent / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(warmRent)}</strong></div><div><span>Excluded utilities</span><div><i style={{ width: `${Math.min(100, (excludedUtilities / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(excludedUtilities)}</strong></div><div><span>Other commitments</span><div><i style={{ width: `${Math.min(100, (fixedCommitments / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(fixedCommitments)}</strong></div></div>
+      <aside className="method-note"><strong>This is a stress check, not an approval rule</strong><p>There is no universal legal 30% rent rule. Landlords use their own evidence and criteria. Check whether heating is included, then add food, transport, health costs, savings and irregular bills before deciding.</p></aside>
+    </section>
+  </div>;
 }

@@ -10,12 +10,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: { default: "Living Germany — Practical guides for life in Germany", template: "%s | Living Germany" },
+  title: { default: "GermanyBase — Practical guides for life in Germany", template: "%s | GermanyBase" },
   description: siteConfig.description,
   applicationName: siteConfig.name,
   alternates: { canonical: absoluteUrl("/") },
-  openGraph: { type: "website", locale: "en_GB", siteName: siteConfig.name, title: "Living Germany", description: siteConfig.description, url: absoluteUrl("/") },
-  twitter: { card: "summary", title: "Living Germany", description: siteConfig.description },
+  openGraph: { type: "website", locale: "en_GB", siteName: siteConfig.name, title: "GermanyBase", description: siteConfig.description, url: absoluteUrl("/") },
+  twitter: { card: "summary", title: "GermanyBase", description: siteConfig.description },
   robots: { index: true, follow: true },
 };
 
