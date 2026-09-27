@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "GB",
   description:
     "Friendly, practical guides and tools for moving to Germany and building your life here.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://blog-alemania.linkedlab-web.workers.dev",
+  url: "https://germanybase.de",
   futureDomain: "https://germanybase.de",
   email: "hello@germanybase.de",
   defaultLocale: "en",
