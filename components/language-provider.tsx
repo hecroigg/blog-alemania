@@ -8,6 +8,7 @@ type LanguageContextValue = {
   setLocale: (locale: Locale) => void;
   copy: (typeof uiCopy)[Locale];
   translations: TranslationCatalog | null;
+  translate: (source: string, replacements?: Record<string, string>, capitalise?: boolean) => string;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -40,7 +41,20 @@ function capitaliseFirstLetter(value: string) {
 }
 
 function startsAVisibleLabel(element: Element) {
-  return Boolean(element.closest("h1, h2, h3, h4, h5, h6, th, summary, .desktop-nav, .mobile-menu nav, .toc, .topic-list, .site-footer a"));
+  return Boolean(element.closest("h1, h2, h3, h4, h5, h6, th, summary, option, label, button, .eyebrow, .desktop-nav, .mobile-menu nav, .toc, .topic-list, .site-footer a, .sidebar-card a, .city-snapshot, .requirement-grid, .timeline-stage h3, .status-pill"));
+}
+
+function catalogValue(catalog: TranslationCatalog | null, source: string) {
+  const direct = catalog?.[source];
+  if (direct) return direct;
+  if (source.includes(" · ")) return source.split(" · ").map((part) => catalog?.[part] || part).join(" · ");
+  return source;
+}
+
+function formatTranslation(catalog: TranslationCatalog | null, source: string, replacements: Record<string, string> = {}, capitalise = false) {
+  let value = catalogValue(catalog, source);
+  for (const [key, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${key}}`, replacement);
+  return capitalise ? capitaliseFirstLetter(value) : value;
 }
 
 function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: Locale) {
@@ -59,7 +73,7 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const source = originalText.get(node) || current;
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
-    const replacement = key !== "GermanyBase" && key !== "Living Germany" && catalog?.[key] ? catalog[key] : key;
+    const replacement = key !== "GermanyBase" && key !== "Living Germany" ? catalogValue(catalog, key) : key;
     const polished = startsAVisibleLabel(parent) ? capitaliseFirstLetter(replacement) : replacement;
     const next = replacement !== key || polished !== key ? replaceKeepingWhitespace(source, polished) : source;
     if (current !== next) node.nodeValue = next;
@@ -146,6 +160,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     },
     copy: uiCopy[locale],
     translations,
+    translate: (source, replacements, capitalise) => formatTranslation(translations, source, replacements, capitalise),
   }), [locale, translations]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

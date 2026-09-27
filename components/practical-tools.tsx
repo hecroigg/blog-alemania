@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/components/language-provider";
 import { cityProfiles, getCitizenshipGroup, nationalityOptions, trackedFacts } from "@/lib/platform-data";
 
 function money(value: number) { return new Intl.NumberFormat("en-DE", { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
@@ -59,18 +60,19 @@ export function CostOfLivingCalculator() {
 }
 
 export function CityComparison() {
+  const { translate } = useLanguage();
   const [selected, setSelected] = useState(["Berlin", "Munich", "Mannheim"]);
   const toggle = (name: string) => setSelected((current) => current.includes(name) ? current.filter((item) => item !== name) : current.length < 4 ? [...current, name] : current);
   const items = cityProfiles.filter((city) => selected.includes(city.name));
   return <div>
     <fieldset className="city-picker"><legend>Choose 2–4 cities</legend>{cityProfiles.map((city) => <label key={city.slug}><input type="checkbox" checked={selected.includes(city.name)} onChange={() => toggle(city.name)} disabled={!selected.includes(city.name) && selected.length >= 4}/><span>{city.name}</span></label>)}</fieldset>
     <div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>Trade-off</th>{items.map((city) => <th key={city.slug}>{city.name}<small>{city.state}</small></th>)}</tr></thead><tbody>
-      <tr><th>Housing pressure</th>{items.map((city) => <td key={city.slug}><span className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{city.housingPressure}</span></td>)}</tr>
-      <tr><th>Transport</th>{items.map((city) => <td key={city.slug}>{city.transport}</td>)}</tr>
-      <tr><th>Employment sectors</th>{items.map((city) => <td key={city.slug}>{city.sectors.join(" · ")}</td>)}</tr>
-      <tr><th>Universities</th>{items.map((city) => <td key={city.slug}>{city.universities}</td>)}</tr>
+      <tr><th>Housing pressure</th>{items.map((city) => <td key={city.slug}><span className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure, undefined, true)}</span></td>)}</tr>
+      <tr><th>Transport</th>{items.map((city) => <td key={city.slug}>{translate(city.transport, undefined, true)}</td>)}</tr>
+      <tr><th>Employment sectors</th>{items.map((city) => <td key={city.slug}>{city.sectors.map((sector, index) => <span key={sector}>{index ? " · " : ""}{translate(sector, undefined, index === 0)}</span>)}</td>)}</tr>
+      <tr><th>Universities</th>{items.map((city) => <td key={city.slug}>{translate(city.universities, undefined, true)}</td>)}</tr>
       <tr><th>Airport/access</th>{items.map((city) => <td key={city.slug}>{city.airport}</td>)}</tr>
-      <tr><th>Nature</th>{items.map((city) => <td key={city.slug}>{city.nature}</td>)}</tr>
+      <tr><th>Nature</th>{items.map((city) => <td key={city.slug}>{translate(city.nature, undefined, true)}</td>)}</tr>
       <tr><th>Official information</th>{items.map((city) => <td key={city.slug}><a className="text-link" href={city.officialUrl} target="_blank" rel="noreferrer">City portal</a></td>)}</tr>
     </tbody></table></div>
     <p className="table-caption">No overall ranking: compare the trade-offs against your actual work, study, housing and commute options.</p>

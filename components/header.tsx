@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Icon } from "@/components/icon";
 import { LanguageSelector } from "@/components/language-selector";
@@ -39,8 +40,7 @@ export function Header() {
     <header className="site-header">
       <div className="shell header-inner">
         <Link href="/" className="brand" aria-label={`${siteConfig.name} home`}>
-          <span className="brand-mark" aria-hidden="true"><span>G</span></span>
-          <span>{siteConfig.name}</span>
+          <Image className="brand-logo" src="/germanybase-logo.png" alt={siteConfig.name} width={300} height={100} priority/>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
           <Link className="nav-primary" href="/plan">{copy.plan}</Link>

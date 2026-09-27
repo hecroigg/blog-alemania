@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { audiences } from "@/lib/content/audiences";
 import { siteConfig } from "@/lib/site";
 
@@ -13,7 +14,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div className="footer-brand">
-          <Link href="/" className="brand"><span className="brand-mark"><span>G</span></span><span>{siteConfig.name}</span></Link>
+          <Link href="/" className="brand"><Image className="brand-logo footer-brand-logo" src="/germanybase-logo.png" alt={siteConfig.name} width={300} height={100}/></Link>
           <p>Independent, practical guidance for building a life in Germany.</p>
           <p className="disclaimer">We are not a government body. Information does not replace legal, tax, medical, immigration, or financial advice.</p>
         </div>
