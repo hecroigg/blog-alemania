@@ -7,7 +7,7 @@ export const siteConfig = {
   futureDomain: "https://germanybase.de",
   email: "hello@germanybase.de",
   defaultLocale: "en",
-  locales: ["en", "es"] as const,
+  locales: ["en", "es", "de", "fr", "it", "pt", "pl", "uk"] as const,
   social: {},
   mainNavigation: [
     { label: "Plan", href: "/plan" },

@@ -43,7 +43,7 @@ export function LanguageSelector() {
         key={item}
       >
         <span aria-hidden="true">{localeLabels[item].flag}</span>
-        <span>{localeLabels[item].label}</span>
+        <span data-no-translate>{localeLabels[item].label}</span>
         <small>{item.toUpperCase()}</small>
       </button>)}
     </div>
