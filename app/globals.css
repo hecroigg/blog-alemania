@@ -486,6 +486,101 @@ p { margin: 0; color: var(--muted); }
 .emergency-hero { background: linear-gradient(180deg, #fff8f6, #f8eeee); }.emergency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }.emergency-grid article { display: grid; align-content: start; padding: 1.5rem; border: 1px solid var(--line); border-radius: 20px; background: white; }.emergency-grid span { color: var(--muted); font-size: .78rem; font-weight: 750; }.emergency-grid a { margin: .3rem 0; color: var(--blue-deep); font-family: var(--font-display); font-size: 3.2rem; font-weight: 850; }.emergency-grid p { font-size: .88rem; }.emergency-grid .emergency-primary { color: white; border: 0; background: var(--blue-deep); }.emergency-grid .emergency-primary span, .emergency-grid .emergency-primary p { color: #c2d6e4; }.emergency-grid .emergency-primary a { color: white; }.emergency-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }.emergency-notes article { padding: 1.2rem; border-radius: 16px; background: #eef3f7; }.emergency-notes h2 { margin-bottom: .5rem; font-size: 1.1rem; }.emergency-notes p { font-size: .84rem; }.emergency-sources { margin-top: 2rem; }
 .data-table { width: 100%; min-width: 900px; border-collapse: collapse; background: white; }.data-table th, .data-table td { padding: 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .82rem; }.data-table th { color: var(--ink); }.data-table th small, .data-table td small { display: block; margin-top: .35rem; color: var(--muted); font-weight: 400; }.data-table a { color: var(--blue); font-weight: 700; }.data-status { display: inline-block; padding: .25rem .45rem; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: .68rem; font-weight: 800; text-transform: capitalize; }.data-local-data-required { color: #806013; background: var(--gold-soft); }.data-route-specific { color: #8c3427; background: var(--coral-soft); }
 
+.salary-hero { background: radial-gradient(circle at 86% 20%, #dff2fa, transparent 34%), linear-gradient(180deg, #f8fbff, #f2f5f8); }
+.employment-hero { background: radial-gradient(circle at 86% 20%, #ffe8e1, transparent 34%), linear-gradient(180deg, #f8fbff, #f2f5f8); }
+.salary-tool { display: grid; grid-template-columns: minmax(320px, .76fr) minmax(0, 1.24fr); gap: 1.25rem; align-items: start; }
+.salary-form, .salary-results { border: 1px solid var(--line); border-radius: 24px; background: white; box-shadow: var(--shadow); }
+.salary-form { padding: clamp(1.1rem, 3vw, 1.6rem); }
+.salary-basic-grid { display: grid; gap: 1rem; }
+.salary-input { display: grid; grid-template-columns: auto 1fr; align-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: white; }
+.salary-input:focus-within { outline: 3px solid #ffb3a2; outline-offset: 1px; }
+.salary-input>span { padding-left: .8rem; color: var(--muted); font-weight: 800; }
+.salary-input input { width: 100%; border: 0; outline: 0; }
+.segmented-control { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; padding: 0; border: 0; }
+.segmented-control legend { margin-bottom: .45rem; color: var(--ink); font-size: .74rem; font-weight: 800; }
+.segmented-control input { position: absolute; opacity: 0; }
+.segmented-control span { display: block; padding: .72rem; border: 1px solid var(--line); border-radius: 10px; text-align: center; font-size: .78rem; font-weight: 800; cursor: pointer; }
+.segmented-control input:checked+span { color: white; border-color: var(--blue); background: var(--blue); }
+.segmented-control input:focus-visible+span { outline: 3px solid #ff9b84; outline-offset: 2px; }
+.advanced-panel { margin-top: 1.2rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.advanced-panel>summary, .deduction-panel>summary { padding: 1rem 0; color: var(--ink); font-weight: 850; cursor: pointer; }
+.advanced-panel>summary small { display: block; margin-top: .15rem; color: var(--muted); font-weight: 500; }
+.advanced-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; padding-bottom: 1.1rem; }
+.advanced-grid .compact-check { grid-column: 1 / -1; }
+.compact-check { padding: .8rem; }
+.salary-submit { width: 100%; margin-top: 1.2rem; }
+.salary-results { padding: clamp(1.2rem, 4vw, 2rem); }
+.salary-results .result-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+.salary-results h2 { margin: .35rem 0 0; font-size: clamp(2rem, 5vw, 3.3rem); }
+.status-pill { display: inline-flex; padding: .4rem .65rem; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: .7rem; font-weight: 850; text-transform: uppercase; }
+.salary-warning { margin: 1.2rem 0; padding: 1rem; border-left: 4px solid var(--coral); border-radius: 0 12px 12px 0; background: var(--coral-soft); }
+.salary-warning p { margin-top: .25rem; color: var(--ink-2); font-size: .82rem; }
+.salary-result-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7rem; margin: 1.4rem 0; }
+.salary-result-cards article { min-width: 0; padding: 1rem; border-radius: 15px; background: #f2f7fa; }
+.salary-result-cards span, .employment-reference-grid span, .employment-card-grid article>span, .wage-year-grid article>span { display: block; color: var(--blue); font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.salary-result-cards strong { display: block; margin: .35rem 0; color: var(--blue-deep); font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.8rem); }
+.salary-result-cards small { color: var(--muted); font-size: .7rem; }
+.salary-meter { position: relative; height: 36px; overflow: hidden; border-radius: 999px; background: #e7eef3; }
+.salary-meter>div { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), #62a9d5); }
+.salary-meter>span { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink); font-size: .7rem; font-weight: 850; mix-blend-mode: multiply; }
+.deduction-panel { margin: 1.2rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.deduction-list { display: grid; padding-bottom: .8rem; }
+.deduction-list>div { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 0; border-top: 1px solid #edf1f4; font-size: .8rem; }
+.deduction-list strong { color: var(--ink); }
+.salary-disclaimer { padding: 1rem; border-radius: 12px; color: var(--ink-2); background: #f4f6f8; font-size: .75rem; }
+.salary-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.salary-links a { padding: .5rem .7rem; border: 1px solid var(--line); border-radius: 999px; color: var(--blue); font-size: .72rem; font-weight: 800; }
+.employment-reference-grid, .wage-year-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.employment-reference-grid article, .wage-year-grid article { padding: 1.35rem; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.employment-reference-grid strong, .wage-year-grid strong { display: block; margin: .55rem 0; color: var(--blue-deep); font-family: var(--font-display); font-size: 1.5rem; }
+.employment-reference-grid p, .wage-year-grid p { font-size: .84rem; }
+.salary-source-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+.salary-source-grid a { display: grid; gap: .45rem; min-height: 180px; padding: 1.1rem; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; background: rgba(255,255,255,.05); }
+.salary-source-grid span { color: #bed3e1; font-size: .78rem; }
+.salary-source-grid em { margin-top: auto; color: #9fd2ef; font-size: .72rem; font-style: normal; font-weight: 800; }
+.compact-faq { margin-top: 2rem; }
+.work-feature-section { padding-bottom: 1rem; }
+.work-feature-grid, .employment-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; }
+.work-feature-grid>a, .employment-card-grid article { display: flex; flex-direction: column; min-height: 255px; padding: 1.25rem; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.work-feature-grid span { color: var(--coral); font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.work-feature-grid h3, .employment-card-grid h2 { margin: .7rem 0; font-size: 1.2rem; }
+.work-feature-grid p, .employment-card-grid p { font-size: .82rem; }
+.work-feature-grid em, .employment-card-grid a { display: flex; justify-content: space-between; gap: .5rem; align-items: center; margin-top: auto; padding-top: 1rem; color: var(--blue); font-size: .75rem; font-style: normal; font-weight: 800; }
+.employment-card-grid article { min-height: 320px; }
+.employment-card-grid article>strong { margin: 1rem 0; color: var(--ink-2); font-size: .78rem; }
+.employment-checker { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: white; box-shadow: var(--shadow); }
+.employment-checker form, .employment-checker section { display: grid; gap: 1rem; padding: clamp(1.2rem, 4vw, 2rem); }
+.employment-checker section { align-content: center; color: white; background: var(--blue-deep); }
+.employment-checker section p, .employment-checker section small { color: #c5d8e5; }
+.employment-checker section h3 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+.employment-checker section .button { justify-self: start; }
+.employment-checker section small { display: block; font-size: .7rem; }
+.employment-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; }
+.employment-table { width: 100%; min-width: 940px; border-collapse: collapse; background: white; }
+.employment-table th, .employment-table td { padding: 1rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .78rem; }
+.employment-table th { color: var(--ink); background: #f2f6f9; }
+.employment-table th:first-child { position: sticky; left: 0; z-index: 2; width: 190px; }
+.midijob-examples { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin: 1.2rem 0; }
+.midijob-examples>div { display: grid; gap: .2rem; padding: .9rem; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; }
+.midijob-examples span { color: #c7d9e6; font-size: .76rem; }
+.number-example { display: grid; gap: .35rem; margin-top: .8rem; padding: 1rem; border-left: 4px solid var(--blue); border-radius: 0 12px 12px 0; background: var(--blue-soft); }
+.number-example span { color: var(--ink-2); font-size: .82rem; }
+.werkstudent-example-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem; margin-top: 2rem; }
+.werkstudent-example-grid article { display: grid; gap: .55rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: 16px; background: white; }
+.werkstudent-example-grid article>span { color: var(--blue); font-size: .72rem; font-weight: 850; }
+.werkstudent-example-grid article>strong { color: var(--blue-deep); font-family: var(--font-display); font-size: 1.3rem; }
+.werkstudent-example-grid p { font-size: .8rem; }
+.werkstudent-example-grid em { color: var(--ink-2); font-size: .75rem; font-style: normal; font-weight: 750; }
+.regular-example-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; }
+.regular-example-grid article { display: grid; gap: .5rem; padding: 1.1rem; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; background: rgba(255,255,255,.05); }
+.regular-example-grid article>span { color: #9fd2ef; font-size: .7rem; font-weight: 850; }
+.regular-example-grid article>strong { font-size: 1.05rem; }
+.regular-example-grid p { color: #c7d9e6; font-size: .76rem; }
+.section-cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.2rem; }
+.example-table th:first-child { min-width: 180px; }
+.wage-year-grid { grid-template-columns: 1fr 1fr; }
+.wage-year-grid small { color: var(--muted); }
+
 .cookie-banner { position: fixed; left: 50%; bottom: 1.2rem; z-index: 80; width: min(1040px, calc(100% - 32px)); display: grid; grid-template-columns: 1fr auto; gap: 1.2rem; align-items: center; padding: 1.1rem; transform: translateX(-50%); border: 1px solid #cedae4; border-radius: 18px; background: white; box-shadow: 0 20px 65px rgba(19,47,74,.22); }
 .cookie-copy strong { display: block; }
 .cookie-copy p { font-size: .83rem; }
@@ -506,6 +601,13 @@ p { margin: 0; color: var(--muted); }
   .form-grid, .action-card-grid { grid-template-columns: repeat(2, 1fr); }.requirement-grid, .source-stamp-grid, .status-route-grid, .route-grid, .authority-grid { grid-template-columns: repeat(2, 1fr); }.flow-card ol, .explore-city-grid { grid-template-columns: repeat(2, 1fr); }
   .explorer-filters { grid-template-columns: 1fr 1fr; }.explorer-filters label:first-child { grid-column: 1 / -1; }.explorer-results { grid-template-columns: repeat(2, 1fr); }
   .state-map { grid-template-columns: repeat(3, 1fr); }
+  .salary-tool { grid-template-columns: 1fr; }
+  .work-feature-grid, .employment-card-grid { grid-template-columns: repeat(2, 1fr); }
+  .salary-result-cards { grid-template-columns: repeat(2, 1fr); }
+  .employment-reference-grid { grid-template-columns: repeat(2, 1fr); }
+  .werkstudent-example-grid { grid-template-columns: 1fr; }
+  .regular-example-grid { grid-template-columns: repeat(2, 1fr); }
+  .salary-source-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -529,6 +631,10 @@ p { margin: 0; color: var(--muted); }
   .result-heading { align-items: start; flex-direction: column; }.timeline-stage { grid-template-columns: 36px 1fr; }.timeline-stage ul { grid-column: 2; }
   .calculator-layout, .scam-checker, .germany-explorer { grid-template-columns: 1fr; }.risk-result { position: static; }.cost-bars>div { grid-template-columns: 1fr 90px; }.cost-bars>div>div { grid-column: 1 / -1; grid-row: 2; }.cost-bars strong { grid-column: 2; grid-row: 1; }
   .state-map { grid-template-columns: repeat(2, 1fr); }.explore-city-grid, .flow-card ol, .explorer-filters, .explorer-results { grid-template-columns: 1fr; }.explorer-filters label:first-child { grid-column: auto; }.explorer-summary { align-items: flex-start; flex-direction: column; }
+  .advanced-grid, .salary-result-cards, .employment-reference-grid, .work-feature-grid, .employment-card-grid, .employment-checker, .salary-source-grid, .wage-year-grid { grid-template-columns: 1fr; }
+  .advanced-grid .compact-check { grid-column: auto; }
+  .midijob-examples { grid-template-columns: 1fr; }
+  .regular-example-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 430px) {
