@@ -91,8 +91,8 @@ export function SalaryCalculator() {
       <div className="result-heading"><div><span className="eyebrow">2026 planning result</span><h2>{translate(result.employmentType)}</h2></div><span className="status-pill">{translate(appliedAdvanced ? "More precise estimate" : "Quick estimate based on standard assumptions")}</span></div>
       {result.belowMinimumWage && <div className="salary-warning"><strong>Below the 2026 statutory minimum wage</strong><p>Your entries equal {money(result.grossHourly, 2)} gross per hour, below €13.90. Check whether a legal exception applies or correct the salary and hours.</p></div>}
       <div className="salary-result-cards">
-        <article><span>Monthly net</span><strong>{money(result.netMonthly, 2)}</strong><small>From {money(result.grossMonthly, 2)} gross</small></article>
-        <article><span>Annual net</span><strong>{money(result.netAnnual, 0)}</strong><small>From {money(result.grossAnnual, 0)} gross</small></article>
+        <article><span>Monthly net</span><strong>{money(result.netMonthly, 2)}</strong><small>From {money(result.grossMonthly, 2)} {translate("Gross salary")}</small></article>
+        <article><span>Annual net</span><strong>{money(result.netAnnual, 0)}</strong><small>From {money(result.grossAnnual, 0)} {translate("Gross salary")}</small></article>
         <article><span>Net per hour</span><strong>{applied.weeklyHours ? money(result.netHourly, 2) : "—"}</strong><small>{applied.weeklyHours ? <>Gross: {money(result.grossHourly, 2)} / hour · {number(applied.weeklyHours, 1)} hours / week</> : "Enter weekly hours to calculate"}</small></article>
         <article><span>Estimated total deductions</span><strong>{money(totalDeductions, 2)}</strong><small>Per month · tax and social insurance</small></article>
       </div>
