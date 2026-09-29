@@ -39,7 +39,11 @@ const protectedGermanTerms = [
 ];
 const protectedTermPattern = new RegExp(protectedGermanTerms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "gi");
 const translationOverrides = {
-  es: { Live: "Disponible" },
+  es: {
+    Live: "Disponible",
+    "Personal Germany plan": "Plan personal para Alemania",
+    "Check official 2026 ticket prices, registration deadlines, fees, tax thresholds and insurance rates.": "Consulta los precios oficiales de los billetes de 2026, los plazos de registro, las tasas, los umbrales fiscales y las cotizaciones del seguro.",
+  },
   de: { Live: "Verfügbar" },
   fr: { Live: "Disponible" },
   it: { Live: "Disponibile" },

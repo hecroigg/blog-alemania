@@ -47,6 +47,11 @@ function startsAVisibleLabel(element: Element) {
 function catalogValue(catalog: TranslationCatalog | null, source: string) {
   const direct = catalog?.[source];
   if (direct) return direct;
+  const titleSuffix = " | GermanyBase";
+  if (source.endsWith(titleSuffix)) {
+    const pageTitle = source.slice(0, -titleSuffix.length);
+    return `${catalog?.[pageTitle] || pageTitle}${titleSuffix}`;
+  }
   if (source.includes(" · ")) return source.split(" · ").map((part) => catalog?.[part] || part).join(" · ");
   return source;
 }
@@ -133,7 +138,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       if (cancelled) return;
       setTranslations(catalog);
       if (!originalTitleRef.current) originalTitleRef.current = document.title;
-      document.title = catalog?.[originalTitleRef.current] || originalTitleRef.current;
+      document.title = catalogValue(catalog, originalTitleRef.current);
       translateRoot(document.body, catalog, locale);
       document.documentElement.lang = locale;
       observerRef.current = new MutationObserver((mutations) => {
