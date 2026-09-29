@@ -28,7 +28,7 @@ const catalogLoaders: Record<Exclude<Locale, "en">, () => Promise<{ default: Tra
 const originalText = new WeakMap<Text, string>();
 const translatedText = new WeakMap<Text, string>();
 const attributeState = new WeakMap<Element, Map<string, { source: string; translated: string }>>();
-const translatableAttributes = ["aria-label", "placeholder", "title"] as const;
+const translatableAttributes = ["aria-label", "placeholder", "title", "alt"] as const;
 
 function replaceKeepingWhitespace(value: string, replacement: string) {
   const leading = value.match(/^\s*/)?.[0] || "";
