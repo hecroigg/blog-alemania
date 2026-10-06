@@ -277,6 +277,12 @@ p { margin: 0; color: var(--muted); }
 .source-list a { display: flex; align-items: start; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: white; }
 .source-list strong { display: block; font-size: .9rem; }
 .source-list small { color: var(--muted); }
+.locale-alternates { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.locale-alternates > strong { display: block; margin-bottom: 1rem; color: var(--navy); }
+.locale-alternates div { display: flex; flex-wrap: wrap; gap: .65rem; }
+.locale-alternates a { border: 1px solid var(--line); border-radius: 999px; padding: .55rem .85rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+.locale-alternates a:hover, .locale-alternates a[aria-current="page"] { border-color: var(--blue); background: var(--blue-soft); color: var(--blue); }
+.exact-guide-card .text-link { align-items: flex-start; }
 .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
 .related-grid a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: white; font-weight: 700; }
 .related-grid a:hover { color: var(--blue); border-color: #b9cbdc; }

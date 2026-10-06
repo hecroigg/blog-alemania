@@ -119,7 +119,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
     const browser = navigator.language.split("-")[0];
-    const next = isLocale(saved) ? saved : isLocale(browser) ? browser : "en";
+    const routeLocale = window.location.pathname.split("/").filter(Boolean)[0] || null;
+    const next = isLocale(routeLocale) ? routeLocale : isLocale(saved) ? saved : isLocale(browser) ? browser : "en";
     document.documentElement.lang = next;
     queueMicrotask(() => updateLocale(next));
   }, []);

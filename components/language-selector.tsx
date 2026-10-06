@@ -3,11 +3,18 @@
 import { useEffect, useRef } from "react";
 import { localeLabels, supportedLocales, type Locale } from "@/lib/platform-data";
 import { useLanguage } from "@/components/language-provider";
+import { switchLocalizedPath } from "@/lib/exact-guide-routes";
 
 export function LanguageSelector() {
   const { locale, setLocale, copy } = useLanguage();
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const choose = (next: Locale) => {
+    const localizedPath = switchLocalizedPath(window.location.pathname, next);
+    if (localizedPath) {
+      window.localStorage.setItem("living-germany-language", next);
+      window.location.assign(localizedPath);
+      return;
+    }
     setLocale(next);
     detailsRef.current?.removeAttribute("open");
   };

@@ -42,10 +42,11 @@ const translationOverrides = {
   es: {
     Live: "Disponible",
     "Personal Germany plan": "Plan personal para Alemania",
+    "Gross. Tax and employee social-insurance contributions are deducted afterwards.": "Bruto. Después se descuentan los impuestos y las cotizaciones sociales del trabajador.",
     "Check official 2026 ticket prices, registration deadlines, fees, tax thresholds and insurance rates.": "Consulta los precios oficiales de los billetes de 2026, los plazos de registro, las tasas, los umbrales fiscales y las cotizaciones del seguro.",
   },
   de: { Live: "Verfügbar" },
-  fr: { Live: "Disponible" },
+  fr: { Live: "Disponible", "Gross. Tax and employee social-insurance contributions are deducted afterwards.": "Brut. Les impôts et les cotisations sociales du salarié sont ensuite déduits." },
   it: { Live: "Disponibile" },
   pt: { Live: "Disponível" },
   pl: { Live: "Dostępne" },
