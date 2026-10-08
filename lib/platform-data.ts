@@ -1,5 +1,7 @@
 export const supportedLocales = ["en", "es", "de", "fr", "it", "pt", "pl", "uk"] as const;
 export type Locale = (typeof supportedLocales)[number];
+export const searchLocales = ["en", "es", "de", "fr"] as const satisfies readonly Locale[];
+export const isSearchLocale = (locale: Locale) => (searchLocales as readonly Locale[]).includes(locale);
 
 export const localeLabels: Record<Locale, { label: string; flag: string }> = {
   en: { label: "English", flag: "🇬🇧" },
