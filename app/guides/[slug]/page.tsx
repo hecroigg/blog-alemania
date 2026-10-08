@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { AdSlot, PartnerDisclosure } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
+import { EditorialNote } from "@/components/editorial-note";
 import { JsonLd } from "@/components/json-ld";
 import { SafetyNotice } from "@/components/source-stamp";
 import { categoryMap } from "@/lib/content/categories";
@@ -34,7 +35,7 @@ export default async function GuidePage({ params }: Props) {
   if (!guide) notFound();
   const category = categoryMap.get(guide.category);
   const related = getRelatedGuides(guide.related);
-  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, datePublished: guide.updated, inLanguage: "en", author: { "@type": "Organization", name: siteConfig.name }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: absoluteUrl(`/guides/${guide.slug}`), articleSection: category?.name };
+  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, datePublished: guide.updated, inLanguage: "en", author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: absoluteUrl(`/guides/${guide.slug}`), articleSection: category?.name };
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: guide.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) };
   const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") }, { "@type": "ListItem", position: 2, name: category?.name, item: absoluteUrl(`/${guide.category}`) }, { "@type": "ListItem", position: 3, name: guide.title, item: absoluteUrl(`/guides/${guide.slug}`) }] };
   return <>
@@ -44,6 +45,7 @@ export default async function GuidePage({ params }: Props) {
         <nav className="toc" aria-label="Table of contents"><strong>On this page</strong><ol>{guide.sections.map((section) => <li key={section.heading}><a href={`#${toId(section.heading)}`}>{section.heading}</a></li>)}<li><a href="#faqs">Questions</a></li><li><a href="#sources">Official sources</a></li></ol></nav>
         <div className="article-body">
           <section className="key-takeaways"><h2>What to know first</h2><ul>{guide.takeaways.map((item) => <li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
+          <EditorialNote slug={guide.slug} updated={guide.updated} sourceCount={guide.sources.length}/>
           <AdSlot placement="article-intro"/>
           {guide.sections.map((section, index) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.resources && <div className="resource-grid">{section.resources.map((resource) => <a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}><span><strong data-no-translate>{resource.label}</strong><small>{resource.note}</small></span><Icon name="external" size={17}/></a>)}</div>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}{index === 1 && <AdSlot placement="article-body"/>}</section>)}
           <PartnerDisclosure/>
