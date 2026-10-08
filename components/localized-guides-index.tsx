@@ -3,13 +3,13 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ExactGuideCard } from "@/components/exact-guide-card";
 import { exactGuideUi, getLocalizedExactGuides } from "@/lib/content/localized-exact-guides";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
-import { supportedLocales, type Locale } from "@/lib/platform-data";
+import { isSearchLocale, searchLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl } from "@/lib/site";
 
 export function localizedGuidesMetadata(locale: Locale): Metadata {
   const ui = exactGuideUi[locale];
   const canonical = absoluteUrl(`/${locale}/guides`);
-  return { title: ui.libraryTitle, description: ui.libraryIntro, alternates: { canonical, languages: Object.fromEntries(supportedLocales.map((item) => [item, absoluteUrl(`/${item}/guides`)])) }, openGraph: { title: ui.libraryTitle, description: ui.libraryIntro, url: canonical, locale } };
+  return { title: ui.libraryTitle, description: ui.libraryIntro, alternates: { canonical, languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(`/${item}/guides`)])) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { title: ui.libraryTitle, description: ui.libraryIntro, url: canonical, locale } };
 }
 
 export function LocalizedGuidesIndex({ locale }: { locale: Locale }) {
