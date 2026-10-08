@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CityPracticalSnapshot } from "@/components/city-practical-snapshot";
 import { Icon } from "@/components/icon";
@@ -10,12 +10,15 @@ import { cityProfiles } from "@/lib/platform-data";
 import { absoluteUrl } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
+const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
 const toId = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 export function generateStaticParams() { return cities.map((city) => ({ slug: city.slug })); }
-export async function generateMetadata({ params }: Props): Promise<Metadata> { const { slug } = await params; const city = cityMap.get(slug); if (!city) return {}; const title = `Living in ${city.name}`; const url = absoluteUrl(`/cities/${city.slug}`); return { title, description: city.description, alternates: { canonical: url }, openGraph: { title, description: city.description, url } }; }
+export async function generateMetadata({ params }: Props): Promise<Metadata> { const { slug } = await params; const cleanSlug = stripCrawlerSuffix(slug); const city = cityMap.get(cityMap.has(cleanSlug) ? cleanSlug : slug); if (!city) return {}; const title = `Living in ${city.name}`; const url = absoluteUrl(`/cities/${city.slug}`); return { title, description: city.description, alternates: { canonical: url }, openGraph: { title, description: city.description, url } }; }
 
 export default async function CityPage({ params }: Props) {
   const { slug } = await params;
+  const cleanSlug = stripCrawlerSuffix(slug);
+  if (cleanSlug !== slug && cityMap.has(cleanSlug)) redirect(`/cities/${cleanSlug}`);
   const city = cityMap.get(slug);
   if (!city) notFound();
   const profile = cityProfiles.find((item) => item.slug === city.slug);
