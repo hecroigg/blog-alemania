@@ -21,7 +21,7 @@ export const trustPages: TrustPage[] = [
   { slug: "corrections-policy", title: "Corrections policy", eyebrow: "Trust", description: "How to report an error and what we do when published information needs correction.", sections: [
     { heading: "Report a concern", paragraphs: ["Send the page URL, the sentence or section concerned, why it may be wrong, and any authoritative source that supports the correction. We do not require personal details beyond a reply address." ] },
     { heading: "Our process", paragraphs: ["We compare the claim with the responsible source, correct material errors promptly, and update the review date where the page has been substantively reassessed. Style changes do not need a correction note." ] },
-    { heading: "Contact", paragraphs: ["Email hello@germanybase.de with the subject ‘Correction’. Include the page URL, the statement you believe is wrong, and the strongest source you have found." ] },
+    { heading: "Contact", paragraphs: ["Email linkedlab.info@gmail.com with the subject ‘Correction’. Include the page URL, the statement you believe is wrong, and the strongest source you have found." ] },
   ] },
   { slug: "affiliate-disclosure", title: "Affiliate disclosure", eyebrow: "Commercial transparency", description: "How future affiliate relationships will be labelled and separated from editorial judgement.", sections: [
     { heading: "No hidden recommendations", paragraphs: ["GermanyBase currently does not publish active affiliate links. If that changes, any link that may earn a commission will be labelled beside the recommendation and the page will include a disclosure." ] },
@@ -37,7 +37,7 @@ export const trustPages: TrustPage[] = [
     { heading: "Account-free use", paragraphs: ["GermanyBase is designed to work without a user account. Core guides and tools can be used without creating a profile or submitting an email address." ] },
     { heading: "Local preferences", paragraphs: ["Cookie choices are stored in your browser so the site remembers whether optional analytics or advertising is allowed. Necessary preference storage is used for this purpose." ] },
     { heading: "Analytics and advertising", paragraphs: ["Optional analytics and advertising technologies are controlled by the consent choices shown on the site where required. Hosting and security providers may process technical request information needed to deliver and protect the website." ] },
-    { heading: "Your rights and contact", paragraphs: ["Data-protection rights depend on the processing and applicable law. Questions about privacy or correction requests can be sent to hello@germanybase.de." ] },
+    { heading: "Your rights and contact", paragraphs: ["Data-protection rights depend on the processing and applicable law. Questions about privacy or correction requests can be sent to linkedlab.info@gmail.com." ] },
   ] },
   { slug: "cookie-policy", title: "Cookie policy", eyebrow: "Legal", description: "What the site's consent controls do and which optional technologies remain off by default.", sections: [
     { heading: "Necessary preferences", paragraphs: ["A local browser record stores the consent choice. This is used to remember the user's settings and does not create an advertising profile." ] },
@@ -52,7 +52,7 @@ export const trustPages: TrustPage[] = [
     { heading: "Responsible use", paragraphs: ["Do not rely on a GermanyBase page as the only source for a deadline, eligibility decision, legal dispute, medical decision, tax filing, or immigration application. Use the linked authority or a qualified professional where the consequences are significant." ] },
   ] },
   { slug: "contact", title: "Contact GermanyBase", eyebrow: "Contact", description: "Questions, corrections, and responsible commercial enquiries are welcome.", sections: [
-    { heading: "Editorial questions and corrections", paragraphs: ["For a correction, include the page URL, the passage concerned, and an authoritative source where possible. Email hello@germanybase.de with the subject ‘Correction’." ] },
+    { heading: "Editorial questions and corrections", paragraphs: ["For a correction, include the page URL, the passage concerned, and an authoritative source where possible. Email linkedlab.info@gmail.com with the subject ‘Correction’." ] },
     { heading: "Partnerships", paragraphs: ["Commercial enquiries must identify the organisation and proposed relationship. Payment does not guarantee coverage or editorial approval." ] },
     { heading: "Important note", paragraphs: ["We cannot provide personal legal, immigration, tax, medical, or financial advice. Messages asking for individual professional advice may receive a pointer to the responsible authority instead." ] },
   ] },
