@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { GuideCard } from "@/components/cards";
 import { Icon } from "@/components/icon";
@@ -29,9 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function HubPage({ params }: Props) {
   const { slug } = await params;
-  if (slug === "&") redirect("/");
+  if (slug === "&") permanentRedirect("/");
   const cleanSlug = stripCrawlerSuffix(slug);
-  if (cleanSlug !== slug && isKnownTopLevelSlug(cleanSlug)) redirect(`/${cleanSlug}`);
+  if (cleanSlug !== slug && isKnownTopLevelSlug(cleanSlug)) permanentRedirect(`/${cleanSlug}`);
   const category = categoryMap.get(slug);
   if (category) {
     const items = getGuidesByCategory(category.slug);
