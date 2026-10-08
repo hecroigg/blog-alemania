@@ -3,6 +3,7 @@ import { lifeServicesGuides } from "./life-services";
 import { moveAndAdminGuides } from "./move-and-admin";
 import { newcomerReferenceGuides } from "./newcomer-reference";
 import { workAndHousingGuides } from "./work-and-housing";
+import { practicalSystemsGuides } from "./practical-systems";
 
 export const guides = [
   ...moveAndAdminGuides,
@@ -10,6 +11,7 @@ export const guides = [
   ...lifeServicesGuides,
   ...newcomerReferenceGuides,
   ...citiesGuides,
+  ...practicalSystemsGuides,
 ];
 
 export const guideMap = new Map(guides.map((guide) => [guide.slug, guide]));
