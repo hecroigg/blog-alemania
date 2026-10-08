@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanSlug = stripCrawlerSuffix(slug);
   const metadataSlug = isKnownTopLevelSlug(cleanSlug) ? cleanSlug : slug;
   const category = categoryMap.get(metadataSlug);
-  if (category) return { title: category.name, description: category.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
+  if (category) return { title: category.name, description: category.description, alternates: { canonical: absoluteUrl(`/${metadataSlug}`) } };
   const audience = audienceMap.get(metadataSlug);
-  if (audience) return { title: audience.name, description: audience.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
+  if (audience) return { title: audience.name, description: audience.description, alternates: { canonical: absoluteUrl(`/${metadataSlug}`) } };
   const trust = trustPageMap.get(metadataSlug);
-  if (trust) return { title: trust.title, description: trust.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
+  if (trust) return { title: trust.title, description: trust.description, alternates: { canonical: absoluteUrl(`/${metadataSlug}`) } };
   return {};
 }
 
