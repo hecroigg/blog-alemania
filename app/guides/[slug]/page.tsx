@@ -10,6 +10,8 @@ import { SafetyNotice } from "@/components/source-stamp";
 import { categoryMap } from "@/lib/content/categories";
 import { getRelatedGuides, guideMap, guides } from "@/lib/content/guides";
 import { absoluteUrl, siteConfig } from "@/lib/site";
+import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
+import { searchLocales } from "@/lib/platform-data";
 
 type Props = { params: Promise<{ slug: string }> };
 const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
@@ -24,7 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const guide = guideMap.get(metadataSlug);
   if (!guide) return {};
   const url = absoluteUrl(`/guides/${guide.slug}`);
-  return { title: guide.title, description: guide.description, alternates: { canonical: url }, openGraph: { type: "article", title: guide.title, description: guide.description, url, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
+  const practicalKey = practicalGuideKeyFromSlug("en", guide.slug);
+  const languages = practicalKey ? Object.fromEntries(searchLocales.map((locale) => [locale, absoluteUrl(practicalGuidePath(locale, practicalKey))])) : undefined;
+  return { title: guide.title, description: guide.description, alternates: { canonical: url, languages }, openGraph: { type: "article", title: guide.title, description: guide.description, url, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
 }
 
 export default async function GuidePage({ params }: Props) {
