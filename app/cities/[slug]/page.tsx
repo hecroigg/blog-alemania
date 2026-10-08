@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CityPracticalSnapshot } from "@/components/city-practical-snapshot";
 import { Icon } from "@/components/icon";
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> { c
 export default async function CityPage({ params }: Props) {
   const { slug } = await params;
   const cleanSlug = stripCrawlerSuffix(slug);
-  if (cleanSlug !== slug && cityMap.has(cleanSlug)) redirect(`/cities/${cleanSlug}`);
+  if (cleanSlug !== slug && cityMap.has(cleanSlug)) permanentRedirect(`/cities/${cleanSlug}`);
   const city = cityMap.get(slug);
   if (!city) notFound();
   const profile = cityProfiles.find((item) => item.slug === city.slug);
