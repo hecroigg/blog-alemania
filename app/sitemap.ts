@@ -5,6 +5,7 @@ import { cities } from "@/lib/content/cities";
 import { guides } from "@/lib/content/guides";
 import { exactGuides } from "@/lib/content/exact-guides";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
+import { practicalGuidePath, practicalGuideSlugs, type PracticalGuideKey } from "@/lib/content/guides/practical-systems-localized";
 import { trustPages } from "@/lib/content/trust";
 import { searchLocales } from "@/lib/platform-data";
 import { absoluteUrl } from "@/lib/site";
@@ -16,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...guides.map((guide) => ({ url: absoluteUrl(`/guides/${guide.slug}`), lastModified: new Date("2026-10-08"), changeFrequency: "monthly" as const, priority: guide.featured ? .9 : .8 })),
     ...searchLocales.map((locale) => ({ url: absoluteUrl(`/${locale}/guides`), lastModified: new Date("2026-10-06"), changeFrequency: "monthly" as const, priority: .8, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(`/${item}/guides`)])) } })),
     ...exactGuides.flatMap((guide) => searchLocales.map((locale) => ({ url: absoluteUrl(exactGuidePath(locale, guide.key)), lastModified: new Date("2026-10-08"), changeFrequency: "monthly" as const, priority: .9, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(exactGuidePath(item, guide.key))])) } }))),
+    ...(Object.keys(practicalGuideSlugs) as PracticalGuideKey[]).flatMap((key) => (["es","de","fr"] as const).map((locale) => ({ url: absoluteUrl(practicalGuidePath(locale, key)), lastModified: new Date("2026-10-08"), changeFrequency: "monthly" as const, priority: .9, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(practicalGuidePath(item, key))])) } }))),
     ...cities.map((city) => ({ url: absoluteUrl(`/cities/${city.slug}`), lastModified: new Date("2026-09-23"), changeFrequency: "monthly" as const, priority: city.featured ? .8 : .7 })),
   ];
 }
