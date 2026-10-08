@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { localeLabels, supportedLocales, type Locale } from "@/lib/platform-data";
+import { localeLabels, searchLocales, type Locale } from "@/lib/platform-data";
 import { useLanguage } from "@/components/language-provider";
 import { switchLocalizedPath } from "@/lib/exact-guide-routes";
 
@@ -41,7 +41,7 @@ export function LanguageSelector() {
     </summary>
     <div className="language-menu" role="listbox" aria-label={copy.language}>
       <span className="language-menu-title">{copy.language}</span>
-      {supportedLocales.map((item) => <button
+      {searchLocales.map((item) => <button
         type="button"
         role="option"
         aria-selected={locale === item}
