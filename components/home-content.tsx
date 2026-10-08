@@ -4,7 +4,6 @@ import Link from "next/link";
 import { CategoryCard, CityCard, GuideCard, type CategoryCardData, type CityCardData, type GuideCardData } from "@/components/cards";
 import { Icon } from "@/components/icon";
 import { useLanguage } from "@/components/language-provider";
-import { Newsletter } from "@/components/newsletter";
 import type { IconName } from "@/lib/types";
 
 type AudienceLinkData = { slug: string; name: string };
@@ -60,6 +59,5 @@ export function HomeContent({ popular, latest, categories, cities, audiences }: 
     <section className="section shell"><div className="split-heading"><div><span className="eyebrow">{c.audienceEyebrow}</span><h2>{c.audienceTitle}</h2></div><div className="audience-links">{audiences.map((audience) => <Link key={audience.slug} href={`/${audience.slug}`}><span>{locale === "es" ? spanishAudiences[audience.slug] || audience.name : audience.name}</span><Icon name="arrow"/></Link>)}</div></div></section>
     <section className="section shell"><div className="section-heading"><div><span className="eyebrow">{c.toolsEyebrow}</span><h2>{c.toolsTitle}</h2></div><p>{c.toolsText}</p></div><div className="tool-preview">{c.tools.map(([icon, title, text]) => <div key={title}><Icon name={icon}/><strong>{title}</strong><span>{text}</span></div>)}<Link href="/tools">{c.openTools} <Icon name="arrow"/></Link></div></section>
     <section className="section shell latest-section"><div className="section-heading"><div><span className="eyebrow">{c.latest}</span><h2>{c.recent}</h2></div></div><div className="latest-list">{latest.map((guide, index) => <div key={guide.slug}><span>{String(index + 1).padStart(2, "0")}</span><GuideCard guide={localGuide(guide)} compact/></div>)}</div></section>
-    <div className="shell newsletter-wrap"><Newsletter/></div>
   </>;
 }
