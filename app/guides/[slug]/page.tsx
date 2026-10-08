@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { AdSlot, PartnerDisclosure } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GuidePage({ params }: Props) {
   const { slug } = await params;
   const cleanSlug = stripCrawlerSuffix(slug);
-  if (cleanSlug !== slug && guideMap.has(cleanSlug)) redirect(`/guides/${cleanSlug}`);
+  if (cleanSlug !== slug && guideMap.has(cleanSlug)) permanentRedirect(`/guides/${cleanSlug}`);
   const guide = guideMap.get(slug);
   if (!guide) notFound();
   const category = categoryMap.get(guide.category);
