@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { GuideCard } from "@/components/cards";
 import { Icon } from "@/components/icon";
@@ -11,20 +11,27 @@ import { trustPageMap, trustPages } from "@/lib/content/trust";
 import { absoluteUrl } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
+const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
+const isKnownTopLevelSlug = (slug: string) => categoryMap.has(slug) || audienceMap.has(slug) || trustPageMap.has(slug);
 export function generateStaticParams() { return [...categories.map((x) => x.slug), ...audiences.map((x) => x.slug), ...trustPages.map((x) => x.slug)].map((slug) => ({ slug })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const category = categoryMap.get(slug);
+  const cleanSlug = stripCrawlerSuffix(slug);
+  const metadataSlug = isKnownTopLevelSlug(cleanSlug) ? cleanSlug : slug;
+  const category = categoryMap.get(metadataSlug);
   if (category) return { title: category.name, description: category.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
-  const audience = audienceMap.get(slug);
+  const audience = audienceMap.get(metadataSlug);
   if (audience) return { title: audience.name, description: audience.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
-  const trust = trustPageMap.get(slug);
+  const trust = trustPageMap.get(metadataSlug);
   if (trust) return { title: trust.title, description: trust.description, alternates: { canonical: absoluteUrl(`/${slug}`) } };
   return {};
 }
 
 export default async function HubPage({ params }: Props) {
   const { slug } = await params;
+  if (slug === "&") redirect("/");
+  const cleanSlug = stripCrawlerSuffix(slug);
+  if (cleanSlug !== slug && isKnownTopLevelSlug(cleanSlug)) redirect(`/${cleanSlug}`);
   const category = categoryMap.get(slug);
   if (category) {
     const items = getGuidesByCategory(category.slug);
