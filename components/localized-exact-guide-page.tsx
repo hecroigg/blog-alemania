@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
@@ -11,6 +11,7 @@ import { exactGuidePath, findExactGuideRoute } from "@/lib/exact-guide-routes";
 import { localeLabels, supportedLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
+const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
 const toId = (value: string) => value.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export function exactGuideStaticParams(locale: Locale) {
@@ -22,7 +23,8 @@ function languageUrls(key: ExactGuideKey) {
 }
 
 export function localizedExactGuideMetadata(locale: Locale, slug: string): Metadata {
-  const match = findExactGuideRoute(locale, slug);
+  const cleanSlug = stripCrawlerSuffix(slug);
+  const match = findExactGuideRoute(locale, cleanSlug) || findExactGuideRoute(locale, slug);
   if (!match) return {};
   const guide = getLocalizedExactGuide(locale, match.key);
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
@@ -30,6 +32,9 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
 }
 
 export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug: string }) {
+  const cleanSlug = stripCrawlerSuffix(slug);
+  const cleanMatch = findExactGuideRoute(locale, cleanSlug);
+  if (cleanSlug !== slug && cleanMatch) redirect(exactGuidePath(locale, cleanMatch.key));
   const match = findExactGuideRoute(locale, slug);
   if (!match) notFound();
   const guide = getLocalizedExactGuide(locale, match.key);
