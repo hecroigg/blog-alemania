@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/json-ld";
 import { exactGuideUi, getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/content/exact-guides";
 import { exactGuidePath, findExactGuideRoute } from "@/lib/exact-guide-routes";
-import { localeLabels, supportedLocales, type Locale } from "@/lib/platform-data";
+import { isSearchLocale, localeLabels, searchLocales, supportedLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
@@ -19,7 +19,7 @@ export function exactGuideStaticParams(locale: Locale) {
 }
 
 function languageUrls(key: ExactGuideKey) {
-  return Object.fromEntries([...supportedLocales.map((locale) => [locale, absoluteUrl(exactGuidePath(locale, key))]), ["x-default", absoluteUrl(exactGuidePath("en", key))]]);
+  return Object.fromEntries([...searchLocales.map((locale) => [locale, absoluteUrl(exactGuidePath(locale, key))]), ["x-default", absoluteUrl(exactGuidePath("en", key))]]);
 }
 
 export function localizedExactGuideMetadata(locale: Locale, slug: string): Metadata {
@@ -28,7 +28,7 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
   if (!match) return {};
   const guide = getLocalizedExactGuide(locale, match.key);
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
-  return { title: guide.title, description: guide.description, alternates: { canonical, languages: languageUrls(match.key) }, openGraph: { type: "article", title: guide.title, description: guide.description, url: canonical, locale, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
+  return { title: guide.title, description: guide.description, alternates: { canonical, languages: languageUrls(match.key) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { type: "article", title: guide.title, description: guide.description, url: canonical, locale, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
 }
 
 export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug: string }) {
