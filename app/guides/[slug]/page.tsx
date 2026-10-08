@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AdSlot, PartnerDisclosure } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
@@ -11,13 +11,16 @@ import { getRelatedGuides, guideMap, guides } from "@/lib/content/guides";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
+const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
 const toId = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export function generateStaticParams() { return guides.map((guide) => ({ slug: guide.slug })); }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const guide = guideMap.get(slug);
+  const cleanSlug = stripCrawlerSuffix(slug);
+  const metadataSlug = guideMap.has(cleanSlug) ? cleanSlug : slug;
+  const guide = guideMap.get(metadataSlug);
   if (!guide) return {};
   const url = absoluteUrl(`/guides/${guide.slug}`);
   return { title: guide.title, description: guide.description, alternates: { canonical: url }, openGraph: { type: "article", title: guide.title, description: guide.description, url, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
@@ -25,6 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GuidePage({ params }: Props) {
   const { slug } = await params;
+  const cleanSlug = stripCrawlerSuffix(slug);
+  if (cleanSlug !== slug && guideMap.has(cleanSlug)) redirect(`/guides/${cleanSlug}`);
   const guide = guideMap.get(slug);
   if (!guide) notFound();
   const category = categoryMap.get(guide.category);
