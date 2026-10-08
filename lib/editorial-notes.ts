@@ -5,6 +5,21 @@ export type EditorialNote = {
 };
 
 export const editorialNotes: Record<string, EditorialNote> = {
+  "sick-leave-germany": {
+    heading: "Separate notification from the medical certificate",
+    text: "The most common misunderstanding is assuming the eAU tells the employer everything automatically. It does not: the employee still has to report the absence, while the medical data follows through the electronic process where applicable.",
+    checks: ["Tell the employer promptly.", "Check whether your employer requires medical confirmation from day one.", "Re-check the rule if the planned 2026 reform is implemented later."],
+  },
+  "finding-doctor-germany": {
+    heading: "Set up your healthcare route before you need it",
+    text: "Finding one nearby Hausarzt while you are healthy is much easier than decoding the system when you are ill. Keep normal care, urgent out-of-hours care and emergencies as three separate routes.",
+    checks: ["Save one or two nearby Hausarzt practices.", "Save 116117 for urgent non-life-threatening care and appointment help.", "Use 112 for life-threatening emergencies."],
+  },
+  "german-payslip-explained": {
+    heading: "Check inputs before questioning the tax calculation",
+    text: "A payroll statement can look complicated while the underlying problem is simple: wrong hours, missing bonus, changed tax data or a correction from another month. Start with gross pay and the final transfer, then trace the deductions between them.",
+    checks: ["Compare gross pay with the contract and hours worked.", "Compare changed lines with the previous month.", "Ask payroll which input changed before assuming a tax error."],
+  },
   "moving-to-germany": {
     heading: "Start with dependencies, not shopping",
     text: "The easiest way to waste time before a move is to arrange optional services before the documents that unlock everything else. Secure registrable housing, health-insurance status and the documents needed for Anmeldung first; then deal with phone plans, subscriptions and other extras.",
