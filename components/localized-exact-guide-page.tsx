@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
@@ -34,7 +34,7 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
 export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug: string }) {
   const cleanSlug = stripCrawlerSuffix(slug);
   const cleanMatch = findExactGuideRoute(locale, cleanSlug);
-  if (cleanSlug !== slug && cleanMatch) redirect(exactGuidePath(locale, cleanMatch.key));
+  if (cleanSlug !== slug && cleanMatch) permanentRedirect(exactGuidePath(locale, cleanMatch.key));
   const match = findExactGuideRoute(locale, slug);
   if (!match) notFound();
   const guide = getLocalizedExactGuide(locale, match.key);
