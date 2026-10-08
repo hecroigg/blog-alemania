@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { AdSlot, PartnerDisclosure } from "@/components/commercial";
+import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { EditorialNote } from "@/components/editorial-note";
@@ -48,7 +48,6 @@ export default async function GuidePage({ params }: Props) {
           <EditorialNote slug={guide.slug} updated={guide.updated} sourceCount={guide.sources.length}/>
           <AdSlot placement="article-intro"/>
           {guide.sections.map((section, index) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.resources && <div className="resource-grid">{section.resources.map((resource) => <a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}><span><strong data-no-translate>{resource.label}</strong><small>{resource.note}</small></span><Icon name="external" size={17}/></a>)}</div>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}{index === 1 && <AdSlot placement="article-body"/>}</section>)}
-          <PartnerDisclosure/>
           <section className="faq-section" id="faqs"><h2>Common questions</h2>{guide.faqs.map((faq) => <details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>
           <section className="sources-section" id="sources"><h2>Official and primary sources</h2><ul className="source-list">{guide.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span><strong>{source.name}</strong>{source.note && <small>{source.note}</small>}</span><Icon name="external" size={17}/></a></li>)}</ul></section>
           {related.length > 0 && <section className="related-section"><h2>Continue with</h2><div className="related-grid">{related.map((item) => <Link href={`/guides/${item.slug}`} key={item.slug}><span>{item.title}</span><Icon name="arrow"/></Link>)}</div></section>}
