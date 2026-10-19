@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!guide) return {};
   const url = absoluteUrl(`/guides/${guide.slug}`);
   const practicalKey = practicalGuideKeyFromSlug("en", guide.slug);
-  const languages = practicalKey ? Object.fromEntries(searchLocales.map((locale) => [locale, absoluteUrl(practicalGuidePath(locale, practicalKey))])) : undefined;
+  const languages = practicalKey ? { ...Object.fromEntries(searchLocales.map((locale) => [locale, absoluteUrl(practicalGuidePath(locale, practicalKey))])), "x-default": absoluteUrl(practicalGuidePath("en", practicalKey)) } : undefined;
   return { title: guide.title, description: guide.description, alternates: { canonical: url, languages }, openGraph: { type: "article", title: guide.title, description: guide.description, url, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
 }
 
