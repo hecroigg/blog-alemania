@@ -4,6 +4,25 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import Script from "next/script";
 
+const adsenseClient = "ca-pub-8337311370258201";
+
+/** Do not contact AdSense until the visitor has opted into advertising. */
+export function AdsenseLoader() {
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const read = () => {
+      try { setAllowed(Boolean(JSON.parse(localStorage.getItem("living-germany-consent") || "{}").advertising)); }
+      catch { setAllowed(false); }
+    };
+    read();
+    window.addEventListener("consentchange", read);
+    return () => window.removeEventListener("consentchange", read);
+  }, []);
+  if (!allowed) return null;
+  return <Script id="adsense-consented" async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} crossOrigin="anonymous" strategy="afterInteractive" />;
+}
+
+
 export function AdSlot({ placement }: { placement: "article-intro" | "article-body" | "sidebar" }) {
   const client = process.env.NEXT_PUBLIC_ADSENSE_ID;
   const slots = { "article-intro": process.env.NEXT_PUBLIC_ADSENSE_SLOT_INTRO, "article-body": process.env.NEXT_PUBLIC_ADSENSE_SLOT_BODY, sidebar: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR };
@@ -13,7 +32,7 @@ export function AdSlot({ placement }: { placement: "article-intro" | "article-bo
     read(); window.addEventListener("consentchange", read); return () => window.removeEventListener("consentchange", read);
   }, []);
   if (!client || !slots[placement] || !allowed) return null;
-  return <><Script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`} crossOrigin="anonymous" strategy="afterInteractive"/><div className={`ad-slot ad-${placement}`} aria-label="Advertisement"><small>Advertisement</small><ins className="adsbygoogle" style={{ display: "block" }} data-ad-client={client} data-ad-slot={slots[placement]} data-ad-format="auto" data-full-width-responsive="true"/></div></>;
+  return <div className={`ad-slot ad-${placement}`} aria-label="Advertisement"><small>Advertisement</small><ins className="adsbygoogle" style={{ display: "block" }} data-ad-client={client} data-ad-slot={slots[placement]} data-ad-format="auto" data-full-width-responsive="true"/></div>;
 }
 
 export function PartnerDisclosure() {
