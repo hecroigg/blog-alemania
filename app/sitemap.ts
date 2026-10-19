@@ -18,6 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...searchLocales.map((locale) => ({ url: absoluteUrl(`/${locale}/guides`), lastModified: new Date("2026-10-06"), changeFrequency: "monthly" as const, priority: .8, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(`/${item}/guides`)])) } })),
     ...exactGuides.flatMap((guide) => searchLocales.map((locale) => ({ url: absoluteUrl(exactGuidePath(locale, guide.key)), lastModified: new Date("2026-10-08"), changeFrequency: "monthly" as const, priority: .9, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(exactGuidePath(item, guide.key))])) } }))),
     ...(Object.keys(practicalGuideSlugs) as PracticalGuideKey[]).flatMap((key) => (["es","de","fr"] as const).map((locale) => ({ url: absoluteUrl(practicalGuidePath(locale, key)), lastModified: new Date("2026-10-08"), changeFrequency: "monthly" as const, priority: .9, alternates: { languages: Object.fromEntries(searchLocales.map((item) => [item, absoluteUrl(practicalGuidePath(item, key))])) } }))),
-    ...cities.map((city) => ({ url: absoluteUrl(`/cities/${city.slug}`), lastModified: new Date("2026-09-23"), changeFrequency: "monthly" as const, priority: city.featured ? .8 : .7 })),
+    ...cities.map((city) => ({ url: absoluteUrl(`/cities/${city.slug}`), lastModified: new Date(city.updated || "2026-09-23"), changeFrequency: "monthly" as const, priority: city.featured ? .8 : .7 })),
   ];
 }
