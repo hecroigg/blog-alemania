@@ -9,11 +9,10 @@ import {
   getLocalizedPracticalGuide,
   practicalGuideKeyFromSlug,
   practicalGuidePath,
-  practicalGuideSlugs,
   practicalGuideStaticParams,
   type PracticalGuideKey,
 } from "@/lib/content/guides/practical-systems-localized";
-import { localeLabels, searchLocales, type Locale } from "@/lib/platform-data";
+import { localeLabels, searchLocales } from "@/lib/platform-data";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 type SearchLocale = "en"|"es"|"de"|"fr";
