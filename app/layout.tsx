@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@/components/analytics";
+import { AdsenseLoader } from "@/components/commercial";
 import { CookieBanner } from "@/components/cookie-banner";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   title: { default: "GermanyBase — Practical guides for life in Germany", template: "%s | GermanyBase" },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  other: { "google-adsense-account": "ca-pub-8337311370258201" },
   alternates: { canonical: absoluteUrl("/") },
   openGraph: { type: "website", locale: "en_GB", siteName: siteConfig.name, title: "GermanyBase", description: siteConfig.description, url: absoluteUrl("/") },
   twitter: { card: "summary", title: "GermanyBase", description: siteConfig.description },
@@ -24,5 +26,5 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const organization = { "@context": "https://schema.org", "@type": "Organization", name: siteConfig.name, url: siteConfig.url, description: siteConfig.description };
   const website = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url, inLanguage: "en", potentialAction: { "@type": "SearchAction", target: `${absoluteUrl("/search")}?q={search_term_string}`, "query-input": "required name=search_term_string" } };
-  return <html lang="en"><head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337311370258201" crossOrigin="anonymous"></script></head><body><LanguageProvider><a className="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content">{children}</main><Footer/><CookieBanner/><Analytics/><JsonLd data={[organization, website]}/></LanguageProvider></body></html>;
+  return <html lang="en"><body><LanguageProvider><a className="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content">{children}</main><Footer/><CookieBanner/><AdsenseLoader/><Analytics/><JsonLd data={[organization, website]}/></LanguageProvider></body></html>;
 }

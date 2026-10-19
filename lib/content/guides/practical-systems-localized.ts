@@ -1,6 +1,5 @@
 import { practicalSystemsGuides } from "@/lib/content/guides/practical-systems";
 import type { Guide } from "@/lib/types";
-import type { Locale } from "@/lib/platform-data";
 
 export type PracticalGuideKey = "sickLeave" | "doctor" | "payslip";
 
