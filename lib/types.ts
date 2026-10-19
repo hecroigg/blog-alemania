@@ -67,6 +67,7 @@ export type City = {
   character: string;
   sections: ContentBlock[];
   sources: Source[];
+  updated?: string;
   featured?: boolean;
 };
 
