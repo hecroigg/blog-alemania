@@ -690,3 +690,27 @@ p { margin: 0; color: var(--muted); }
   .editorial-note-head { align-items: flex-start; flex-direction: column; }
   .editorial-note-head small { text-align: left; }
 }
+
+/* Anmeldung Finder: an original public-service decision tool */
+.registration-finder { margin: 2rem 0 1rem; border: 1px solid #d9e3ef; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 12px 40px rgba(20,42,75,.055); }
+.registration-finder-controls { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1.1rem; padding: 1.5rem; background: #f2f7fc; border-bottom: 1px solid #dce5ee; }
+.registration-finder-controls label { display: grid; gap: .5rem; font-size: .92rem; font-weight: 650; color: #20304b; }
+.registration-finder-controls select { padding: .75rem; border-radius: 10px; border: 1px solid #aebfd2; background: #fff; color: #172b47; width: 100%; font: inherit; font-weight: 500; }
+.registration-lang { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0; border: 0; align-content: start; }
+.registration-lang legend { margin-bottom: .5rem; font-weight: 650; color: #20304b; font-size: .92rem; }
+.registration-lang button { border: 1px solid #bfcedf; background: #fff; color: #28445e; border-radius: 8px; cursor: pointer; padding: .65rem .8rem; font: inherit; font-size: .83rem; }
+.registration-lang button[aria-pressed="true"] { background: #0c4774; border-color: #0c4774; color: #fff; }
+.registration-finder-result { max-width: 880px; padding: clamp(1.2rem,3vw,2.5rem); }
+.registration-finder-result h2 { margin: .5rem 0 .9rem; }
+.registration-finder-result h3 { margin-top: 1.8rem; }
+.registration-finder-result li { margin: .5rem 0; line-height: 1.55; }
+.registration-info { border-left: 4px solid #1767a2; background: #eff6fd; padding: 1rem 1.3rem; margin: 1rem 0; border-radius: 0 12px 12px 0; }
+.registration-info p { margin: .4rem 0 0; }
+.registration-city-link { margin: .85rem 0; display: block; font-weight: 700; }
+.registration-caveat { margin-top: 1rem; font-size: .88rem; color: #50627b; }
+.registration-guide-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 1rem; margin: 1.5rem 0 2rem; }
+.registration-guide-grid article { border: 1px solid #d9e3ef; border-radius: 14px; padding: 1.2rem; background: #fff; }
+.registration-guide-grid h3 { font-size: 1.1rem; margin: 0 0 .8rem; }
+.registration-guide-grid p { line-height: 1.65; margin: 0; }
+.registration-inline { margin: .8rem 0 1.4rem; padding: 1rem 1.2rem; border-left: 4px solid #1767a2; background: #eff6fd; border-radius: 0 10px 10px 0; }
+.registration-inline a { color: #114f81; font-weight: 750; text-decoration: underline; }
