@@ -35,15 +35,15 @@ export const trustPages: TrustPage[] = [
   ] },
   { slug: "privacy-policy", title: "Privacy policy", eyebrow: "Legal", description: "A plain-language explanation of data handling on GermanyBase.", sections: [
     { heading: "Account-free use", paragraphs: ["GermanyBase is designed to work without a user account. Core guides and tools can be used without creating a profile or submitting an email address." ] },
-    { heading: "Local preferences", paragraphs: ["Cookie choices are stored in your browser so the site remembers whether optional analytics or advertising is allowed. Necessary preference storage is used for this purpose." ] },
-    { heading: "Analytics and advertising", paragraphs: ["Optional analytics and advertising technologies are controlled by the consent choices shown on the site where required. Hosting and security providers may process technical request information needed to deliver and protect the website." ] },
+    { heading: "Local preferences", paragraphs: ["Your optional analytics choice is stored in this browser. Google AdSense advertising choices are separately obtained and stored by Google’s certified European consent platform, where applicable." ] },
+    { heading: "Analytics and advertising", paragraphs: ["Google Analytics only loads after our separate analytics opt-in. The Google AdSense publisher tag loads to make the official Google consent message available; Google’s CMP manages advertising purposes, including personalized advertising consent where required. Hosting and security providers process necessary technical request information." ] },
     { heading: "Your rights and contact", paragraphs: ["Data-protection rights depend on the processing and applicable law. Questions about privacy or correction requests can be sent to linkedlab.info@gmail.com." ] },
   ] },
   { slug: "cookie-policy", title: "Cookie policy", eyebrow: "Legal", description: "What the site's consent controls do and which optional technologies remain off by default.", sections: [
     { heading: "Necessary preferences", paragraphs: ["A local browser record stores the consent choice. This is used to remember the user's settings and does not create an advertising profile." ] },
     { heading: "Analytics", paragraphs: ["Analytics is optional and disabled by default. When a measurement ID is configured, it can load only after the user enables analytics." ] },
-    { heading: "Advertising", paragraphs: ["Advertising technologies are treated as optional where consent is required. The site does not require advertising cookies for access to its guides or tools." ] },
-    { heading: "Change your choice", paragraphs: ["Consent preferences are stored locally in the browser so the site can remember the user's choice. Clearing site data resets that local preference." ] },
+    { heading: "Advertising", paragraphs: ["The AdSense publisher tag loads to initiate Google’s Privacy & messaging consent platform. Advertising data purposes and optional advertising storage are managed through the Google-certified consent message for covered regions. Refusing advertising consent does not block access to guides or tools. Ads are not served until Google approves the site." ] },
+    { heading: "Change your choice", paragraphs: ["The site’s analytics preference can be changed with Cookie settings. Advertising choices can be revisited with the Google advertising preferences control when it is available. Clearing browser storage can reset locally saved choices." ] },
   ] },
   { slug: "terms", title: "Terms of use", eyebrow: "Legal", description: "The baseline terms for using GermanyBase's public information and tools.", sections: [
     { heading: "Informational purpose", paragraphs: ["Content is general information, not personal legal, immigration, tax, medical, employment, or financial advice. Use the responsible authority or a qualified professional for a decision that depends on your facts." ] },
