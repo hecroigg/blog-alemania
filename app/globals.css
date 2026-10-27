@@ -714,3 +714,20 @@ p { margin: 0; color: var(--muted); }
 .registration-guide-grid p { line-height: 1.65; margin: 0; }
 .registration-inline { margin: .8rem 0 1.4rem; padding: 1rem 1.2rem; border-left: 4px solid #1767a2; background: #eff6fd; border-radius: 0 10px 10px 0; }
 .registration-inline a { color: #114f81; font-weight: 750; text-decoration: underline; }
+
+/* Deposit law scenario and fraud-prevention guidance */
+.rental-deposit-checker{margin:2rem 0;padding:clamp(1.25rem,3vw,2rem);border:1px solid #bdd5e8;border-radius:18px;background:#f0f7ff;max-width:850px}
+.rental-deposit-checker h2{margin:.2rem 0 1rem;font-size:clamp(1.25rem,2.5vw,1.8rem)}
+.rental-deposit-checker p{line-height:1.65}
+.rental-deposit-grid,.rental-deposit-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.2rem 0}
+.rental-deposit-grid label{display:grid;gap:.45rem;font-weight:650}
+.rental-deposit-grid input{width:100%;background:white;color:#16334e;border:1px solid #a8bfd0;border-radius:9px;padding:.8rem;font:inherit}
+.rental-deposit-results>div{display:grid;gap:.4rem;border:1px solid #d0dfeb;background:white;border-radius:12px;padding:1rem}
+.rental-deposit-results small{color:#4a6478}
+.rental-deposit-results strong{font-size:1.45rem;color:#153d61}
+.rental-deposit-result-text{font-weight:700}
+.rental-deposit-disclaimer{font-size:.88rem;color:#405369}
+.rental-safety-editorial{max-width:850px;line-height:1.7}
+.rental-safety-editorial h2,.rental-safety-editorial h3{margin-top:1.4rem}
+.rental-safety-editorial li{margin:.85rem 0}
+.rental-safety-editorial a,.rental-deposit-checker a{color:#175684;text-decoration:underline}

@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+const require=createRequire(import.meta.url);
+const ts=require("typescript");
+const source=readFileSync(new URL("../lib/rental-deposit.ts",import.meta.url),"utf8");
+const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const module={exports:{}};
+new Function("module","exports",code)(module,module.exports);
+const check=module.exports.checkResidentialDeposit;
+assert.equal(check(750,1800).maximum,2250);
+assert.equal(check(750,1800).firstInstalment,600);
+assert.equal(check(750,2300).exceeds,true);
+assert.equal(check(750,2250).exceeds,false);
+assert.equal(check(0,1800).valid,false);
+assert.equal(check(-10,-10).maximum,0);
+console.log("German §551 BGB scenario invariants passed.");
