@@ -15,7 +15,7 @@ type GoogleFcWindow = Window & { googlefc?: GoogleFc };
  * is usable. Consent API readiness alone is not proof that the method exists
  * (for example, the site may not yet be approved for advertising).
  */
-export function GooglePrivacyButton() {
+export function GooglePrivacyButton({label="Google advertising preferences"}:{label?:string}={}) {
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function GooglePrivacyButton() {
       // Official AdSense revocation pattern: push the API method to Google's queue.
       googlefc.callbackQueue.push(action);
     }}>
-      Google advertising preferences
+      {label}
     </button>
   );
 }
