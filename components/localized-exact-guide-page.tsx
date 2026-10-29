@@ -5,6 +5,7 @@ import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { HolidayMinimumCalculator } from "@/components/holiday-minimum-calculator";
 import { exactGuideUi, getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/content/exact-guides";
 import { exactGuidePath, findExactGuideRoute } from "@/lib/exact-guide-routes";
@@ -28,7 +29,20 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
   if (!match) return {};
   const guide = getLocalizedExactGuide(locale, match.key);
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
-  return { title: guide.title, description: guide.description, alternates: { canonical, languages: languageUrls(match.key) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { type: "article", title: guide.title, description: guide.description, url: canonical, locale, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description: guide.description } };
+  const topicalDescriptions: Partial<Record<ExactGuideKey, Partial<Record<Locale,string>>>> = {
+    leave: {
+      es: "¿Trabajas 2, 3, 4 o 5 días por semana en Alemania? Calcula el mínimo legal de vacaciones pagadas con el §3 BUrlG y descubre cuándo pueden corresponderte más días.",
+      de: "Wie viele Urlaubstage bei 2 bis 6 Arbeitstagen pro Woche? Gesetzlichen Mindesturlaub berechnen, mit BUrlG-Quelle, Wartezeit und Tarifhinweisen.",
+      en: "Calculate the German statutory holiday minimum for a 2–6-day workweek. Check four-week entitlement, part-time rules and official BUrlG sources.",
+      fr: "Calculez les congés payés minimum en Allemagne pour 2 à 6 jours travaillés par semaine. Règles et sources légales incluses."
+    },
+    deutschlandticket: {
+      de: "Deutschlandticket 2026: 63 € pro Monat. Welche Busse und Regionalzüge gelten, was ist mit ICE/IC und wann lohnt sich das Abo? Offizielle Quellen.",
+      en: "Deutschlandticket 2026 costs €63 a month. Check included buses and regional trains, ICE exclusions, subscriptions and a practical break-even example."
+    }
+  };
+  const description = topicalDescriptions[match.key]?.[locale] || guide.description;
+  return { title: guide.title, description, alternates: { canonical, languages: languageUrls(match.key) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { type: "article", title: guide.title, description, url: canonical, locale, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description } };
 }
 
 export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug: string }) {
@@ -48,6 +62,7 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
       <nav className="toc" aria-label={ui.onPage}><strong>{ui.onPage}</strong><ol>{guide.sections.map((section) => <li key={section.heading}><a href={`#${toId(section.heading)}`}>{section.heading}</a></li>)}<li><a href="#faqs">{ui.questions}</a></li><li><a href="#sources">{ui.sources}</a></li></ol></nav>
       <div className="article-body">
         <section className="key-takeaways"><h2>{ui.first}</h2><ul>{guide.takeaways.map((item) => <li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
+        {match.key==="leave" && <HolidayMinimumCalculator locale={locale}/>}
         <AdSlot placement="article-intro"/>
         {guide.sections.map((section) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}</section>)}
         <section className="faq-section" id="faqs"><h2>{ui.questions}</h2>{guide.faqs.map((faq) => <details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>

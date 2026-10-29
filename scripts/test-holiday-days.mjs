@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+const require=createRequire(import.meta.url);
+const ts=require("typescript");
+const source=readFileSync(new URL("../lib/holiday-days.ts",import.meta.url),"utf8");
+const js=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS}}).outputText;
+const compiled={exports:{}};
+new Function("module","exports",js)(compiled,compiled.exports);
+const compute=compiled.exports.minimumHolidayDays;
+for(let days=1;days<=6;days++)assert.equal(compute(days),days*4);
+for(const n of [0,-1,7,2.5,NaN,Infinity])assert.throws(()=>compute(n),RangeError);
+console.log("Holiday entitlement: §3 BUrlG 4-week calculation passed for 1–6 workdays and invalid inputs");
