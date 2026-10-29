@@ -1,0 +1,48 @@
+name: Verified Cloudflare deployment
+on:
+  workflow_run:
+    workflows: ["SEO / build verification"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: germanybase-production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    # Explicit opt-in prevents duplicate Cloudflare Git builds and manual deploys.
+    if: ${{ vars.ENABLE_GITHUB_CLOUDFLARE_DEPLOY == 'true' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Verify credentials exist
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "Missing GitHub Actions Cloudflare deployment secrets"; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Validate code before deployment
+        run: pnpm run typecheck && pnpm run lint && pnpm run build:cloudflare
+      - name: Deploy directly to Cloudflare Worker
+        run: pnpm exec wrangler deploy --config dist/server/wrangler.json
+      - name: Verify essential routes
+        run: |
+          curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/robots.txt | grep -q sitemap.xml
+          curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/ads.txt | grep -q 'pub-8337311370258201'
+          curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/tools/anmeldung-finder >/dev/null
