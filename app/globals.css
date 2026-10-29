@@ -731,3 +731,15 @@ p { margin: 0; color: var(--muted); }
 .rental-safety-editorial h2,.rental-safety-editorial h3{margin-top:1.4rem}
 .rental-safety-editorial li{margin:.85rem 0}
 .rental-safety-editorial a,.rental-deposit-checker a{color:#175684;text-decoration:underline}
+
+/* Self-contained statutory paid-leave decision tool on existing guide URLs. */
+.holiday-mini-calculator{margin:1.75rem 0;padding:clamp(1rem,3vw,2rem);border-radius:18px;background:#edf6ff;border:1px solid #b6d6ee;color:#143854}
+.holiday-mini-calculator h2{margin:.2rem 0 1rem;font-size:clamp(1.25rem,2vw,1.6rem)}
+.holiday-mini-calculator p{line-height:1.65}
+.holiday-mini-calculator label{display:block;font-weight:700;margin:1rem 0 .4rem}
+.holiday-mini-calculator select{min-width:110px;padding:.65rem .8rem;background:white;border:1px solid #7ca4c4;border-radius:10px;color:#123855;font:inherit}
+.holiday-mini-result{display:grid;gap:.4rem;background:white;border:1px solid #c4daef;border-radius:12px;margin:1.2rem 0;padding:1rem}
+.holiday-mini-result small{color:#3e617c;font-size:.85rem}
+.holiday-mini-result strong{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#155989;line-height:1}
+.holiday-mini-warning{font-size:.85rem}
+.holiday-mini-sources a{color:#155989;text-decoration:underline;text-underline-offset:3px}

@@ -19,7 +19,7 @@ const sources = {
 };
 
 function guide(key: ExactGuideKey, value: Omit<Guide, "slug" | "updated" | "related">): Guide & { key: ExactGuideKey } {
-  return { key, slug: exactGuideSlugs[key].en, updated: "2026-10-06", related: [], ...value };
+  return { key, slug: exactGuideSlugs[key].en, updated: key === "leave" ? "2026-10-29" : "2026-10-06", related: [], ...value };
 }
 
 export const exactGuides = [

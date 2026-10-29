@@ -18,6 +18,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: node scripts/check-rental-deposit.mjs
+      - run: node scripts/test-holiday-days.mjs
       - run: pnpm run typecheck
       - run: pnpm run lint
       - run: pnpm run build:cloudflare
