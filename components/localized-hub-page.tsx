@@ -14,6 +14,7 @@ import {
 } from "@/lib/content/guides/practical-systems-localized";
 import { exactGuideUi } from "@/lib/content/localized-exact-guides";
 import { absoluteUrl } from "@/lib/site";
+import { allTrustPageSlugs, trustPageForLocale } from "@/lib/content/localized-trust";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
 
@@ -22,29 +23,47 @@ const t = (locale: EditorialLocale, value: string) => locale === "en" ? value : 
 const locales = ["en", "es", "de"] as const;
 
 export function localizedHubStaticParams() {
-  return [...categories, ...audiences].map((item) => ({ slug: item.slug }));
+  return [...categories, ...audiences].map((item) => ({ slug: item.slug })).concat(allTrustPageSlugs().map((slug) => ({ slug })));
 }
 export function localizedHubMetadata(locale: EditorialLocale, slug: string): Metadata {
   const item = categoryMap.get(slug) || audienceMap.get(slug);
-  if (!item) return {};
+  const trust = trustPageForLocale(locale, slug);
+  if (!item && !trust) return {};
   const url = absoluteUrl("/" + locale + "/" + slug);
+  const title = trust ? trust.title : t(locale, item!.name);
+  const description = trust ? trust.description : t(locale, item!.description);
   return {
-    title: t(locale, item.name),
-    description: t(locale, item.description),
+    title, description,
     alternates: {
       canonical: url,
       languages: Object.fromEntries(locales.map((lang) => [lang, absoluteUrl("/" + lang + "/" + slug)])),
     },
     robots: { index: true, follow: true },
-    openGraph: { title: t(locale, item.name), description: t(locale, item.description), url, locale },
+    openGraph: { title, description, url, locale },
   };
 }
 
 export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; slug: string }) {
   const c = categoryMap.get(slug);
   const a = audienceMap.get(slug);
-  if (!c && !a) notFound();
+  const trust = trustPageForLocale(locale, slug);
+  if (!c && !a && !trust) notFound();
   const ui = exactGuideUi[locale];
+  if (trust) return (
+    <article className="shell trust-page" lang={locale} data-no-translate>
+      <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: trust.title }]}/>
+      <span className="eyebrow">{trust.eyebrow}</span>
+      <h1>{trust.title}</h1>
+      <p className="lead">{trust.description}</p>
+      {trust.sections.map((section) =>
+        <section className="prose-section" key={section.heading}>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          {section.bullets && <ul>{section.bullets.map((item) => <li key={item}>{item}</li>)}</ul>}
+        </section>
+      )}
+    </article>
+  );
   const pageTitle = t(locale, c?.name || a!.name);
   const description = t(locale, c?.intro || a!.description);
   const categoryGuides = c ? getGuidesByCategory(c.slug) : [];
