@@ -36,7 +36,7 @@ function xmlDecode(value) {
 }
 function attributes(tag) {
   return Object.fromEntries([...tag.matchAll(/([a-zA-Z:-]+)\s*=\s*["']([^"']*)["']/g)]
-    .map(([, name, value]) => [name, xmlDecode(value)]));
+    .map(([, name, value]) => [name.toLowerCase(), xmlDecode(value)]));
 }
 
 console.log("Checking production sitemap...");
