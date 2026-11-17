@@ -56,8 +56,7 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
   const guide = getLocalizedExactGuide(locale, match.key);
   const ui = exactGuideUi[locale];
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
-  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, datePublished: guide.updated, inLanguage: locale, author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: canonical, citation: guide.sources.map((source) => source.url) };
-  const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", inLanguage: locale, mainEntity: guide.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) };
+  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, inLanguage: locale, author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: canonical, citation: guide.sources.map((source) => source.url) };
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner"><Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: ui.guides, href: locale === "en" || locale === "es" || locale === "de" ? sectionPath(locale, "guides") : `/${locale}/guides` }, { label: guide.title }]}/><span className="eyebrow">{guide.eyebrow}</span><h1>{guide.title}</h1><p className="article-summary">{guide.summary}</p><div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {ui.read}</span><span><Icon name="check" size={16}/> {ui.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span><Link href="/about">GermanyBase Editorial</Link></span></div></div></header>
     <div className="shell article-layout">
@@ -75,6 +74,6 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
       </div>
       <aside className="article-side"><div className="source-stamp"><Icon name="shield" size={20}/><strong>{ui.official}</strong><p>{guide.sources[0]?.note}</p></div><AdSlot placement="sidebar"/></aside>
     </div>
-    <JsonLd data={[articleSchema, faqSchema]}/>
+    <JsonLd data={articleSchema}/>
   </article>;
 }
