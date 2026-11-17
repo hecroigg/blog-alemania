@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { auxiliaryPath, guidePath, isSiteLocale } from "@/lib/localized-paths";
 import { useLanguage } from "@/components/language-provider";
 import type { Guide } from "@/lib/types";
 
@@ -20,7 +21,8 @@ function guideStrings(guide: SearchGuide) {
 }
 
 export function SearchContent({ guides, initialQuery }: { guides: SearchGuide[]; initialQuery: string }) {
-  const { locale, translations } = useLanguage();
+  const { locale, translations, translate } = useLanguage();
+  const routeLocale = isSiteLocale(locale) ? locale : "en";
   const query = normalize(initialQuery);
   const results = query ? guides.filter((guide) => {
     const source = guideStrings(guide);
@@ -29,12 +31,12 @@ export function SearchContent({ guides, initialQuery }: { guides: SearchGuide[];
   }) : [];
 
   return <>
-    <form className="search-form" action="/search">
-      <label className="sr-only" htmlFor="q">Search guides</label>
-      <input id="q" name="q" type="search" defaultValue={initialQuery} placeholder="Try “Anmeldung”, “registro” or “health insurance”"/>
-      <button className="button button-primary" type="submit">Search</button>
+    <form className="search-form" action={auxiliaryPath(routeLocale, "search")}>
+      <label className="sr-only" htmlFor="q">{translate("Search guides")}</label>
+      <input id="q" name="q" type="search" defaultValue={initialQuery} placeholder={translate("Try “Anmeldung”, “registro” or “health insurance”")}/>
+      <button className="button button-primary" type="submit">{translate("Search")}</button>
     </form>
-    {query && <p>{results.length ? `${results.length} result${results.length === 1 ? "" : "s"} for “${initialQuery}”` : `No guides found for “${initialQuery}”. Try a broader term.`}</p>}
-    <div className="search-results">{results.map((guide) => <Link className="search-result" key={guide.slug} href={`/guides/${guide.slug}`}><small>{guide.eyebrow}</small><strong>{guide.title}</strong><span>{guide.description}</span></Link>)}</div>
+    {query && <p>{results.length ? `${results.length} · ${translate("Search results for")} “${initialQuery}”` : `${translate("No guides found for")} “${initialQuery}”. ${translate("Try a broader term.")}`}</p>}
+    <div className="search-results">{results.map((guide) => <Link className="search-result" key={guide.slug} href={guidePath(routeLocale, guide.slug)}><small>{guide.eyebrow}</small><strong>{guide.title}</strong><span>{guide.description}</span></Link>)}</div>
   </>;
 }
