@@ -1,0 +1,420 @@
+import type { City } from "@/lib/types";
+import type { EditorialLocale } from "@/lib/content/localized-general-guides";
+import esCatalog from "@/lib/translations/es.json";
+import deCatalog from "@/lib/translations/de.json";
+
+type CityTranslation = readonly [string, string, string, string, string, string, string, string];
+type CityLanguages = Record<"es" | "de", CityTranslation>;
+
+// Each tuple translates the eight new, municipality-specific fields omitted
+// by the original JSON catalogs: heading, 2 paragraphs, 3 checklist bullets,
+// municipal source label and its review note. Everything else is translated
+// with the existing editorial catalogs. Official URLs and place names remain intact.
+const cityRegistrationCopy: Record<string, CityLanguages> = {
+  mannheim: {
+    es: [
+      "Empadronarse y elegir domicilio en Mannheim",
+      "Mannheim permite registrar o cambiar el domicilio en las oficinas Bürgerservice. También ofrece una opción digital en su portal ciudadano para quienes cumplan los requisitos electrónicos. La página oficial facilita formularios, una plantilla de Wohnungsgeberbestätigung y un formulario de registro en inglés. Tener pasaporte de la UE no basta por sí solo para usar todas las opciones digitales: verifica qué identificación electrónica se admite.",
+      "En la región Rin-Neckar, el municipio donde debes empadronarte depende de la dirección de tu vivienda, no de tu universidad ni de tu empresa. Si alquilas en Ludwigshafen o Heidelberg, debes dirigirte a la Meldebehörde correspondiente. La ciudad indica que las personas de un mismo hogar pueden usar un formulario conjunto y, en determinadas condiciones, un representante puede presentar documentación. Guarda la Meldebestätigung: pueden pedírtela en el banco o en el trabajo.",
+      "Acude al municipio donde está situada realmente la vivienda.",
+      "Pide al propietario o inquilino principal una Wohnungsgeberbestätigung firmada.",
+      "Utiliza los formularios oficiales de Mannheim y comprueba si puedes identificarte en línea.",
+      "Mannheim Bürgerdienste: registro y cambio de domicilio",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Anmeldung und Wohnortwahl in Mannheim",
+      "Mannheim ermöglicht die An- und Ummeldung bei den Bürgerservice-Stellen. Über das Bürgerportal gibt es für Personen, die die elektronischen Voraussetzungen erfüllen, auch einen digitalen Weg. Die offizielle Serviceseite verlinkt Formulare sowie eine Vorlage für die Wohnungsgeberbestätigung; unter den Downloads befindet sich auch ein englisches Anmeldeformular. Ein EU-Pass allein berechtigt nicht automatisch zur digitalen Anmeldung: Prüfen Sie zunächst die zulässigen elektronischen Identitätsnachweise.",
+      "Bei einem Umzug in der Rhein-Neckar-Region richtet sich die Meldebehörde nach der tatsächlichen Wohnadresse, nicht nach der Universität oder dem Arbeitgeber. Wer in Ludwigshafen oder Heidelberg wohnt, muss sich dort melden. Laut Stadt können gemeinsam umziehende Haushaltsmitglieder ein gemeinsames Formular verwenden; unter bestimmten Voraussetzungen darf eine bevollmächtigte Person Unterlagen einreichen. Bewahren Sie Ihre Meldebestätigung auf, da Banken oder Arbeitgeber sie verlangen können.",
+      "Wählen Sie die Meldebehörde am tatsächlichen Wohnort.",
+      "Fordern Sie vom Vermieter oder Hauptmieter eine unterschriebene Wohnungsgeberbestätigung an.",
+      "Verwenden Sie Mannheims amtliche Formulare und prüfen Sie Ihre E-ID-Berechtigung.",
+      "Mannheim Bürgerdienste: An- und Ummeldung",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  berlin: {
+    es: [
+      "Registrar tu domicilio en Berlín: elige el procedimiento correcto",
+      "Berlín dispone de un trámite específico para registrar la residencia principal o única. Normalmente debes hacerlo dentro de los 14 días posteriores a la mudanza, con las excepciones previstas por la ley. Puedes solicitar cita en un Bürgeramt o utilizar el procedimiento digital si cumples los requisitos de identidad electrónica. Llegar desde el extranjero no implica poder realizarlo automáticamente en línea.",
+      "Antes de optar por el trámite digital, revisa los criterios oficiales y prepara una identificación válida, la confirmación firmada del proveedor de vivienda y la fecha real de entrada. El contrato de alquiler no sustituye la Wohnungsgeberbestätigung. Si no puedes hacerlo en línea, consulta cómo pedir una cita presencial o cómo utilizar un representante autorizado.",
+      "Comprueba si el registro digital admite tu nacionalidad y modalidad de traslado.",
+      "Consigue la Wohnungsgeberbestätigung del propietario o proveedor de alojamiento.",
+      "Confirma la cita, los documentos y los cambios en la página oficial del Bürgeramt.",
+      "Servicio oficial de Anmeldung de Berlín y documentos",
+      "Requisitos, documentos y modalidades de registro; revisado el 19 de octubre de 2026.",
+    ],
+    de: [
+      "Wohnsitz in Berlin anmelden: den richtigen Weg wählen",
+      "Berlin bietet einen eigenen Dienst zur Anmeldung einer Haupt- oder alleinigen Wohnung. Nach dem Einzug gilt normalerweise eine Frist von 14 Tagen, vorbehaltlich gesetzlicher Ausnahmen. Möglich sind Termine beim Bürgeramt oder die elektronische Wohnsitzanmeldung, sofern die Voraussetzungen für den Online-Identitätsnachweis erfüllt sind. Ein Zuzug aus dem Ausland berechtigt nicht automatisch zum digitalen Verfahren.",
+      "Prüfen Sie vor der digitalen Anmeldung die amtlichen Voraussetzungen und bereiten Sie einen gültigen Ausweis, die unterschriebene Wohnungsgeberbestätigung und das tatsächliche Einzugsdatum vor. Der Mietvertrag ersetzt diese Bestätigung nicht. Wenn die digitale Anmeldung nicht möglich ist, folgen Sie den Hinweisen zu persönlichen Terminen oder einer zulässigen Vertretung.",
+      "Prüfen Sie, ob die Online-Anmeldung für Ihre Staatsangehörigkeit und Umzugsart zulässig ist.",
+      "Besorgen Sie die Wohnungsgeberbestätigung vom Wohnungsgeber.",
+      "Kontrollieren Sie Termin, Unterlagen und Änderungen auf der offiziellen Bürgeramt-Seite.",
+      "Berlin: offizieller Anmeldedienst und Formulare",
+      "Voraussetzungen, erforderliche Nachweise und Anmeldewege; geprüft am 19. Oktober 2026.",
+    ],
+  },
+  munich: {
+    es: [
+      "Empadronarse en Múnich: en línea o en el Bürgerbüro",
+      "El Bürgerbüro de Múnich explica que, normalmente, los nuevos residentes deben registrar su domicilio en los 14 días posteriores a la mudanza. Según los requisitos, el trámite puede hacerse en línea o presencialmente. La inscripción electrónica está prevista para la vivienda principal, no para una residencia secundaria: si tienes más de un domicilio, comprueba cuál es tu procedimiento.",
+      "La mudanza debe haberse producido: no puedes registrar por adelantado una fecha futura de entrada. El municipio solicita documentos de identidad y la confirmación del proveedor de vivienda. Las familias pueden tener requisitos específicos; consulta las instrucciones para mudanzas con niños en lugar de dar por hecho que una única cita sirve para todos.",
+      "No solicites el Anmeldung con una fecha de entrada que todavía no ha llegado.",
+      "Confirma si registras una vivienda principal o secundaria.",
+      "Consulta los documentos aceptados y los requisitos para familias en la web municipal.",
+      "Instrucciones oficiales de Wohnsitzanmeldung de Múnich",
+      "Trámite municipal y alcance del servicio digital; revisado el 19 de octubre de 2026.",
+    ],
+    de: [
+      "Wohnsitzanmeldung in München: online oder im Bürgerbüro",
+      "Laut Münchner Bürgerbüro müssen neue Einwohner ihre Wohnung normalerweise innerhalb von 14 Tagen nach dem Einzug anmelden. Je nach Voraussetzungen ist die Anmeldung online oder persönlich möglich. Die elektronische Wohnsitzanmeldung betrifft die Hauptwohnung und nicht eine Nebenwohnung. Wer mehrere Wohnsitze hat, sollte den passenden Vorgang vorab prüfen.",
+      "Ein künftiger Einzug kann nicht vorab angemeldet werden; Sie müssen tatsächlich eingezogen sein. Die Stadt verlangt Ausweisdokumente und die Wohnungsgeberbestätigung. Für Familien können besondere Vorgaben gelten. Prüfen Sie bei einem Umzug mit Kindern die entsprechenden städtischen Hinweise statt sich auf einen Einzelpersonentermin zu verlassen.",
+      "Vereinbaren Sie keine Anmeldung für ein erst zukünftiges Einzugsdatum.",
+      "Klären Sie, ob es sich um eine Haupt- oder Nebenwohnung handelt.",
+      "Prüfen Sie aktuelle Dokumentenlisten und Familienvorgaben beim Bürgerbüro.",
+      "München: amtliche Hinweise zur Wohnsitzanmeldung",
+      "Kommunale Hinweise und Umfang des Onlinedienstes; geprüft am 19. Oktober 2026.",
+    ],
+  },
+  hamburg: {
+    es: [
+      "Empadronamiento en Hamburgo: identifica primero de dónde vienes",
+      "Hamburgo distingue varios trámites de registro según te mudes dentro de la ciudad, desde otro estado federado o desde el extranjero. Esta diferencia puede afectar las instrucciones y los documentos necesarios. Consulta primero el servicio oficial de Hamburg Service y evita aplicar una lista genérica de otra ciudad.",
+      "Para el trámite presencial, Hamburgo ofrece reserva de citas en las distintas oficinas de Hamburg Service. Antes de elegir barrio, comprueba si tu trabajo y vivienda están separados por grandes vías de agua: una distancia corta en línea recta puede implicar transbordos o cruces largos. Calcula el trayecto real según tus turnos o el horario universitario.",
+      "Elige el servicio oficial según vengas de Hamburgo, otro estado o el extranjero.",
+      "Consulta las oficinas, citas, horarios y documentos actuales.",
+      "Compara desplazamientos puerta a puerta en hora punta y por la noche, no solo kilómetros.",
+      "Hamburg Service: registrar tu domicilio",
+      "Servicios según procedencia y cita previa; revisado el 19 de octubre de 2026.",
+    ],
+    de: [
+      "Wohnsitz in Hamburg anmelden: zuerst die Umzugsart klären",
+      "Hamburg unterscheidet bei der Wohnsitzanmeldung zwischen Umzügen innerhalb Hamburgs, aus einem anderen Bundesland und aus dem Ausland. Davon können die erforderlichen Nachweise und die genaue Vorgehensweise abhängen. Beginnen Sie deshalb bei der offiziellen Seite von Hamburg Service und übernehmen Sie keine allgemeine Checkliste aus einer anderen Stadt.",
+      "Für die persönliche Anmeldung bietet die Stadt eine Online-Terminvereinbarung bei den Hamburg-Service-Standorten an. Bei der Wohnungssuche sollten Sie große Wasserwege beachten: Eine kurze Luftlinie kann in der Praxis lange Umwege oder Umstiege bedeuten. Prüfen Sie die tatsächlichen Verbindungen passend zu Arbeitszeiten oder Stundenplan.",
+      "Wählen Sie den passenden Service für innerstädtische, innerdeutsche oder internationale Umzüge.",
+      "Prüfen Sie Standort, Termine, Öffnungszeiten und notwendige Unterlagen.",
+      "Vergleichen Sie echte Wege zu Stoßzeiten und spätabends statt bloßer Kilometerangaben.",
+      "Hamburg Service: Wohnsitz anmelden",
+      "Verweise auf Umzugskategorien und Terminvergabe; geprüft am 19. Oktober 2026.",
+    ],
+  },
+  frankfurt: {
+    es: [
+      "Anmeldung en Fráncfort: cualquier Bürgeramt u opción digital habilitada",
+      "El trámite oficial de Fráncfort permite registrar la vivienda en cualquiera de sus oficinas Bürgeramt, independientemente del distrito de la ciudad en el que vivas. También existe un registro electrónico para personas que cumplan los requisitos y registren una residencia principal o única. El registro de una segunda residencia no está incluido en ese procedimiento digital.",
+      "Si comparas viviendas en Fráncfort y municipios cercanos, el organismo competente es el de la localidad donde está realmente tu piso, no el lugar de trabajo ni el centro urbano más próximo. Comprueba la dirección del contrato antes de pedir cita. Si va otra persona en tu nombre, Fráncfort detalla en su página oficial los formularios y la autorización firmada necesarios.",
+      "Elige el municipio de empadronamiento según la dirección donde te has instalado.",
+      "Para una dirección en Fráncfort, compara requisitos digitales y citas en Bürgeramt.",
+      "Prepara los documentos de identidad y la confirmación del proveedor de vivienda.",
+      "Fráncfort: trámite oficial Anmeldung einer Wohnung",
+      "Bürgeramt, registro digital y representación autorizada; revisado el 19 de octubre de 2026.",
+    ],
+    de: [
+      "Anmeldung in Frankfurt: jedes Bürgeramt oder ein zulässiger Onlinedienst",
+      "Laut offizieller Frankfurter Serviceseite können Einwohner ihre neue Wohnung bei jedem Frankfurter Bürgeramt anmelden, unabhängig vom Stadtteil. Für berechtigte Personen gibt es zudem einen elektronischen Dienst zur Anmeldung einer Haupt- oder alleinigen Wohnung. Eine Nebenwohnung kann über diesen digitalen Weg nicht angemeldet werden.",
+      "Bei Wohnungen in Frankfurt und Nachbargemeinden richtet sich die zuständige Meldebehörde nach dem tatsächlichen Wohnort, nicht nach Arbeitsstelle oder nächstgelegenem Zentrum. Prüfen Sie daher die Mietadresse vor der Terminbuchung. Bei einer Anmeldung durch eine andere Person erläutert Frankfurt die notwendigen Vollmachten und Formulare auf seiner offiziellen Serviceseite.",
+      "Bestimmen Sie die Gemeinde anhand der tatsächlichen Wohnadresse.",
+      "Prüfen Sie bei Frankfurter Adressen die digitale Berechtigung oder Bürgeramt-Termine.",
+      "Halten Sie Ausweise und die Wohnungsgeberbestätigung für das amtliche Verfahren bereit.",
+      "Frankfurt: Anmeldung einer Wohnung – amtlicher Dienst",
+      "Bürgeramt, Online-Anmeldung und bevollmächtigte Vertretung; geprüft am 19. Oktober 2026.",
+    ],
+  },
+  cologne: {
+    es: [
+      "Anmeldung en Colonia: días de atención y requisitos digitales",
+      "La página municipal de Colonia indica que quien se traslada desde fuera de la ciudad debe registrar normalmente su domicilio dentro de los 14 días siguientes a la entrada. Ofrece registro digital para personas que cumplan los requisitos y registro presencial en los Kundenzentren. En la fecha de revisión, distinguía días con cita previa y otros con atención sin cita: comprueba siempre la información actual antes de desplazarte.",
+      "La Wohnungsgeberbescheinigung del propietario o inquilino principal es esencial. Colonia aclara que debe confirmar una mudanza ya realizada: el contrato de alquiler por sí solo no basta y no se puede sustituir el certificado aportándolo más tarde. Solicítalo antes de concertar la cita o de comunicar a la empresa o universidad que ya has completado el registro.",
+      "Consulta los requisitos actuales para el registro digital y el calendario de citas.",
+      "Consigue la Wohnungsgeberbescheinigung firmada, no solo el contrato.",
+      "Antes de acudir sin cita, comprueba en directo los horarios del servicio.",
+      "Colonia: registro oficial de residencia",
+      "Plazos, documentos y modalidades del servicio; revisado el 19 de octubre de 2026.",
+    ],
+    de: [
+      "Anmeldung in Köln: persönliche Termine und Online-Berechtigung",
+      "Die Kölner Serviceseite erklärt, dass ein Zuzug von außerhalb der Stadt normalerweise innerhalb von 14 Tagen nach dem Einzug angemeldet werden muss. Für berechtigte Personen ist die Online-Anmeldung möglich, alternativ die persönliche Anmeldung bei den Kundenzentren. Zum Prüfzeitpunkt unterschied der Dienst zwischen Tagen mit Termin und Tagen mit Vorsprache ohne Termin. Kontrollieren Sie vor dem Weg die aktuellen Informationen.",
+      "Wichtig ist die Wohnungsgeberbescheinigung des Vermieters oder Hauptmieters. Köln erläutert, dass das unterschriebene Dokument den bereits erfolgten Einzug bestätigen muss. Ein Mietvertrag ersetzt es nicht; die Bescheinigung lässt sich nicht einfach später an seiner Stelle nachreichen. Besorgen Sie sie, bevor Sie einen Termin buchen oder Arbeitgebern bzw. der Universität eine abgeschlossene Anmeldung zusagen.",
+      "Prüfen Sie die aktuellen Voraussetzungen der Online-Anmeldung und den Terminkalender.",
+      "Holen Sie die ausgefüllte Wohnungsgeberbescheinigung statt nur des Mietvertrags ein.",
+      "Verlassen Sie sich nicht auf alte Sprechstunden; kontrollieren Sie die aktuelle Seite.",
+      "Köln: amtliche Wohnsitzanmeldung",
+      "Amtliche Fristen, erforderliche Unterlagen und Anmeldewege; geprüft am 19. Oktober 2026.",
+    ],
+  },
+  dusseldorf: {
+    es: [
+      "Registrar domicilio y elegir vivienda en Düsseldorf",
+      "Düsseldorf diferencia vivienda única, principal y secundaria. Su servicio de registro indica un plazo habitual de dos semanas tras la mudanza y permite solicitar cita en el Bürgerbüro; también existe una opción digital para personas habilitadas. Llegar del extranjero o inscribir otro tipo de domicilio puede cambiar el procedimiento. El contrato de alquiler no sustituye la Wohnungsgeberbestätigung firmada.",
+      "Al buscar vivienda, comprueba si la dirección pertenece a Düsseldorf o a otro municipio del Rin-Ruhr. Trabajar cerca del aeropuerto o en Neuss no determina dónde debes empadronarte: manda la localidad de tu piso. Calcula los desplazamientos puerta a puerta con los transbordos y horarios de tu turno, y confirma que podrás registrar la dirección antes de abonar una fianza.",
+      "Comprueba si tu documentación y tipo de residencia permiten el registro digital.",
+      "Prepara identidad y Wohnungsgeberbestätigung y consulta las reglas para familias o representantes.",
+      "Si alquilas fuera de Düsseldorf, utiliza el servicio del municipio correspondiente.",
+      "Düsseldorf Serviceportal: Anmeldung eines Wohnsitzes",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Adresse wählen in Düsseldorf",
+      "Düsseldorf unterscheidet alleinige Wohnung, Hauptwohnung und Nebenwohnung. Laut Meldeservice gilt normalerweise eine Frist von zwei Wochen nach dem Einzug. Die Anmeldung ist mit Bürgerbüro-Termin oder bei Erfüllung der Voraussetzungen elektronisch möglich. Ein Zuzug aus dem Ausland oder ein anderer Wohnsitztyp kann den Weg beeinflussen. Der Mietvertrag ersetzt keine unterschriebene Wohnungsgeberbestätigung.",
+      "Prüfen Sie bei der Wohnungssuche, ob die Adresse innerhalb Düsseldorfs oder in einer anderen Rhein-Ruhr-Gemeinde liegt. Ein Arbeitsplatz am Flughafen oder in Neuss entscheidet nicht über Ihr Bürgerbüro: maßgeblich ist die Gemeinde der Wohnung. Testen Sie Tür-zu-Tür-Wege zu den Schichtzeiten und klären Sie vor Zahlung der Kaution, ob eine Anmeldung möglich ist.",
+      "Prüfen Sie, ob Ihre Unterlagen und der Wohnsitztyp für die elektronische Anmeldung zugelassen sind.",
+      "Bereiten Sie Ausweis und Wohnungsgeberbestätigung vor und beachten Sie Familien- oder Vertretungsregeln.",
+      "Bei einer Wohnung außerhalb Düsseldorfs ist die andere Gemeinde zuständig.",
+      "Düsseldorf Serviceportal: Anmeldung eines Wohnsitzes",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  stuttgart: {
+    es: [
+      "Registrar y elegir domicilio en Stuttgart",
+      "El Welcome Center de Stuttgart explica que los nuevos residentes que llegan del extranjero, de otra zona de Alemania o cambian de dirección dentro de Stuttgart deben registrarse generalmente en las dos semanas posteriores a la mudanza. Para la gestión presencial pueden acudir a cualquiera de los Bürgerbüros de la ciudad. Prepara identificación válida y la confirmación firmada del proveedor de alojamiento. También existe una vía digital, pero debes verificar sus condiciones.",
+      "En Stuttgart la geografía importa: dos barrios pueden parecer cercanos en el mapa pero estar separados por pendientes o conexiones de Stadtbahn y S-Bahn poco prácticas. Prueba un trayecto por la mañana y otro al final del día, incluida la subida a pie. Si no eres ciudadano de la UE, recuerda que el Anmeldung en el Bürgerbüro y los trámites de la Ausländerbehörde son procedimientos diferentes.",
+      "Selecciona un Bürgerbüro y confirma el sistema de citas o espera.",
+      "Organiza por separado el Anmeldung, el seguro médico y el permiso de residencia.",
+      "Prioriza las conexiones reales y las cuestas, no solo la distancia en el mapa.",
+      "Welcome Center Stuttgart: registrar nueva dirección",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Stuttgart",
+      "Das Stuttgarter Welcome Center erklärt, dass neue Einwohner nach einem Zuzug aus dem Ausland, anderen Teilen Deutschlands oder nach einem innerstädtischen Umzug ihre Wohnung grundsätzlich innerhalb von zwei Wochen anmelden. Für die persönliche Anmeldung kann jedes Bürgerbüro der Stadt genutzt werden. Erforderlich sind ein gültiger Identitätsnachweis und die unterschriebene Wohnungsgeberbestätigung. Eine Online-Option existiert, ihre Voraussetzungen müssen jedoch vorab geprüft werden.",
+      "In Stuttgart ist die Topografie entscheidend: Zwei Stadtteile wirken auf der Karte nahe, können aber durch steile Hänge oder ungünstige Stadtbahn- und S-Bahn-Verbindungen getrennt sein. Testen Sie morgens und spätabends die gesamte Strecke einschließlich des letzten Fußwegs bergauf. Für Nicht-EU-Bürger bleiben die Anmeldung beim Bürgerbüro und Angelegenheiten der Ausländerbehörde getrennte Verfahren.",
+      "Wählen Sie ein Bürgerbüro und prüfen Sie Termine und Warteverfahren direkt.",
+      "Planen Sie Anmeldung, Versicherung und Aufenthaltstitel als getrennte Aufgaben.",
+      "Achten Sie auf Steigungen und echte ÖPNV-Verbindungen, nicht nur auf Luftlinien.",
+      "Welcome Center Stuttgart: neue Adresse anmelden",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  heidelberg: {
+    es: [
+      "Registrar domicilio y escoger dirección en Heidelberg",
+      "La página oficial de Heidelberg explica la obligación habitual de registrar la vivienda en un plazo de dos semanas y facilita los formularios de Anmeldung y Wohnungsgeberbestätigung. El registro electrónico se está implantando mediante el sistema de Baden-Württemberg: consulta el servicio municipal actualizado para comprobar si cumples sus requisitos. El organismo competente es siempre el del municipio donde se encuentra tu vivienda.",
+      "Esto es importante si estudias en la Universidad de Heidelberg o trabajas en un instituto de investigación: alquilar en Mannheim, Eppelheim u otro municipio no permite hacer el registro en Heidelberg. Antes de elegir piso, compara tres trayectos reales: al campus principal, el regreso nocturno y un segundo destino imprescindible. Añade alquiler con gastos y transporte para valorar el coste total.",
+      "Utiliza los formularios municipales actuales, no una lista genérica.",
+      "Confirma el municipio de la vivienda antes de reservar el Anmeldung.",
+      "Separa matrícula universitaria, seguro médico y empadronamiento en tus tareas.",
+      "Heidelberg: procedimiento municipal oficial de residencia",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Adresse wählen in Heidelberg",
+      "Die Heidelberger Serviceseite erläutert die übliche zweiwöchige Meldefrist und stellt Formulare für Anmeldung und Wohnungsgeberbestätigung bereit. Die elektronische Anmeldung wird im Rahmen des baden-württembergischen Systems eingeführt. Prüfen Sie im aktuellen städtischen Dienst, ob Sie persönlich dazu berechtigt sind. Zuständig ist die Gemeinde der neuen Wohnung.",
+      "Das ist auch für Studierende der Universität Heidelberg und Beschäftigte in Forschungsinstituten wichtig: Wer in Mannheim, Eppelheim oder einer anderen Gemeinde wohnt, kann sich nicht in Heidelberg anmelden. Vergleichen Sie vor der Wohnungssuche drei echte Wege: zum Hauptcampus, abends nach Hause und zu einem weiteren wichtigen Ziel. Berücksichtigen Sie Warmmiete und Fahrtkosten.",
+      "Nutzen Sie die aktuellen Formulare der Stadt statt allgemeiner Checklisten.",
+      "Prüfen Sie die tatsächliche Wohngemeinde vor der Anmeldung.",
+      "Behandeln Sie Einschreibung, Krankenversicherung und Wohnsitzanmeldung als getrennte Pflichten.",
+      "Heidelberg: offizielles Verfahren zur Wohnsitzanmeldung",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  freiburg: {
+    es: [
+      "Empadronamiento y elección de domicilio en Friburgo",
+      "El servicio municipal de Friburgo indica un plazo ordinario de dos semanas después de mudarte. Explica que el registro digital se está implantando por fases en Baden-Württemberg y ofrece información tanto sobre citas de atención ciudadana como sobre la disponibilidad en línea. No des por hecho que tu documentación, nacionalidad o municipio admiten el procedimiento digital: revisa el formulario oficial vigente.",
+      "La red de tranvías, los trenes regionales y los pueblos cercanos de la Selva Negra hacen que una habitación más barata fuera de la ciudad pueda implicar gastos de desplazamiento muy distintos. Antes de firmar, comprueba el último tren o autobús según tu horario de estudio o trabajo y que podrás empadronarte en la vivienda. Guarda la confirmación del propietario y el certificado de registro.",
+      "Verifica si puedes usar el servicio digital, en lugar de basarte en indicaciones generales del estado.",
+      "Compara transportes según los horarios reales, también de noche.",
+      "La localidad de la vivienda determina la oficina de registro, no la universidad.",
+      "Friburgo: trámite oficial Wohnsitz anmelden",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Freiburg",
+      "Laut Freiburger Meldedienst beträgt die reguläre Frist zwei Wochen nach dem Einzug. Die digitale Anmeldung wird in Baden-Württemberg schrittweise eingeführt; die Stadt informiert sowohl über Termine beim Bürgerservice als auch über die digitale Verfügbarkeit. Gehen Sie nicht davon aus, dass jedes Dokument, jede Staatsangehörigkeit und jede Gemeinde für den Onlineweg zugelassen sind: Prüfen Sie den aktuellen offiziellen Dienst.",
+      "Durch Straßenbahnen, Regionalzüge und umliegende Schwarzwaldorte kann ein preiswerteres Zimmer außerhalb der Stadt ganz andere Pendelkosten bedeuten. Prüfen Sie vor Vertragsabschluss die letzte Bahn oder den letzten Bus passend zu Ihrem Studien- oder Arbeitsplan und ob die Wohnung meldefähig ist. Bewahren Sie die Wohnungsgeberbestätigung und spätere Meldebestätigung auf.",
+      "Prüfen Sie die digitale Berechtigung statt nur allgemeiner Landesinformationen.",
+      "Vergleichen Sie Verbindungen zu den tatsächlichen Zeiten, auch abends.",
+      "Die Wohngemeinde und nicht die Universität bestimmt die Meldebehörde.",
+      "Freiburg: amtlicher Dienst „Wohnsitz anmelden“",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  karlsruhe: {
+    es: [
+      "Anmeldung en Karlsruhe: reglas distintas para quien llega del extranjero",
+      "Karlsruhe establece una distinción importante: su servicio Bürgerdienste indica que el registro electrónico y la oficina virtual no están disponibles para un primer traslado desde el extranjero. En ese caso debes reservar una cita presencial en el Bürgerbüro. Quienes se mudan desde otra localidad alemana y cumplen los requisitos de identidad digital pueden comprobar la vía electrónica. Registrar vivienda principal o secundaria también puede exigir trámites diferentes.",
+      "La red de tranvía-tren permite buscar alojamiento en un área amplia, pero debes comprobar los transbordos concretos. Prueba el desplazamiento al KIT o al trabajo a las horas previstas. Confirma la localidad del piso, pide la Wohnungsgeberbestätigung y no firmes un alquiler dando por hecho que siempre podrás hacer el Anmeldung en línea.",
+      "Si llegas por primera vez desde el extranjero, consulta la cita presencial del Bürgerbüro.",
+      "Si te trasladas desde Alemania, verifica la identidad digital y los requisitos de vivienda principal.",
+      "Prepara identificación, fecha real de entrada y Wohnungsgeberbestätigung.",
+      "Karlsruhe Bürgerdienste: registro de vivienda principal",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Anmeldung in Karlsruhe: besondere Regeln bei Zuzug aus dem Ausland",
+      "Karlsruhe unterscheidet ausdrücklich zwischen Zuzügen: Laut Bürgerdienste stehen elektronische Wohnsitzanmeldung und virtuelles Amt für den erstmaligen Zuzug aus dem Ausland nicht zur Verfügung. In diesem Fall ist ein persönlicher Termin im Bürgerbüro erforderlich. Bei einem Umzug innerhalb Deutschlands können berechtigte Personen mit elektronischer Identität den digitalen Weg prüfen. Für Haupt- und Nebenwohnungen können unterschiedliche Verfahren gelten.",
+      "Das Stadtbahn- und Straßenbahnnetz erweitert das mögliche Wohngebiet, doch die konkreten Umstiege sind entscheidend. Testen Sie die Fahrt zum KIT oder Arbeitsplatz zu Ihren üblichen Zeiten. Prüfen Sie die Wohngemeinde, besorgen Sie die Wohnungsgeberbestätigung und schließen Sie keinen Mietvertrag allein in der Annahme ab, die Anmeldung sei immer online möglich.",
+      "Erster Zuzug aus dem Ausland? Nutzen Sie den amtlichen persönlichen Bürgerbüro-Termin.",
+      "Zuzug aus Deutschland? Prüfen Sie elektronische Identität und Voraussetzungen für die Hauptwohnung.",
+      "Bereiten Sie Ausweis, Einzugsdatum und Wohnungsgeberbestätigung vor.",
+      "Karlsruhe Bürgerdienste: Hauptwohnung anmelden",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  leipzig: {
+    es: [
+      "Empadronamiento y elección de domicilio en Leipzig",
+      "Leipzig permite registrar o cambiar la dirección a través de sus oficinas Bürgerbüro e introdujo una opción de registro electrónico en 2025. Revisa en su página oficial los requisitos y documentos antes de solicitar el trámite digital. Quienes viven en Leipzig pueden acudir a cualquiera de sus Bürgerbüros; si alquilas en otra localidad, debes utilizar el organismo municipal que corresponda.",
+      "Al mudarte, quizá tengas que elegir entre un barrio animado con buen tranvía y una vivienda más barata que obligue a hacer transbordos. Compara el alquiler total con gastos, el regreso después del trabajo y la conexión con la estación central o el campus. Pide al propietario la Wohnungsgeberbestätigung en cuanto se confirme la fecha de entrada: el contrato no sustituye este certificado.",
+      "Consulta el servicio oficial de Leipzig para ver las modalidades digitales o presenciales.",
+      "Para una dirección de Leipzig puedes utilizar sus distintas oficinas Bürgerbüro.",
+      "Si el piso está en un municipio vecino, consulta su Meldebehörde.",
+      "Leipzig: servicio oficial de registro y cambio de domicilio",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Leipzig",
+      "Leipzig ermöglicht die An- und Ummeldung über seine Bürgerbüros und hat 2025 zusätzlich eine elektronische Anmeldung eingeführt. Voraussetzungen und Unterlagen müssen auf der aktuellen Serviceseite geprüft werden. Für eine Leipziger Adresse kann grundsätzlich jedes Leipziger Bürgerbüro genutzt werden; in einer Nachbargemeinde ist die dortige Meldebehörde zuständig.",
+      "Neuzugezogene stehen oft vor der Wahl zwischen einem belebten Viertel mit guter Straßenbahn und einer günstigeren Wohnung mit Umstiegen. Vergleichen Sie Warmmiete, Heimfahrten nach der Arbeit und Anschlüsse an Hauptbahnhof oder Campus. Fordern Sie vom Vermieter die Wohnungsgeberbestätigung an, sobald der Einzug feststeht; der Mietvertrag ersetzt die Bestätigung nicht.",
+      "Prüfen Sie auf Leipzigs Serviceseite digitale und persönliche Anmeldewege.",
+      "Für eine Leipziger Anschrift stehen die städtischen Bürgerbüros zur Verfügung.",
+      "Bei einer Wohnung außerhalb der Stadt ist die Meldebehörde der Nachbargemeinde zuständig.",
+      "Leipzig: amtlicher Service für An- und Ummeldung",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  dresden: {
+    es: [
+      "Empadronamiento y elección de domicilio en Dresde",
+      "La página oficial de las Meldestellen de Dresde sirve para localizar las oficinas de registro y sus citas. El municipio exige expresamente una confirmación escrita del propietario o proveedor de alojamiento: presentar únicamente un contrato de alquiler no equivale a llevar la Wohnungsgeberbestätigung. Consulta qué Bürgerbüro o Meldestelle gestiona tu caso y comprueba las instrucciones actuales antes de desplazarte.",
+      "Los empleos industriales, de semiconductores e investigación de Dresde no siempre están cerca del centro turístico. Si trabajas a turnos, comprueba la primera salida y la última conexión al campus industrial o instituto concreto. Si vienes a estudiar, organiza por separado seguro médico, matrícula y empadronamiento, y prepara una dirección registrable antes de la primera cita.",
+      "Lleva la Wohnungsgeberbestätigung firmada y no solo el contrato.",
+      "Confirma las oficinas disponibles y la identificación exigida.",
+      "Compara el transporte para turnos tempranos y el regreso, no solo las horas centrales.",
+      "Dresde: oficinas oficiales de registro y certificado del propietario",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Dresden",
+      "Die offizielle Dresdner Meldestellen-Seite ist der Ausgangspunkt für Meldeangelegenheiten und Termine. Die Stadt verlangt ausdrücklich eine schriftliche Wohnungsgeberbestätigung. Der Mietvertrag allein erfüllt diese Voraussetzung nicht. Prüfen Sie im kommunalen Dienst, welches Bürgerbüro bzw. welche Meldestelle zuständig ist, und informieren Sie sich vor dem Besuch über die aktuellen Buchungsregeln.",
+      "Standorte von Halbleiterindustrie und Forschung liegen nicht immer in der touristischen Innenstadt. Bei Schichtarbeit sollten Sie die erste und letzte Verbindung zum konkreten Werks- oder Forschungsstandort prüfen. Studierende sollten Krankenversicherung, Einschreibung und Wohnsitzanmeldung getrennt planen und rechtzeitig eine meldefähige Adresse nachweisen können.",
+      "Bringen Sie die unterschriebene Wohnungsgeberbestätigung mit, nicht nur den Mietvertrag.",
+      "Prüfen Sie aktuelle Verfügbarkeit der Meldestellen und erforderliche Ausweise.",
+      "Vergleichen Sie Frühschichtverbindungen ebenso wie reguläre Fahrzeiten.",
+      "Dresden: amtliche Meldestellen und Wohnungsgeberbestätigung",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  nuremberg: {
+    es: [
+      "Empadronamiento y elección de vivienda en Núremberg",
+      "El servicio oficial de Núremberg distingue entre Anmeldung al llegar a la ciudad y Ummeldung cuando cambias de dirección dentro de ella. Los residentes que cumplan los requisitos de identificación electrónica pueden registrar su vivienda principal en línea; una residencia secundaria requiere actualmente cita presencial. La ciudad indica que el registro se hace dentro de las dos semanas posteriores a la entrada real, nunca antes de mudarte.",
+      "Un piso en Fürth o Erlangen no es una dirección de Núremberg, aunque se tarde poco en llegar al trabajo. Confirma el municipio competente antes de reservar cita en el Bürgeramt. Para evaluar el coste, suma alquiler con gastos y desplazamiento por la red VGN al centro de trabajo o campus. Una buena conexión de U-Bahn o S-Bahn puede pesar más que un alquiler anunciado algo inferior.",
+      "La vivienda principal y la secundaria tienen procedimientos distintos.",
+      "Los requisitos de identidad en línea no se aplican por igual a todas las personas.",
+      "Decide en función del trayecto metropolitano real y del organismo de registro correcto.",
+      "Núremberg: registro oficial de vivienda",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Nürnberg",
+      "Der amtliche Nürnberger Dienst unterscheidet Anmeldung beim Zuzug und Ummeldung bei einem Wohnungswechsel innerhalb der Stadt. Berechtigte Einwohner können ihre Hauptwohnung mit elektronischer Identifikation online anmelden. Eine Nebenwohnung erfordert derzeit eine persönliche Vorsprache. Laut Stadt muss die Anmeldung innerhalb von zwei Wochen nach dem tatsächlichen Einzug erfolgen, nicht davor.",
+      "Eine Wohnung in Fürth oder Erlangen ist keine Nürnberger Meldeadresse, auch wenn der Arbeitsweg kurz ist. Prüfen Sie vor der Bürgeramt-Buchung die zuständige Gemeinde. Für die Kostenentscheidung zählen Warmmiete und der vollständige Weg im VGN-Gebiet zum Arbeitsplatz oder Campus. Eine passende U-Bahn- oder S-Bahn-Verbindung kann wichtiger als eine niedrige Kaltmiete sein.",
+      "Für Haupt- und Nebenwohnung gelten unterschiedliche Meldewege.",
+      "Die Voraussetzungen für elektronische Identifikation sind nicht bei allen gleich.",
+      "Bewerten Sie den tatsächlichen Pendelweg und die zuständige Meldebehörde.",
+      "Nürnberg: amtliche Wohnsitzanmeldung",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  hannover: {
+    es: [
+      "Empadronamiento y elección de domicilio en Hannover",
+      "Hannover gestiona las citas del Bürgeramt mediante su portal municipal. Generalmente, los residentes pueden acudir a cualquiera de los Bürgerämter de la ciudad, con independencia de su distrito. También existe un registro electrónico para personas adultas que cumplen los requisitos de identificación digital. El procedimiento oficial distingue una nueva residencia principal de los supuestos de vivienda secundaria: comprueba los requisitos antes de usarlo.",
+      "Aunque Hannover es un gran nudo ferroviario nacional, vivir en una localidad regional no garantiza un trayecto cómodo: manda el horario real, no la distancia a Hauptbahnhof. Compara Stadtbahn o S-Bahn hasta tu trabajo, universidad o recinto ferial y prueba al menos un regreso nocturno. Si alquilas fuera de Hannover, el registro corresponde al municipio donde está el piso.",
+      "Consulta la disponibilidad de citas y los requisitos de identificación electrónica.",
+      "Confirma el municipio de tu vivienda antes de reservar un Bürgeramt.",
+      "Prueba los trayectos nocturnos si valoras viviendas regionales más baratas.",
+      "Hannover: citas oficiales de Bürgeramt",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Wohnsitz anmelden und Wohnlage wählen in Hannover",
+      "Hannover vergibt Bürgeramt-Termine über sein Stadtportal. Einwohner können normalerweise jedes der städtischen Bürgerämter nutzen, unabhängig von ihrem Stadtteil. Für berechtigte Erwachsene mit unterstütztem Online-Ausweis gibt es außerdem die elektronische Wohnsitzanmeldung. Die offiziellen Voraussetzungen unterscheiden zwischen neuer Hauptwohnung und Nebenwohnung: Prüfen Sie den konkreten Dienst, bevor Sie sich auf den digitalen Weg verlassen.",
+      "Hannover ist ein großer Bahnknotenpunkt, doch beim Pendeln aus dem Umland zählt der tatsächliche Fahrplan statt der Entfernung zum Hauptbahnhof. Vergleichen Sie die Stadtbahn- oder S-Bahn-Verbindung zu Arbeit, Universität oder Messegelände einschließlich einer späten Rückfahrt. Außerhalb der Stadtgrenze richtet sich die Anmeldung nach der Wohngemeinde.",
+      "Prüfen Sie amtliche Bürgeramt-Termine und die Voraussetzungen für den Online-Ausweis.",
+      "Klären Sie die zuständige Gemeinde vor der Terminbuchung.",
+      "Testen Sie späte Verbindungen bei günstigeren Wohnungen im Umland.",
+      "Hannover: amtliche Bürgeramt-Terminvergabe",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+  bremen: {
+    es: [
+      "Anmeldung en Bremen: atención presencial para llegadas del extranjero",
+      "Bremen establece una diferencia especialmente importante para quienes llegan desde otro país: su servicio oficial indica que deben acudir personalmente a un BürgerServiceCenter para registrar su domicilio. La opción electrónica descrita para traslados dentro de Alemania no sirve para una llegada internacional. También se pide que se presenten todas las personas que deban registrarse, incluidos los niños; consulta las opciones de ayuda lingüística y los documentos exigidos antes de la cita.",
+      "Si te mudas desde otra ciudad alemana, el servicio para residencia principal contempla un procedimiento digital cuando cumples los requisitos. El registro de una vivienda secundaria es independiente y puede exigir una visita presencial. Tanto en Bremen como en una localidad vecina, debes registrarte donde está tu alojamiento. Para trabajos a turnos en el puerto o polígonos industriales, compara las frecuencias tempranas de transporte en lugar de trayectos entre centros urbanos.",
+      "Si llegas desde el extranjero, prepara una cita presencial en BürgerServiceCenter.",
+      "Si llegas desde Alemania, comprueba si puedes registrar en línea tu residencia principal.",
+      "Para una dirección secundaria, consulta el trámite separado y sus documentos.",
+      "Bremen: registro oficial tras mudarse desde el extranjero",
+      "Fuente municipal oficial; comprobada el 20 de octubre de 2026. Los requisitos pueden cambiar.",
+    ],
+    de: [
+      "Anmeldung in Bremen: persönlicher Termin bei Zuzug aus dem Ausland",
+      "Bremen unterscheidet besonders deutlich zwischen internationalen und innerdeutschen Umzügen. Laut offiziellem Dienst müssen Personen, die aus dem Ausland zuziehen, ihre Wohnung persönlich im BürgerServiceCenter anmelden. Das elektronische Verfahren für Umzüge innerhalb Deutschlands ist dafür nicht vorgesehen. Auch alle anzumeldenden Personen einschließlich Kinder sollen persönlich erscheinen. Prüfen Sie vorab Sprachunterstützung und benötigte Unterlagen.",
+      "Bei einem Umzug aus einer anderen deutschen Stadt beschreibt Bremen für berechtigte Personen eine digitale Anmeldung der Hauptwohnung. Die Anmeldung einer Nebenwohnung ist ein eigener Vorgang und kann eine persönliche Vorsprache erfordern. Egal ob in Bremen oder einer Nachbargemeinde: Meldebehörde ist die Gemeinde der Wohnung. Für Schichtarbeit in Hafen- und Industriegebieten sollten Sie frühe Fahrpläne statt bloßer Zentrumsverbindungen vergleichen.",
+      "Aus dem Ausland? Planen Sie einen persönlichen Termin im BürgerServiceCenter.",
+      "Aus Deutschland? Prüfen Sie den digitalen Weg für die Hauptwohnung.",
+      "Bei Nebenwohnungen gelten eigene Vorgaben und Unterlagen.",
+      "Bremen: amtliche Anmeldung nach Zuzug aus dem Ausland",
+      "Amtliche kommunale Quelle; geprüft am 20. Oktober 2026. Anforderungen können sich ändern.",
+    ],
+  },
+};
+
+const catalogs = {
+  es: esCatalog as Record<string, string>,
+  de: deCatalog as Record<string, string>,
+};
+
+export function getLocalizedCity(city: City, locale: EditorialLocale): City {
+  if (locale === "en") return city;
+  const sourceCatalog = catalogs[locale];
+  const cityCopy = cityRegistrationCopy[city.slug]?.[locale];
+  const registration = city.sections.find((section) =>
+    section.heading.length > 20 && !sourceCatalog[section.heading] &&
+    section.paragraphs.length >= 2 && !sourceCatalog[section.paragraphs[0]]
+  );
+
+  const extra: Record<string, string> = {};
+  if (cityCopy && registration) {
+    const originalStrings = [
+      registration.heading,
+      registration.paragraphs[0], registration.paragraphs[1],
+      registration.bullets?.[0], registration.bullets?.[1], registration.bullets?.[2],
+      registration.resources?.[0]?.label, registration.resources?.[0]?.note,
+    ];
+    originalStrings.forEach((value, i) => {
+      if (value !== undefined) extra[value] = cityCopy[i];
+    });
+  }
+  const t = (value: string) => sourceCatalog[value] || extra[value] || value;
+  return {
+    ...city,
+    name: t(city.name),
+    region: t(city.region),
+    description: t(city.description),
+    bestFor: t(city.bestFor),
+    character: t(city.character),
+    sections: city.sections.map((section) => ({
+      ...section,
+      heading: t(section.heading),
+      paragraphs: section.paragraphs.map(t),
+      bullets: section.bullets?.map(t),
+      callout: section.callout && {
+        ...section.callout, title: t(section.callout.title), text: t(section.callout.text),
+      },
+      resources: section.resources?.map((resource) => ({
+        ...resource, label: t(resource.label), note: t(resource.note),
+      })),
+    })),
+    sources: city.sources.map((source) => ({
+      ...source, name: t(source.name), note: source.note ? t(source.note) : undefined,
+    })),
+  };
+}
+
+export const translatedCitySlugs = Object.keys(cityRegistrationCopy);

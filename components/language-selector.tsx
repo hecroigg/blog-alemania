@@ -1,22 +1,22 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { localeLabels, searchLocales, type Locale } from "@/lib/platform-data";
 import { useLanguage } from "@/components/language-provider";
 import { switchLocalizedPath } from "@/lib/exact-guide-routes";
 
 export function LanguageSelector() {
-  const { locale, setLocale, copy } = useLanguage();
+  const { locale, copy } = useLanguage();
+  const pathname = usePathname();
+  const routeLanguage = pathname.split("/").filter(Boolean)[0];
+  const activeLanguage = searchLocales.find((item) => item === routeLanguage) || (pathname === "/" ? "en" : locale);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const choose = (next: Locale) => {
-    const localizedPath = switchLocalizedPath(window.location.pathname, next);
-    if (localizedPath) {
-      window.localStorage.setItem("living-germany-language", next);
-      window.location.assign(localizedPath);
-      return;
-    }
-    setLocale(next);
+    const localizedPath = switchLocalizedPath(pathname, next);
+    window.localStorage.setItem("living-germany-language", next);
     detailsRef.current?.removeAttribute("open");
+    if (localizedPath !== pathname) window.location.assign(localizedPath);
   };
   useEffect(() => {
     const close = (event: PointerEvent) => {
@@ -34,9 +34,9 @@ export function LanguageSelector() {
   }, []);
 
   return <details className="language-selector" ref={detailsRef}>
-    <summary aria-label={`${copy.language}: ${localeLabels[locale].label}`}>
+    <summary aria-label={`${copy.language}: ${localeLabels[activeLanguage].label}`}>
       <span className="language-globe" aria-hidden="true">◎</span>
-      <span className="language-code">{locale.toUpperCase()}</span>
+      <span className="language-code">{activeLanguage.toUpperCase()}</span>
       <span className="language-chevron" aria-hidden="true">⌄</span>
     </summary>
     <div className="language-menu" role="listbox" aria-label={copy.language}>
@@ -44,8 +44,8 @@ export function LanguageSelector() {
       {searchLocales.map((item) => <button
         type="button"
         role="option"
-        aria-selected={locale === item}
-        className={locale === item ? "is-active" : ""}
+        aria-selected={activeLanguage === item}
+        className={activeLanguage === item ? "is-active" : ""}
         onClick={() => choose(item)}
         key={item}
       >

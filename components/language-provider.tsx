@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { supportedLocales, type Locale, uiCopy } from "@/lib/platform-data";
+import { supportedLocales, searchLocales, type Locale, uiCopy } from "@/lib/platform-data";
 
 type LanguageContextValue = {
   locale: Locale;
@@ -110,6 +110,10 @@ function isLocale(value: string | null): value is Locale {
   return Boolean(value && (supportedLocales as readonly string[]).includes(value));
 }
 
+function isPublicLocale(value: string | null): value is Locale {
+  return Boolean(value && (searchLocales as readonly string[]).includes(value));
+}
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, updateLocale] = useState<Locale>("en");
   const observerRef = useRef<MutationObserver | null>(null);
@@ -120,7 +124,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const saved = window.localStorage.getItem(storageKey);
     const browser = navigator.language.split("-")[0];
     const routeLocale = window.location.pathname.split("/").filter(Boolean)[0] || null;
-    const next = isLocale(routeLocale) ? routeLocale : isLocale(saved) ? saved : isLocale(browser) ? browser : "en";
+    const next = isLocale(routeLocale) ? routeLocale : isPublicLocale(saved) ? saved : isPublicLocale(browser) ? browser : "en";
     document.documentElement.lang = next;
     queueMicrotask(() => updateLocale(next));
   }, []);

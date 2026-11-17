@@ -34,7 +34,7 @@ export function localizedPracticalGuideMetadata(locale: SearchLocale, slug:strin
   if(!key) return null;
   const guide=getLocalizedPracticalGuide(locale,key);
   const canonical=absoluteUrl(practicalGuidePath(locale,key));
-  return {title:guide.title,description:guide.description,alternates:{canonical,languages:languageUrls(key)},openGraph:{type:"article",title:guide.title,description:guide.description,url:canonical,locale,modifiedTime:guide.updated},twitter:{card:"summary",title:guide.title,description:guide.description}};
+  return {title:guide.title,description:guide.description,alternates:{canonical,languages:languageUrls(key)},robots:locale === "fr" ? {index:false,follow:true} : undefined,openGraph:{type:"article",title:guide.title,description:guide.description,url:canonical,locale,modifiedTime:guide.updated},twitter:{card:"summary",title:guide.title,description:guide.description}};
 }
 
 export { practicalGuideStaticParams };

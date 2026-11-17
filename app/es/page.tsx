@@ -5,11 +5,12 @@ import { Icon } from "@/components/icon";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
 import type { ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { absoluteUrl } from "@/lib/site";
+import { localizedHomeAlternates } from "@/components/localized-home";
 
 export const metadata: Metadata = {
   title: "Vivir y trabajar en Alemania: guía práctica en español",
   description: "Guías en español para instalarte en Alemania: Anmeldung, trabajo, seguros, alquiler y transporte. Pasos claros, herramientas y fuentes oficiales.",
-  alternates: { canonical: absoluteUrl("/es") },
+  alternates: { canonical: absoluteUrl("/es"), languages: localizedHomeAlternates },
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
@@ -64,7 +65,7 @@ const allGuides = clusters.flatMap((cluster) => cluster.items);
 
 export default function SpanishHome() {
   return (
-    <div lang="es">
+    <div lang="es" data-no-translate>
       <section className="page-hero">
         <div className="shell">
           <div className="page-hero-grid">
