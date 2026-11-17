@@ -7,9 +7,10 @@ import { usePathname } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { LanguageSelector } from "@/components/language-selector";
 import { useLanguage } from "@/components/language-provider";
+import { sectionPath, type SiteLocale } from "@/lib/localized-paths";
 import { siteConfig } from "@/lib/site";
 
-type NavLocale = "en" | "es" | "de" | "fr";
+type NavLocale = "en" | "es" | "de";
 
 const localeNav: Record<NavLocale, {
   home: string; documents: string; work: string; life: string; guides: string;
@@ -18,7 +19,6 @@ const localeNav: Record<NavLocale, {
   en: { home: "Home", documents: "Paperwork", work: "Work", life: "Daily life", guides: "All guides", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Main navigation" },
   es: { home: "Inicio", documents: "Trámites", work: "Trabajo", life: "Vida diaria", guides: "Todas las guías", documentsId: "tramites", workId: "trabajo", lifeId: "vida-diaria", label: "Navegación principal" },
   de: { home: "Startseite", documents: "Behörden", work: "Arbeit", life: "Alltag", guides: "Alle Ratgeber", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Hauptnavigation" },
-  fr: { home: "Accueil", documents: "Démarches", work: "Travail", life: "Vie quotidienne", guides: "Tous les guides", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Navigation principale" },
 };
 
 export function Header() {
@@ -63,7 +63,7 @@ export function Header() {
       <Link href={homePath + "#" + localized.documentsId}>{localized.documents}</Link>
       <Link href={homePath + "#" + localized.workId}>{localized.work}</Link>
       <Link href={homePath + "#" + localized.lifeId}>{localized.life}</Link>
-      <Link href={homePath + "/guides"}>{localized.guides}</Link>
+      <Link href={sectionPath(locale as SiteLocale, "guides")}>{localized.guides}</Link>
     </>
   ) : null;
 
