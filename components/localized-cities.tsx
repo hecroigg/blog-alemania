@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -10,6 +11,48 @@ import { getLocalizedCity } from "@/lib/content/city-registration-i18n";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
 import { absoluteUrl } from "@/lib/site";
 import { cityFromSlug, cityUrl, sectionPath } from "@/lib/locale-paths";
+
+type CityPhoto = {
+  src: string;
+  alt: Record<EditorialLocale, string>;
+  author: string;
+  source: string;
+  license: string;
+  licenseUrl: string;
+};
+
+const cityPhotos: Partial<Record<string, CityPhoto>> = {
+  mannheim: {
+    src: "/images/cities/mannheim.webp",
+    alt: {
+      es: "La torre del agua de Mannheim en Friedrichsplatz",
+      en: "Mannheim's water tower on Friedrichsplatz",
+      de: "Der Mannheimer Wasserturm am Friedrichsplatz",
+    },
+    author: "LeonSiPL",
+    source: "https://commons.wikimedia.org/wiki/File:Mannheim_turm.JPG",
+    license: "CC BY-SA 3.0 DE",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/de/",
+  },
+  heidelberg: {
+    src: "/images/cities/heidelberg.webp",
+    alt: {
+      es: "El Puente Viejo de Heidelberg sobre el Neckar, con el castillo al fondo",
+      en: "Heidelberg’s Old Bridge over the Neckar with the castle in the background",
+      de: "Die Alte Brücke in Heidelberg über dem Neckar mit dem Schloss im Hintergrund",
+    },
+    author: "DRAI92",
+    source: "https://commons.wikimedia.org/wiki/File:Heidelberg_Old_Bridge_with_the_Castle_in_background.jpg",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+  },
+};
+
+const photoEdit = {
+  es: "Imagen reducida y convertida a WebP",
+  en: "Resized and converted to WebP",
+  de: "Verkleinert und in WebP umgewandelt",
+};
 
 const i18n = {
   en: {
@@ -59,11 +102,15 @@ export function cityDetailMetadata(locale: EditorialLocale, slug: string): Metad
   const city = getLocalizedCity(raw, locale);
   const title = i18n[locale].living + " " + city.name;
   const canonical = absoluteUrl(cityUrl(locale, city.slug)!);
+  const photo = cityPhotos[city.slug];
   return {
     title, description: city.description,
     alternates: { canonical, languages: languageLinks("/" + city.slug) },
     robots: { index: true, follow: true },
-    openGraph: { type: "article", title, description: city.description, url: canonical, locale },
+    openGraph: {
+      type: "article", title, description: city.description, url: canonical, locale,
+      ...(photo && { images: [{ url: absoluteUrl(photo.src), width: 1200, height: 900, alt: photo.alt[locale] }] }),
+    },
   };
 }
 
@@ -99,6 +146,7 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
   const c = i18n[locale];
   const title = c.living + " " + city.name;
   const url = absoluteUrl(cityUrl(locale, city.slug)!);
+  const photo = cityPhotos[city.slug];
   return <article lang={locale} data-no-translate>
     <section className="page-hero city-detail-hero"><div className="shell">
       <Breadcrumbs items={[
@@ -115,6 +163,15 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
       <div className="content-main">
         <p className="lead">{c.best}: {city.bestFor}</p>
         {city.updated && <p>{c.verified}: <time dateTime={city.updated}>{city.updated}</time>. {c.check}</p>}
+        {photo && (
+          <figure className="city-photo">
+            <Image src={photo.src} alt={photo.alt[locale]} width={1200} height={900} unoptimized />
+            <figcaption>
+              <a href={photo.source}>{photo.author}</a> · <a href={photo.licenseUrl} rel="license">{photo.license}</a>
+              {" · "}{photoEdit[locale]}
+            </figcaption>
+          </figure>
+        )}
         {city.sections.map((section) => <section className="article-section" key={section.heading} id={headingId(section.heading)}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
@@ -155,6 +212,7 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
       "@context": "https://schema.org", "@type": "Article",
       headline: title, description: city.description, inLanguage: locale,
       dateModified: city.updated, mainEntityOfPage: url,
+      ...(photo && { image: absoluteUrl(photo.src) }),
       about: { "@type": "City", name: city.name, containedInPlace: { "@type": "AdministrativeArea", name: city.region } },
     }}/>
   </article>;

@@ -301,6 +301,10 @@ p { margin: 0; color: var(--muted); }
 .city-detail-hero .eyebrow { color: #9fd2ef; }
 .city-detail-hero .page-stat { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.07); }
 .city-detail-hero .page-stat span, .city-detail-hero .page-stat small { color: #bdd3e2; }
+.city-photo { margin: 1.5rem 0 2rem; }
+.city-photo img { display: block; width: 100%; height: auto; border-radius: 14px; }
+.city-photo figcaption { margin-top: .5rem; color: var(--muted); font-size: .8rem; }
+.city-photo figcaption a { text-decoration: underline; }
 .city-snapshot { display: grid; grid-template-columns: repeat(2, 1fr); gap: .7rem; margin: 1.5rem 0 3rem; }
 .city-snapshot article { display: grid; gap: .35rem; padding: 1rem; border: 1px solid var(--line); border-radius: 14px; background: white; }
 .city-snapshot span { color: var(--blue); font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
