@@ -45,7 +45,7 @@ export function LanguageSelector() {
         type="button"
         role="option"
         aria-selected={activeLanguage === item}
-        className={locale === item ? "is-active" : ""}
+        className={activeLanguage === item ? "is-active" : ""}
         onClick={() => choose(item)}
         key={item}
       >
