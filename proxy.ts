@@ -26,7 +26,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  return NextResponse.next();
+  const requestedLanguage = originalPath.split("/").filter(Boolean)[0];
+  const pageLanguage = requestedLanguage === "es" || requestedLanguage === "de" ? requestedLanguage : "en";
+  const nextHeaders = new Headers(request.headers);
+  nextHeaders.set("x-germanybase-page-language", pageLanguage);
+  return NextResponse.next({ request: { headers: nextHeaders } });
 }
 
 export const config = {
