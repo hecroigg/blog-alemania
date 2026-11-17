@@ -1,10 +1,11 @@
+import { guidePath, localizedTarget, isSiteLocale, sectionPath } from "@/lib/localized-paths";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { supportedLocales, type Locale } from "@/lib/platform-data";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
 import { generalGuideFromSlug, localizedGeneralPath, type EditorialLocale } from "@/lib/content/localized-general-guides";
 
 export function exactGuidePath(locale: Locale, key: ExactGuideKey) {
-  return `/${locale}/guides/${exactGuideSlugs[key][locale]}`;
+  return isSiteLocale(locale) ? guidePath(locale, exactGuideSlugs[key][locale]) : `/${locale}/guides/${exactGuideSlugs[key][locale]}`;
 }
 
 export function findExactGuideRoute(locale: string, slug: string) {
@@ -20,12 +21,19 @@ function partsForPath(pathname: string) { return pathname.split("/").filter(Bool
 
 export function switchLocalizedPath(pathname: string, locale: Locale): string {
   const targetHome = "/" + locale;
+  if (isSiteLocale(locale)) {
+    const originalLocale = pathname.split("/").filter(Boolean)[0];
+    if (originalLocale && isSiteLocale(originalLocale)) {
+      const equivalent = localizedTarget(originalLocale, locale, pathname);
+      if (equivalent) return equivalent;
+    }
+  }
   const parts = partsForPath(pathname);
   if (parts.length === 0 || (parts.length === 1 && (supportedLocales as readonly string[]).includes(parts[0]))) return targetHome;
 
   // The old unprefixed guide library remains available, but new language choices
   // always navigate to a distinct language-specific URL.
-  if (pathname === "/guides" || pathname === "/guides/") return targetHome + "/guides";
+  if (pathname === "/guides" || pathname === "/guides/") return isSiteLocale(locale) ? sectionPath(locale, "guides") : targetHome + "/guides";
   if (parts.length === 2 && parts[1] === "guides" &&
       (supportedLocales as readonly string[]).includes(parts[0])) return targetHome + "/guides";
 
