@@ -1,3 +1,4 @@
+import { sectionPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
@@ -72,7 +73,7 @@ export function LocalizedHome({ locale }: { locale: PublicLanguage }) {
               <p>{page.description}</p>
               <div className="hero-actions">
                 <Link className="button button-primary button-large" href={"/" + locale + "#documents"}>{page.start} <Icon name="arrow" /></Link>
-                <Link className="button button-secondary button-large" href={"/" + locale + "/guides"}>{page.all}</Link>
+                <Link className="button button-secondary button-large" href={sectionPath(locale, "guides")}>{page.all}</Link>
               </div>
             </div>
             <div className="page-stat"><span>GermanyBase</span><strong>3</strong><small>{page.topics}</small></div>
