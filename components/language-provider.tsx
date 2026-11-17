@@ -57,8 +57,9 @@ function catalogValue(catalog: TranslationCatalog | null, source: string) {
 
 function formatTranslation(catalog: TranslationCatalog | null, source: string, replacements: Record<string, string> = {}, capitalise = false) {
   let value = catalogValue(catalog, source);
+  const translated = value !== source;
   for (const [key, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${key}}`, replacement);
-  return capitalise && !catalog?.[source] ? capitaliseFirstLetter(value) : value;
+  return capitalise && !translated ? capitaliseFirstLetter(value) : value;
 }
 
 function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: Locale) {
