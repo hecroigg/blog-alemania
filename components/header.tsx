@@ -13,12 +13,12 @@ import { sectionPath } from "@/lib/locale-paths";
 type NavLocale = "en" | "es" | "de";
 
 const localeNav: Record<NavLocale, {
-  home: string; documents: string; work: string; life: string; guides: string;
+  home: string; documents: string; work: string; life: string; guides: string; tools: string; cities: string;
   documentsId: string; workId: string; lifeId: string; label: string;
 }> = {
-  en: { home: "Home", documents: "Paperwork", work: "Work", life: "Daily life", guides: "All guides", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Main navigation" },
-  es: { home: "Inicio", documents: "Trámites", work: "Trabajo", life: "Vida diaria", guides: "Todas las guías", documentsId: "tramites", workId: "trabajo", lifeId: "vida-diaria", label: "Navegación principal" },
-  de: { home: "Startseite", documents: "Behörden", work: "Arbeit", life: "Alltag", guides: "Alle Ratgeber", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Hauptnavigation" },
+  en: { home: "Home", documents: "Paperwork", work: "Work", life: "Daily life", guides: "All guides", tools: "Tools", cities: "Cities", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Main navigation" },
+  es: { home: "Inicio", documents: "Trámites", work: "Trabajo", life: "Vida diaria", guides: "Todas las guías", tools: "Herramientas", cities: "Ciudades", documentsId: "tramites", workId: "trabajo", lifeId: "vida-diaria", label: "Navegación principal" },
+  de: { home: "Startseite", documents: "Behörden", work: "Arbeit", life: "Alltag", guides: "Alle Ratgeber", tools: "Werkzeuge", cities: "Städte", documentsId: "documents", workId: "work", lifeId: "everyday", label: "Hauptnavigation" },
 };
 
 export function Header() {
@@ -64,6 +64,8 @@ export function Header() {
       <Link href={homePath + "#" + localized.workId}>{localized.work}</Link>
       <Link href={homePath + "#" + localized.lifeId}>{localized.life}</Link>
       <Link href={sectionPath(locale as NavLocale,"guides")}>{localized.guides}</Link>
+      <Link href={sectionPath(locale as NavLocale,"tools")}>{localized.tools}</Link>
+      <Link href={sectionPath(locale as NavLocale,"cities")}>{localized.cities}</Link>
     </>
   ) : null;
 
