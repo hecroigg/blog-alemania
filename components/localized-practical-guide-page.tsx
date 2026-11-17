@@ -1,3 +1,4 @@
+import { sectionPath, hubPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,15 +50,15 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",inLanguage:locale,mainEntity:guide.faqs.map(faq=>({"@type":"Question",name:faq.question,acceptedAnswer:{"@type":"Answer",text:faq.answer}}))};
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner">
-      <Breadcrumbs items={[{label:t.home,href:"/"},{label:t.guides,href:`/${locale}/guides`},{label:guide.title}]}/>
+      <Breadcrumbs items={[{label:t.home,href:"/"+locale},{label:t.guides,href:sectionPath(locale as "en" | "es" | "de", "guides")},{label:guide.title}]}/>
       <span className="eyebrow">{guide.eyebrow}</span><h1>{guide.title}</h1><p className="article-summary">{guide.summary}</p>
-      <div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {t.read}</span><span><Icon name="check" size={16}/> {t.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span>{t.reviewed} <Link href="/about">GermanyBase Editorial</Link></span></div>
+      <div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {t.read}</span><span><Icon name="check" size={16}/> {t.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span>{t.reviewed} <Link href={hubPath(locale as "en" | "es" | "de", "about")}>GermanyBase Editorial</Link></span></div>
     </div></header>
     <div className="shell article-layout">
       <nav className="toc" aria-label={t.onPage}><strong>{t.onPage}</strong><ol>{guide.sections.map(section=><li key={section.heading}><a href={`#${toId(section.heading)}`}>{section.heading}</a></li>)}<li><a href="#faqs">{t.questions}</a></li><li><a href="#sources">{t.sources}</a></li></ol></nav>
       <div className="article-body">
         <section className="key-takeaways"><h2>{t.first}</h2><ul>{guide.takeaways.map(item=><li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
-        <aside className="editorial-note"><div className="editorial-note-head"><span>{t.note}</span><small>{t.updated}: {new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))} · {guide.sources.length} {t.sources.toLowerCase()}</small></div><p>{t.method}</p><p className="editorial-note-method"><Link href="/how-we-research">{t.reviewed} GermanyBase Editorial</Link></p></aside>
+        <aside className="editorial-note"><div className="editorial-note-head"><span>{t.note}</span><small>{t.updated}: {new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))} · {guide.sources.length} {t.sources.toLowerCase()}</small></div><p>{t.method}</p><p className="editorial-note-method"><Link href={hubPath(locale as "en" | "es" | "de", "how-we-research")}>{t.reviewed} GermanyBase Editorial</Link></p></aside>
         <AdSlot placement="article-intro"/>
         {guide.sections.map((section,index)=><section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(p=><p key={p}>{p}</p>)}{section.bullets&&<ul>{section.bullets.map(b=><li key={b}>{b}</li>)}</ul>}{section.resources&&<div className="resource-grid">{section.resources.map(resource=><a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}><span><strong data-no-translate>{resource.label}</strong><small>{locale === "en" ? resource.note : t.officialNote}</small></span><Icon name="external" size={17}/></a>)}</div>}{section.callout&&<aside className={`callout callout-${section.callout.tone||"note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}{index===1&&<AdSlot placement="article-body"/>}</section>)}
         <section className="faq-section" id="faqs"><h2>{t.questions}</h2>{guide.faqs.map(faq=><details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>
