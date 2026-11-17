@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { GooglePrivacyButton } from "@/components/google-privacy-button";
+import { hubUrl } from "@/lib/locale-paths";
 import { useEffect, useState } from "react";
 
 type Consent = { necessary: true; analytics: boolean };
@@ -11,7 +12,8 @@ const localizedText = {"en":{"title":"Your privacy, your choice","description":"
 
 export function CookieBanner() {
   const { locale } = useLanguage();
-  const t = locale === "es" || locale === "de" || locale === "fr" ? localizedText[locale] : localizedText.en;
+  const siteLocale=locale==="es"||locale==="de"?locale:"en";
+  const t=localizedText[siteLocale];
   const [visible, setVisible] = useState(false);
   const [manage, setManage] = useState(false);
   const [analytics, setAnalytics] = useState(false);
@@ -26,5 +28,5 @@ export function CookieBanner() {
     setVisible(false);
   }
   if (!visible) return <button type="button" className="button button-ghost" style={{ position: "fixed", bottom: 12, right: 12, zIndex: 95, background: "#fff", border: "1px solid #cbd5e1", boxShadow: "0 4px 16px #0002" }} onClick={() => { setManage(true); setVisible(true); }}>{t.settings}</button>;
-  return <aside className="cookie-banner" aria-label={t.manageTitle} data-no-translate><div className="cookie-copy"><strong>{t.title}</strong><p>{t.description}</p><span><Link href="/cookie-policy">{t.cookie}</Link> · <Link href="/privacy-policy">{t.privacy}</Link> · <GooglePrivacyButton label={t.google}/></span></div>{manage && <fieldset><legend>{t.manageTitle}</legend><label><input type="checkbox" checked disabled/> {t.necessary} <small>{t.active}</small></label><label><input type="checkbox" checked={analytics} onChange={(e) => setAnalytics(e.target.checked)}/> {t.analytics}</label><GooglePrivacyButton label={t.google}/></fieldset>}<div className="cookie-actions"><button className="button button-ghost" onClick={() => save({ necessary: true, analytics: false })}>{t.reject}</button><button className="button button-ghost" onClick={() => manage ? save({ necessary: true, analytics }) : setManage(true)}>{manage ? t.save : t.manage}</button><button className="button button-primary" onClick={() => save({ necessary: true, analytics: true })}>{t.accept}</button></div></aside>;
+  return <aside className="cookie-banner" aria-label={t.manageTitle} data-no-translate><div className="cookie-copy"><strong>{t.title}</strong><p>{t.description}</p><span><Link href={hubUrl(siteLocale,"cookie-policy")!}>{t.cookie}</Link> · <Link href={hubUrl(siteLocale,"privacy-policy")!}>{t.privacy}</Link> · <GooglePrivacyButton label={t.google}/></span></div>{manage && <fieldset><legend>{t.manageTitle}</legend><label><input type="checkbox" checked disabled/> {t.necessary} <small>{t.active}</small></label><label><input type="checkbox" checked={analytics} onChange={(e) => setAnalytics(e.target.checked)}/> {t.analytics}</label><GooglePrivacyButton label={t.google}/></fieldset>}<div className="cookie-actions"><button className="button button-ghost" onClick={() => save({ necessary: true, analytics: false })}>{t.reject}</button><button className="button button-ghost" onClick={() => manage ? save({ necessary: true, analytics }) : setManage(true)}>{manage ? t.save : t.manage}</button><button className="button button-primary" onClick={() => save({ necessary: true, analytics: true })}>{t.accept}</button></div></aside>;
 }
