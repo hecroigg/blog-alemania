@@ -1,5 +1,6 @@
 import { cloneElement, isValidElement, type ReactNode, type ReactElement } from "react";
 import { JsonLd } from "@/components/json-ld";
+import { SafetyNotice, SourceStamp } from "@/components/source-stamp";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { generalEnglishGuides, localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
@@ -90,6 +91,10 @@ export function translateTree(
   if (Array.isArray(node)) return node.map((item) => translateTree(item, locale, supplemental));
   if (isValidElement(node)) {
     if (node.type === JsonLd) return null; // The new localized page supplies a canonical schema.
+    if (node.type === SafetyNotice || node.type === SourceStamp) {
+      const old=node as ReactElement<Record<string, unknown>>;
+      return cloneElement(old, { ...old.props, locale });
+    }
     const element = node as ReactElement<Record<string, unknown>>;
     return cloneElement(element, translateProps(element.props, locale, supplemental));
   }
