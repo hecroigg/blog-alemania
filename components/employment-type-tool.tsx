@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { toolPath, isSiteLocale } from "@/lib/localized-paths";
+import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { employmentFigures } from "@/lib/employment-data";
@@ -14,7 +16,8 @@ const employmentAnswers = {
 } as const;
 
 export function EmploymentTypeTool() {
-  const { translate } = useLanguage();
+  const { translate, locale } = useLanguage();
+  const routeLocale = isSiteLocale(locale) ? locale : "en";
   const [gross, setGross] = useState(1_200);
   const [hours, setHours] = useState(16);
   const [student, setStudent] = useState(true);
@@ -33,6 +36,6 @@ export function EmploymentTypeTool() {
       <label className="calculator-check compact-check"><input type="checkbox" checked={student} onChange={(event) => setStudent(event.target.checked)}/><span><strong>{translate("Currently enrolled")}</strong><small>{translate("Your studies remain your main activity.")}</small></span></label>
       <label className="calculator-check compact-check"><input type="checkbox" checked={specialPattern} onChange={(event) => setSpecialPattern(event.target.checked)}/><span><strong>{translate("Qualifying special work pattern")}</strong><small>{translate("Mainly evening, night, weekend or semester-break work for no more than 26 weeks.")}</small></span></label>
     </form>
-    <section aria-live="polite"><span className="eyebrow">{translate("Quick classification")}</span><h3>{translate(answer.name)}</h3><p>{translate(answer.note)}</p><Link className="button button-secondary" href={answer.href}>{translate("Check the detailed rules")}</Link><small>{translate("This tool cannot assess residence permission, multiple jobs or every insurance exception.")}</small></section>
+    <section aria-live="polite"><span className="eyebrow">{translate("Quick classification")}</span><h3>{translate(answer.name)}</h3><p>{translate(answer.note)}</p><Link className="button button-secondary" href={answer.href.includes("werkstudent-germany") ? localizedGeneralPath(routeLocale, "werkstudent-germany")! : answer.href.includes("minijob-germany") ? localizedGeneralPath(routeLocale, "minijob-germany")! : toolPath(routeLocale, "employment") + "#midijob"}>{translate("Check the detailed rules")}</Link><small>{translate("This tool cannot assess residence permission, multiple jobs or every insurance exception.")}</small></section>
   </div>;
 }
