@@ -1,4 +1,4 @@
-import { guidePath, localizedTarget, isSiteLocale, sectionPath, matchSection, matchHub, hubPath } from "@/lib/localized-paths";
+import { guidePath, localizedTarget, isSiteLocale, sectionPath, matchSection, matchHub, hubPath, matchAuxiliary, auxiliaryPath } from "@/lib/localized-paths";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { supportedLocales, type Locale } from "@/lib/platform-data";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
@@ -48,6 +48,8 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
   }
 
   if (isSiteLocale(locale) && parts.length === 2 && isSiteLocale(parts[0])) {
+    const auxiliary = matchAuxiliary(parts[0], parts[1]);
+    if (auxiliary) return auxiliaryPath(locale, auxiliary);
     const hub = matchHub(parts[0], parts[1]);
     if (hub) return hubPath(locale, hub);
   }
