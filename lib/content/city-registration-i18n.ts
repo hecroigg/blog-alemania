@@ -364,3 +364,57 @@ const cityRegistrationCopy: Record<string, CityLanguages> = {
     ],
   },
 };
+
+const catalogs = {
+  es: esCatalog as Record<string, string>,
+  de: deCatalog as Record<string, string>,
+};
+
+export function getLocalizedCity(city: City, locale: EditorialLocale): City {
+  if (locale === "en") return city;
+  const sourceCatalog = catalogs[locale];
+  const cityCopy = cityRegistrationCopy[city.slug]?.[locale];
+  const registration = city.sections.find((section) =>
+    section.heading.length > 20 && !sourceCatalog[section.heading] &&
+    section.paragraphs.length >= 2 && !sourceCatalog[section.paragraphs[0]]
+  );
+
+  const extra: Record<string, string> = {};
+  if (cityCopy && registration) {
+    const originalStrings = [
+      registration.heading,
+      registration.paragraphs[0], registration.paragraphs[1],
+      registration.bullets?.[0], registration.bullets?.[1], registration.bullets?.[2],
+      registration.resources?.[0]?.label, registration.resources?.[0]?.note,
+    ];
+    originalStrings.forEach((value, i) => {
+      if (value !== undefined) extra[value] = cityCopy[i];
+    });
+  }
+  const t = (value: string) => sourceCatalog[value] || extra[value] || value;
+  return {
+    ...city,
+    name: t(city.name),
+    region: t(city.region),
+    description: t(city.description),
+    bestFor: t(city.bestFor),
+    character: t(city.character),
+    sections: city.sections.map((section) => ({
+      ...section,
+      heading: t(section.heading),
+      paragraphs: section.paragraphs.map(t),
+      bullets: section.bullets?.map(t),
+      callout: section.callout && {
+        ...section.callout, title: t(section.callout.title), text: t(section.callout.text),
+      },
+      resources: section.resources?.map((resource) => ({
+        ...resource, label: t(resource.label), note: t(resource.note),
+      })),
+    })),
+    sources: city.sources.map((source) => ({
+      ...source, name: t(source.name), note: source.note ? t(source.note) : undefined,
+    })),
+  };
+}
+
+export const translatedCitySlugs = Object.keys(cityRegistrationCopy);
