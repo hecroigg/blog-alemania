@@ -1,5 +1,4 @@
 import { cloneElement, isValidElement, type ReactNode, type ReactElement } from "react";
-import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { generalEnglishGuides, localizedGeneralPath } from "@/lib/content/localized-general-guides";
@@ -7,7 +6,7 @@ import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/gui
 import { exactGuidePath } from "@/lib/exact-guide-routes";
 import {
   type SiteLocale, hubUrl, cityUrl, sectionPath, toolUrl, otherUrl,
-  type ToolId, type OtherPageId, toolIds,
+  type ToolId, type OtherPageId, toolIds, toolFromSlug, cityFromSlug,
 } from "@/lib/locale-paths";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
@@ -44,10 +43,10 @@ export function localizedInternalHref(href: string, locale: SiteLocale): string 
     if (practical) return practicalGuidePath(locale, practical) + rest;
   }
   if (["cities", "ciudades", "staedte"].includes(head)) {
-    return slug ? (cityUrl(locale, slug) || sectionPath(locale, "cities")) + rest : sectionPath(locale, "cities") + rest;
+    return slug ? (cityUrl(locale, cityFromSlug(oldLang, slug) || slug) || sectionPath(locale, "cities")) + rest : sectionPath(locale, "cities") + rest;
   }
   if (["tools", "herramientas", "werkzeuge"].includes(head)) {
-    const id = slug && toolIds.includes(slug as ToolId) ? slug as ToolId : null;
+    const id = slug ? (toolFromSlug(oldLang, slug) || (toolIds.includes(slug as ToolId) ? slug as ToolId : null)) : null;
     return id ? toolUrl(locale, id) + rest : sectionPath(locale, "tools") + rest;
   }
   if (path === "/trabajo/calculadora-salario") return toolUrl(locale, "salary-calculator") + rest;
