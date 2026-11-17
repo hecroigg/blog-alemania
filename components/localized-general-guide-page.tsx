@@ -1,4 +1,4 @@
-import { sectionPath } from "@/lib/localized-paths";
+import { sectionPath, hubPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -57,7 +57,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
     headline: guide.title, description: guide.description,
     datePublished: guide.updated, dateModified: guide.updated,
     mainEntityOfPage: canonical, inLanguage: locale,
-    author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") },
+    author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl(hubPath(locale, "about")) },
     publisher: { "@type": "Organization", name: siteConfig.name },
     citation: guide.sources.map((source) => source.url),
   };
