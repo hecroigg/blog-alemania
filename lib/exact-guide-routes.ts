@@ -1,6 +1,7 @@
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { supportedLocales, type Locale } from "@/lib/platform-data";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
+import { generalGuideFromSlug, localizedGeneralPath, type EditorialLocale } from "@/lib/content/localized-general-guides";
 
 export function exactGuidePath(locale: Locale, key: ExactGuideKey) {
   return `/${locale}/guides/${exactGuideSlugs[key][locale]}`;
@@ -40,6 +41,10 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
   }
 
   if (sourceLocale && sourceSlug) {
+    if (["en", "es", "de"].includes(sourceLocale) && ["en", "es", "de"].includes(locale)) {
+      const match = generalGuideFromSlug(sourceLocale as EditorialLocale, sourceSlug);
+      if (match) return localizedGeneralPath(locale as EditorialLocale, match.slug)!;
+    }
     if (["en", "es", "de", "fr"].includes(locale) && ["en", "es", "de", "fr"].includes(sourceLocale)) {
       const practical = practicalGuideKeyFromSlug(sourceLocale as "en" | "es" | "de" | "fr", sourceSlug);
       if (practical) return practicalGuidePath(locale as "en" | "es" | "de" | "fr", practical);
