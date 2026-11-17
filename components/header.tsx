@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { LanguageSelector } from "@/components/language-selector";
 import { useLanguage } from "@/components/language-provider";
-import { sectionPath, type SiteLocale } from "@/lib/localized-paths";
+import { sectionPath, auxiliaryPath, type SiteLocale } from "@/lib/localized-paths";
 import { siteConfig } from "@/lib/site";
 
 type NavLocale = "en" | "es" | "de";
@@ -64,6 +64,7 @@ export function Header() {
       <Link href={homePath + "#" + localized.workId}>{localized.work}</Link>
       <Link href={homePath + "#" + localized.lifeId}>{localized.life}</Link>
       <Link href={sectionPath(locale as SiteLocale, "guides")}>{localized.guides}</Link>
+      <Link href={sectionPath(locale as SiteLocale, "tools")}>{copy.tools}</Link>
     </>
   ) : null;
 
@@ -93,7 +94,7 @@ export function Header() {
           </>}
         </nav>
         <div className="header-actions">
-          <Link href="/search" className="icon-button" aria-label={copy.search}><Icon name="search" /></Link>
+          <Link href={locale ? auxiliaryPath(locale, "search") : "/en/search"} className="icon-button" aria-label={copy.search}><Icon name="search" /></Link>
           <LanguageSelector />
           <details className="mobile-menu" ref={mobileRef}>
             <summary aria-label={copy.menu}><Icon name="menu" /></summary>
