@@ -1,3 +1,4 @@
+import { sectionPath, hubPath, cityPath, toolPath, toolSlugs, type HubKey, type ToolKey } from "@/lib/localized-paths";
 import type { MetadataRoute } from "next";
 import { audiences } from "@/lib/content/audiences";
 import { categories } from "@/lib/content/categories";
@@ -18,14 +19,10 @@ const localizedAlternates = (path: (locale: typeof languages[number]) => string)
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const stable = [
-    "/en", "/es", "/de", "/guides", "/tools", "/plan",
+    "/en", "/es", "/de", "/plan",
     "/visas-residence", "/explore-germany", "/glossary", "/authorities",
     "/emergency", "/data-status", "/costs-deadlines",
-    "/trabajo/calculadora-salario", "/trabajo/tipos-de-empleo",
-    "/tools/cost-of-living", "/tools/compare-cities",
-    "/tools/document-checklist", "/tools/anmeldung-finder",
-    "/tools/rental-scam-checker", "/tools/first-30-days",
-    "/tools/apartment-affordability",
+
   ].filter((value) => value !== "/guides"); // /guides redirects to /en/guides.
 
   return [
@@ -38,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...[...categories, ...audiences, ...trustPages].flatMap((item) =>
       searchLocales.map((locale) => ({
-        url: absoluteUrl("/" + locale + "/" + item.slug),
+        url: absoluteUrl(hubPath(locale, item.slug as HubKey)),
         lastModified: new Date("2026-11-17"),
         changeFrequency: "monthly" as const,
         priority: .7,
@@ -46,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       }))
     ),
     ...searchLocales.map((locale) => ({
-      url: absoluteUrl("/" + locale + "/guides"),
+      url: absoluteUrl(sectionPath(locale, "guides")),
       lastModified: new Date("2026-11-17"),
       changeFrequency: "monthly" as const,
       priority: .9,
@@ -80,7 +77,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       }))
     ),
     ...searchLocales.map((locale) => ({
-      url: absoluteUrl("/" + locale + "/cities"),
+      url: absoluteUrl(sectionPath(locale, "tools")),
+      lastModified: new Date("2026-11-17"),
+      changeFrequency: "monthly" as const,
+      priority: .9,
+      alternates: { languages: localizedAlternates((lang) => sectionPath(lang, "tools")) },
+    })),
+    ...(Object.keys(toolSlugs) as ToolKey[]).flatMap((key) =>
+      searchLocales.map((locale) => ({
+        url: absoluteUrl(toolPath(locale, key)),
+        lastModified: new Date("2026-11-17"),
+        changeFrequency: "monthly" as const,
+        priority: .85,
+        alternates: { languages: localizedAlternates((lang) => toolPath(lang, key)) },
+      }))
+    ),
+    ...searchLocales.map((locale) => ({
+      url: absoluteUrl(sectionPath(locale, "cities")),
       lastModified: new Date("2026-11-17"),
       changeFrequency: "monthly" as const,
       priority: .8,
@@ -88,7 +101,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...cities.flatMap((city) =>
       searchLocales.map((locale) => ({
-        url: absoluteUrl("/" + locale + "/cities/" + city.slug),
+        url: absoluteUrl(cityPath(locale, city.slug)),
         lastModified: new Date(city.updated || "2026-09-23"),
         changeFrequency: "monthly" as const,
         priority: city.featured ? .8 : .7,
