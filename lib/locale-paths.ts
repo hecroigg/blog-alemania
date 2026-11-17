@@ -139,7 +139,7 @@ export function equivalentPath(source: string, targetLocale: SiteLocale): string
   if (!rest.length) return "/" + targetLocale;
   const [part, slug] = rest;
   const langPart = (Object.keys(sections[src]) as RouteSection[]).find((kind) => sections[src][kind] === part);
-  if (langPart === "guides" && slug) return null; // guide-slug switching handled by the guide route module
+  if (langPart === "guides") return slug ? null : sectionPath(targetLocale, "guides"); // individual guide-slug switching handled by guide route module
   if (langPart === "cities") return slug
     ? (cityUrl(targetLocale, cityFromSlug(src, slug) || slug) || null)
     : sectionPath(targetLocale, "cities");
