@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { registrationCities, type RegistrationLocale } from "@/lib/content/city-registration";
+import { useLanguage } from "@/components/language-provider";
+import { cityUrl } from "@/lib/locale-paths";
 
 const text = {
   en: {
@@ -13,7 +15,8 @@ const text = {
 } as const;
 
 export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: string }) {
-  const [locale,setLocale] = useState<RegistrationLocale>("en");
+  const {locale:siteLocale}=useLanguage();
+  const locale: RegistrationLocale=siteLocale==="es"||siteLocale==="de"?siteLocale:"en";
   const [city,setCity] = useState(registrationCities.some(item=>item.slug===initialCity) ? initialCity : "mannheim");
   const [from,setFrom] = useState<"abroad"|"domestic">("abroad");
   const [residence,setResidence] = useState<"main"|"secondary">("main");
@@ -22,10 +25,6 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
   return (
     <div className="registration-finder">
       <div className="registration-finder-controls">
-        <fieldset className="registration-lang" aria-label={ui.lang}>
-          <legend>{ui.lang}</legend>
-          {(["en","es","de"] as RegistrationLocale[]).map(item => <button key={item} type="button" lang={item} aria-pressed={item===locale} onClick={()=>setLocale(item)}>{({en:"English",es:"Español",de:"Deutsch"} as const)[item]}</button>)}
-        </fieldset>
         <label>{ui.city}
           <select value={city} onChange={event=>setCity(event.target.value)}>
             {registrationCities.map(item=><option key={item.slug} value={item.slug}>{item.name}</option>)}
@@ -53,7 +52,7 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
         <h3>{ui.extra}</h3>
         <p>{selected.note[locale]}</p>
         <a className="button button-primary" href={selected.officialUrl} target="_blank" rel="noopener noreferrer">{ui.official} ↗</a>
-        <a className="registration-city-link" href={"/cities/"+selected.slug}>{ui.cityLink}: {selected.name} →</a>
+        <a className="registration-city-link" href={cityUrl(locale,selected.slug)!}>{ui.cityLink}: {selected.name} →</a>
         <h3>{ui.docs}</h3>
         <ul>{ui.documents.map(item=><li key={item}>{item}</li>)}</ul>
         <h3>{ui.tip}</h3>
