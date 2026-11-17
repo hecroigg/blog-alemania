@@ -78,3 +78,20 @@ export const hubPath = (locale: SiteLocale, slug: HubKey) => "/" + locale + "/" 
 export function matchHub(locale: SiteLocale, slug: string): HubKey | null {
   return (Object.keys(hubSlugs) as HubKey[]).find((key) => hubSlugs[key][locale] === slug) || null;
 }
+
+export const auxiliarySlugs = {
+  plan: { en: "plan", es: "planificar-mudanza", de: "umzug-planen" },
+  visas: { en: "visas-residence", es: "visados-residencia", de: "visa-aufenthalt" },
+  costs: { en: "costs-deadlines", es: "costes-plazos", de: "kosten-fristen" },
+  authorities: { en: "authorities", es: "organismos-oficiales", de: "behoerden-wegweiser" },
+  emergency: { en: "emergency", es: "emergencias", de: "notfallnummern" },
+  data: { en: "data-status", es: "estado-datos", de: "datenstatus" },
+  glossary: { en: "glossary", es: "glosario", de: "glossar" },
+  explore: { en: "explore-germany", es: "explorar-alemania", de: "deutschland-entdecken" },
+  search: { en: "search", es: "buscar", de: "suche" },
+} as const;
+export type AuxiliaryKey = keyof typeof auxiliarySlugs;
+export const auxiliaryPath = (locale: SiteLocale, key: AuxiliaryKey) => "/" + locale + "/" + auxiliarySlugs[key][locale];
+export function matchAuxiliary(locale: SiteLocale, slug: string): AuxiliaryKey | null {
+  return (Object.keys(auxiliarySlugs) as AuxiliaryKey[]).find((key) => auxiliarySlugs[key][locale] === slug) || null;
+}
