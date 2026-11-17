@@ -1,4 +1,2 @@
-import { LocalizedGuidesIndex, localizedGuidesMetadata } from "@/components/localized-guides-index";
-
-export const metadata = localizedGuidesMetadata("de");
-export default function Page() { return <LocalizedGuidesIndex locale="de"/>; }
+import { permanentRedirect } from "next/navigation";
+export default function LegacyIndex() { permanentRedirect("/de/ratgeber"); }
