@@ -7,7 +7,7 @@ import { audienceMap, audiences } from "@/lib/content/audiences";
 import { categories, categoryMap } from "@/lib/content/categories";
 import { getGuidesByCategory } from "@/lib/content/guides";
 import {
-  localizedGeneralGuide, localizedGeneralPath, type EditorialLocale,
+  generalEnglishGuides, localizedGeneralGuide, localizedGeneralPath, type EditorialLocale,
 } from "@/lib/content/localized-general-guides";
 import {
   getLocalizedPracticalGuide, practicalGuideKeyFromSlug, practicalGuidePath,
@@ -38,22 +38,6 @@ export function localizedHubMetadata(locale: EditorialLocale, slug: string): Met
     robots: { index: true, follow: true },
     openGraph: { title: t(locale, item.name), description: t(locale, item.description), url, locale },
   };
-}
-
-function getGuideCards(locale: EditorialLocale, englishSlugs: string[]) {
-  return englishSlugs.flatMap((slug) => {
-    const practical = practicalGuideKeyFromSlug("en", slug);
-    if (practical) {
-      return [{ guide: getLocalizedPracticalGuide(locale, practical), href: practicalGuidePath(locale, practical) }];
-    }
-    const original = getGuidesByCategory("__all_never_matches__").find((g) => g.slug === slug);
-    // Fall back to the canonical general guide index below; do not invent a route.
-    if (original) {
-      const href = localizedGeneralPath(locale, slug);
-      return href ? [{ guide: localizedGeneralGuide(original, locale), href }] : [];
-    }
-    return [];
-  });
 }
 
 export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; slug: string }) {
@@ -114,5 +98,4 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
   </div>;
 }
 
-import { generalEnglishGuides } from "@/lib/content/localized-general-guides";
 const allGeneralBySlug = new Map(generalEnglishGuides.map((guide) => [guide.slug, guide]));
