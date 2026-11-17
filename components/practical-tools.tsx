@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { cityProfiles, getCitizenshipGroup, nationalityOptions, trackedFacts } from "@/lib/platform-data";
+import { localizedCityName } from "@/lib/city-labels";
 
 function money(value: number, locale: string = "en") { return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
 
@@ -44,7 +45,7 @@ export function CostOfLivingCalculator() {
 
   return <div className="calculator-layout">
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
-      <label className="form-field"><span>{t("City or region", undefined, true)}</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug}>{item.name}</option>)}</select></label>
+      <label className="form-field"><span>{t("City or region", undefined, true)}</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug} value={item.name}>{localizedCityName(locale==="es"||locale==="de"?locale:"en",item.slug,item.name)}</option>)}</select></label>
       <label className="form-field"><span>{t("Household", undefined, true)}</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
       <label className="form-field"><span>{t("Lifestyle", undefined, true)}</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
       <label className="form-field"><span>{t("Transport", undefined, true)}</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
@@ -52,7 +53,7 @@ export function CostOfLivingCalculator() {
       <label className="range-field"><span>{t("Expected warm rent", undefined, true)} <strong>{localMoney(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>{t("Use a current listing or offer. This is the largest source of variation.")}</small></label>
     </form>
     <section className="calculator-result" aria-live="polite">
-      <span className="eyebrow">{t("Planning estimate", undefined, true)} · {city}</span>
+      <span className="eyebrow">{t("Planning estimate", undefined, true)} · {localizedCityName(locale==="es"||locale==="de"?locale:"en",cityProfiles.find(item=>item.name===city)?.slug||"",city)}</span>
       <h2>≈ {localMoney(result.total)}<small>{t("/month")}</small></h2>
       <p>{t("Approximate annual budget:", undefined, true)} {localMoney(result.total * 12)}. {t("Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.")}</p>
       <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{t(label, undefined, true)}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{localMoney(amount)}</strong></div>)}</div>
@@ -62,18 +63,19 @@ export function CostOfLivingCalculator() {
 }
 
 export function CityComparison() {
-  const { translate } = useLanguage();
+  const { locale, translate } = useLanguage();
+  const lang = locale==="es"||locale==="de"?locale:"en";
   const [selected, setSelected] = useState(["Berlin", "Munich", "Mannheim"]);
   const toggle = (name: string) => setSelected((current) => current.includes(name) ? current.filter((item) => item !== name) : current.length < 4 ? [...current, name] : current);
   const items = cityProfiles.filter((city) => selected.includes(city.name));
   return <div>
-    <fieldset className="city-picker"><legend>{translate("Choose 2–4 cities", undefined, true)}</legend>{cityProfiles.map((city) => <label key={city.slug}><input type="checkbox" checked={selected.includes(city.name)} onChange={() => toggle(city.name)} disabled={!selected.includes(city.name) && selected.length >= 4}/><span>{city.name}</span></label>)}</fieldset>
-    <div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>{translate("Trade-off", undefined, true)}</th>{items.map((city) => <th key={city.slug}>{city.name}<small>{city.state}</small></th>)}</tr></thead><tbody>
+    <fieldset className="city-picker"><legend>{translate("Choose 2–4 cities", undefined, true)}</legend>{cityProfiles.map((city) => <label key={city.slug}><input type="checkbox" checked={selected.includes(city.name)} onChange={() => toggle(city.name)} disabled={!selected.includes(city.name) && selected.length >= 4}/><span>{localizedCityName(lang,city.slug,city.name)}</span></label>)}</fieldset>
+    <div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>{translate("Trade-off", undefined, true)}</th>{items.map((city) => <th key={city.slug}>{localizedCityName(lang,city.slug,city.name)}<small>{city.state}</small></th>)}</tr></thead><tbody>
       <tr><th>{translate("Housing pressure", undefined, true)}</th>{items.map((city) => <td key={city.slug}><span className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure, undefined, true)}</span></td>)}</tr>
       <tr><th>{translate("Transport", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.transport, undefined, true)}</td>)}</tr>
       <tr><th>{translate("Employment sectors", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{city.sectors.map((sector, index) => <span key={sector}>{index ? " · " : ""}{translate(sector, undefined, index === 0)}</span>)}</td>)}</tr>
       <tr><th>{translate("Universities", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.universities, undefined, true)}</td>)}</tr>
-      <tr><th>{translate("Airport/access", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{city.airport}</td>)}</tr>
+      <tr><th>{translate("Airport/access", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.airport,undefined,true)}</td>)}</tr>
       <tr><th>{translate("Nature", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.nature, undefined, true)}</td>)}</tr>
       <tr><th>{translate("Official information", undefined, true)}</th>{items.map((city) => <td key={city.slug}><a className="text-link" href={city.officialUrl} target="_blank" rel="noreferrer">{translate("City portal", undefined, true)}</a></td>)}</tr>
     </tbody></table></div>
