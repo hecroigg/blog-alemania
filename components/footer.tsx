@@ -14,7 +14,7 @@ const pages = {
     sections: ["Moving", "Work", "Housing", "Paperwork", "Healthcare", "Money", "Transport", "Daily life"],
     audience: ["Students", "Workers", "Families", "Freelancers", "EU citizens", "Non-EU citizens"],
     legal: ["About us", "Editorial policy", "How we research", "Corrections", "Affiliate disclosure", "Advertising disclosure", "Privacy", "Cookies", "Terms", "Contact"],
-    guides: "All guides",
+    guides: "All guides", cities: "Cities",
   },
   es: {
     intro: "Información práctica e independiente para vivir en Alemania.",
@@ -23,7 +23,7 @@ const pages = {
     sections: ["Mudanza", "Trabajo", "Vivienda", "Trámites", "Salud", "Dinero", "Transporte", "Vida diaria"],
     audience: ["Estudiantes", "Trabajadores", "Familias", "Autónomos", "Ciudadanos de la UE", "Ciudadanos no comunitarios"],
     legal: ["Quiénes somos", "Política editorial", "Cómo investigamos", "Correcciones", "Afiliación", "Publicidad", "Privacidad", "Cookies", "Condiciones", "Contacto"],
-    guides: "Todas las guías",
+    guides: "Todas las guías", cities: "Ciudades",
   },
   de: {
     intro: "Unabhängige, praktische Informationen für das Leben in Deutschland.",
@@ -32,7 +32,7 @@ const pages = {
     sections: ["Umzug", "Arbeit", "Wohnen", "Behörden", "Gesundheit", "Finanzen", "Verkehr", "Alltag"],
     audience: ["Studierende", "Arbeitnehmende", "Familien", "Selbstständige", "EU-Bürger", "Nicht-EU-Bürger"],
     legal: ["Über uns", "Redaktionelle Leitlinien", "Unsere Recherche", "Korrekturen", "Affiliate-Hinweise", "Werbehinweise", "Datenschutz", "Cookies", "Nutzungsbedingungen", "Kontakt"],
-    guides: "Alle Ratgeber",
+    guides: "Alle Ratgeber", cities: "Städte",
   },
 } as const;
 
@@ -59,6 +59,7 @@ export function Footer() {
           <h2>{copy.explore}</h2>
           {sectionSlugs.map((slug, index) => <Link href={prefix + "/" + slug} key={slug}>{copy.sections[index]}</Link>)}
           <Link href={prefix + "/guides"}>{copy.guides}</Link>
+          <Link href={prefix + "/cities"}>{copy.cities}</Link>
         </div>
         <div>
           <h2>{copy.people}</h2>
