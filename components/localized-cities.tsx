@@ -79,7 +79,7 @@ export function LocalizedCitiesIndex({ locale }: { locale: EditorialLocale }) {
     <section className="section shell"><div className="action-card-grid">
       {cities.map((raw) => {
         const city = getLocalizedCity(raw, locale);
-        return <Link key={city.slug} href={"/" + locale + "/cities/" + city.slug} className="action-card">
+        return <Link key={city.slug} href={cityPath(locale, city.slug)} className="action-card">
           <strong>{city.name} · {city.region}</strong>
           <small>{city.description}</small><Icon name="arrow" />
         </Link>;
