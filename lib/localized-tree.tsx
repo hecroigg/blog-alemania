@@ -11,13 +11,17 @@ import {
 } from "@/lib/locale-paths";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
+import supplementEs from "@/lib/translations/supplemental-es.json";
+import supplementDe from "@/lib/translations/supplemental-de.json";
 const catalogs = { es: esCatalog as Record<string, string>, de: deCatalog as Record<string, string> };
+const supplementaryCatalogs = { es: supplementEs as Record<string, string>, de: supplementDe as Record<string, string> };
 const existingGeneral = new Set(generalEnglishGuides.map((guide) => guide.slug));
 
 export function translatedString(locale: SiteLocale, value: string, supplemental?: Partial<Record<SiteLocale, Record<string, string>>>): string {
   if (locale === "en" || !value.trim()) return value;
   const clean = value.trim();
-  const translate = supplemental?.[locale]?.[clean] || catalogs[locale][clean];
+  const lookupKey = clean.replaceAll("&#39;", "'").replaceAll("&apos;", "'");
+  const translate = supplemental?.[locale]?.[lookupKey] || supplementaryCatalogs[locale][lookupKey] || catalogs[locale][lookupKey] || catalogs[locale][clean];
   if (!translate) return value;
   return value.replace(clean, translate);
 }
