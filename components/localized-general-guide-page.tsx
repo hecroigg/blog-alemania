@@ -1,3 +1,4 @@
+import { sectionPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -66,7 +67,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
         <div className="shell article-hero-inner">
           <Breadcrumbs items={[
             { label: copy.home, href: "/" + locale },
-            { label: copy.guides, href: "/" + locale + "/guides" },
+            { label: copy.guides, href: sectionPath(locale, "guides") },
             { label: guide.title },
           ]} />
           <span className="eyebrow">{guide.eyebrow}</span>
