@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import esCatalog from "@/lib/translations/es.json";
+import deCatalog from "@/lib/translations/de.json";
 import { supportedLocales, searchLocales, type Locale, uiCopy } from "@/lib/platform-data";
 
 type LanguageContextValue = {
@@ -40,10 +42,6 @@ function capitaliseFirstLetter(value: string) {
   return value.replace(/\p{L}/u, (letter) => letter.toLocaleUpperCase());
 }
 
-function startsAVisibleLabel(element: Element) {
-  return Boolean(element.closest("h1, h2, h3, h4, h5, h6, th, summary, option, label, button, .eyebrow, .desktop-nav, .mobile-menu nav, .toc, .topic-list, .site-footer a, .sidebar-card a, .city-snapshot, .requirement-grid, .timeline-stage h3, .status-pill"));
-}
-
 function catalogValue(catalog: TranslationCatalog | null, source: string) {
   const direct = catalog?.[source];
   if (direct) return direct;
@@ -59,7 +57,7 @@ function catalogValue(catalog: TranslationCatalog | null, source: string) {
 function formatTranslation(catalog: TranslationCatalog | null, source: string, replacements: Record<string, string> = {}, capitalise = false) {
   let value = catalogValue(catalog, source);
   for (const [key, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${key}}`, replacement);
-  return capitalise ? capitaliseFirstLetter(value) : value;
+  return capitalise && (!catalog || !Object.prototype.hasOwnProperty.call(catalog, source)) ? capitaliseFirstLetter(value) : value;
 }
 
 function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: Locale) {
@@ -79,7 +77,7 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
     const replacement = key !== "GermanyBase" && key !== "Living Germany" ? catalogValue(catalog, key) : key;
-    const polished = startsAVisibleLabel(parent) ? capitaliseFirstLetter(replacement) : replacement;
+    const polished = replacement;
     const next = replacement !== key || polished !== key ? replaceKeepingWhitespace(source, polished) : source;
     if (current !== next) node.nodeValue = next;
     translatedText.set(node, next);
@@ -114,11 +112,12 @@ function isPublicLocale(value: string | null): value is Locale {
   return Boolean(value && (searchLocales as readonly string[]).includes(value));
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, updateLocale] = useState<Locale>("en");
+export function LanguageProvider({ children, initialLocale = "en" }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const [locale, updateLocale] = useState<Locale>(initialLocale);
   const observerRef = useRef<MutationObserver | null>(null);
-  const originalTitleRef = useRef<string | null>(null);
-  const [translations, setTranslations] = useState<TranslationCatalog | null>(null);
+  const [translations, setTranslations] = useState<TranslationCatalog | null>(
+    initialLocale === "es" ? esCatalog as TranslationCatalog : initialLocale === "de" ? deCatalog as TranslationCatalog : null
+  );
 
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
@@ -142,8 +141,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
       if (cancelled) return;
       setTranslations(catalog);
-      if (!originalTitleRef.current) originalTitleRef.current = document.title;
-      document.title = catalogValue(catalog, originalTitleRef.current);
+      // Metadata titles are rendered by Next.js for each canonical URL.
+      // Do not overwrite SEO titles with the old client-side translation.
       translateRoot(document.body, catalog, locale);
       document.documentElement.lang = locale;
       observerRef.current = new MutationObserver((mutations) => {
