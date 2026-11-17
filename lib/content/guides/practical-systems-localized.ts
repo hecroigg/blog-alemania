@@ -1,5 +1,6 @@
 import { practicalSystemsGuides } from "@/lib/content/guides/practical-systems";
 import type { Guide } from "@/lib/types";
+import { guideUrl } from "@/lib/locale-paths";
 
 export type PracticalGuideKey = "sickLeave" | "doctor" | "payslip";
 
@@ -263,7 +264,7 @@ export function getLocalizedPracticalGuide(locale: "en"|"es"|"de"|"fr", key: Pra
 }
 
 export function practicalGuidePath(locale: "en"|"es"|"de"|"fr", key: PracticalGuideKey) {
-  return `/${locale}/guides/${practicalGuideSlugs[key][locale]}`;
+  return locale === "fr" ? `/${locale}/guides/${practicalGuideSlugs[key][locale]}` : guideUrl(locale, practicalGuideSlugs[key][locale]);
 }
 
 export function practicalGuideStaticParams(locale: "en"|"es"|"de"|"fr") {
