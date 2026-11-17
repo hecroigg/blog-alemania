@@ -5,6 +5,7 @@ import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { RelatedResources } from "@/components/related-resources";
 import { exactGuideUi } from "@/lib/content/localized-exact-guides";
 import {
   generalGuideFromSlug, generalGuideStaticParams, localizedGeneralGuide,
@@ -136,6 +137,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
               <Link href={item.path} key={item.path}><span>{item.title}</span><Icon name="arrow" /></Link>
             )}</div>
           </section>}
+          <RelatedResources locale={locale} category={guide.category} currentPath={localizedGeneralPath(locale, original.slug)!}/>
           <nav className="locale-alternates" aria-label={copy.otherLanguages}>
             <strong>{copy.otherLanguages}</strong>
             <div>{(["en", "es", "de"] as const).map((item) =>
