@@ -13,6 +13,7 @@ import {
 } from "@/lib/content/guides/practical-systems-localized";
 import { exactGuideUi } from "@/lib/content/localized-exact-guides";
 import { absoluteUrl } from "@/lib/site";
+import { hubUrl } from "@/lib/locale-paths";
 import { allTrustPageSlugs, trustPageForLocale } from "@/lib/content/localized-trust";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
@@ -28,14 +29,14 @@ export function localizedHubMetadata(locale: EditorialLocale, slug: string): Met
   const item = categoryMap.get(slug) || audienceMap.get(slug);
   const trust = trustPageForLocale(locale, slug);
   if (!item && !trust) return {};
-  const url = absoluteUrl("/" + locale + "/" + slug);
+  const url = absoluteUrl(hubUrl(locale, slug)!);
   const title = trust ? trust.title : t(locale, item!.name);
   const description = trust ? trust.description : t(locale, item!.description);
   return {
     title, description,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(locales.map((lang) => [lang, absoluteUrl("/" + lang + "/" + slug)])),
+      languages: Object.fromEntries(locales.map((lang) => [lang, absoluteUrl(hubUrl(lang, slug)!)])),
     },
     robots: { index: true, follow: true },
     openGraph: { title, description, url, locale },
