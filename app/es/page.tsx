@@ -1,3 +1,4 @@
+import { sectionPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
@@ -81,7 +82,7 @@ export default function SpanishHome() {
                 <Link className="button button-primary button-large" href="#tramites">
                   Empieza por los trámites <Icon name="arrow" />
                 </Link>
-                <Link className="button button-secondary button-large" href="/es/guides">
+                <Link className="button button-secondary button-large" href={sectionPath("es", "guides")}>
                   Ver todas las guías
                 </Link>
               </div>
