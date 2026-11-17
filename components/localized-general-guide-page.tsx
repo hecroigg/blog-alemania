@@ -11,6 +11,7 @@ import {
   localizedGeneralPath, type EditorialLocale,
 } from "@/lib/content/localized-general-guides";
 import { absoluteUrl, siteConfig } from "@/lib/site";
+import { sectionPath } from "@/lib/locale-paths";
 
 export { generalGuideStaticParams };
 
@@ -66,7 +67,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
         <div className="shell article-hero-inner">
           <Breadcrumbs items={[
             { label: copy.home, href: "/" + locale },
-            { label: copy.guides, href: "/" + locale + "/guides" },
+            { label: copy.guides, href: sectionPath(locale, "guides") },
             { label: guide.title },
           ]} />
           <span className="eyebrow">{guide.eyebrow}</span>
