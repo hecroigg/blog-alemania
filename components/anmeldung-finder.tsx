@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { cityPath, type SiteLocale } from "@/lib/localized-paths";
 import { registrationCities, type RegistrationLocale } from "@/lib/content/city-registration";
 
 const text = {
@@ -12,8 +13,8 @@ const text = {
     lang:"Sprache",city:"In welcher Stadt wohnst du?",case:"Woher ziehst du zu?",category:"Welche Wohnungsart?",abroad:"Aus dem Ausland",domestic:"Innerhalb Deutschlands",main:"Haupt- oder alleinige Wohnung",secondary:"Nebenwohnung",title:"Dein Meldeweg statt einer allgemeinen Liste",official:"Offizielle Informationen der Stadt öffnen",normal:"Im Regelfall ist eine meldepflichtige Wohnung innerhalb von zwei Wochen nach dem Einzug anzumelden; gesetzliche Ausnahmen sind möglich. Maßgeblich ist der tatsächliche Einzug, nicht die Vertragsunterschrift.",docs:"Vor dem Termin vorbereiten",documents:["Gültiges Ausweisdokument für jede Person","Unterschriebene Wohnungsgeberbestätigung","Tatsächliches Einzugsdatum und neue Adresse","Daten der bisherigen Wohnung, soweit verlangt","Ggf. weitere Familien- oder Aufenthaltsdokumente laut Stadt"],first:"Bei Zuzug aus dem Ausland ist eine Online-Anmeldung für innerdeutsche Umzüge nicht automatisch nutzbar.",within:"Bei einem Umzug innerhalb Deutschlands ist die Meldebehörde am neuen Wohnort zuständig. Die bisherige deutsche Gemeinde wird normalerweise über die Anmeldung informiert.",second:"Für Nebenwohnungen können eigene Verfahren und kommunale Regeln gelten. Nicht einfach das Online-Verfahren für Hauptwohnungen verwenden.",extra:"Besonderheiten dieser Stadt",verify:"Am 20. Oktober 2026 mit der verlinkten städtischen Quelle abgeglichen. Termine, Voraussetzungen und Unterlagen können sich ändern. Das Tool ist eine Orientierung und keine behördliche Entscheidung.",tip:"Nächste Schritte",steps:["Mit dem Wohnungsgeber klären, ob die tatsächliche Adresse anmeldbar ist.","Offizielle Seite öffnen und Termine bzw. digitale Voraussetzungen prüfen.","Die Meldebestätigung nach der Anmeldung aufbewahren."],disclaimer:"Deine Auswahl bleibt im Browser und wird nicht an GermanyBase gesendet.",cityLink:"Stadtführer" }
 } as const;
 
-export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: string }) {
-  const [locale,setLocale] = useState<RegistrationLocale>("en");
+export function AnmeldungFinder({ initialCity = "mannheim", initialLocale = "en" }: { initialCity?: string; initialLocale?: SiteLocale }) {
+  const locale: RegistrationLocale = initialLocale;
   const [city,setCity] = useState(registrationCities.some(item=>item.slug===initialCity) ? initialCity : "mannheim");
   const [from,setFrom] = useState<"abroad"|"domestic">("abroad");
   const [residence,setResidence] = useState<"main"|"secondary">("main");
@@ -22,10 +23,6 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
   return (
     <div className="registration-finder">
       <div className="registration-finder-controls">
-        <fieldset className="registration-lang" aria-label={ui.lang}>
-          <legend>{ui.lang}</legend>
-          {(["en","es","de"] as RegistrationLocale[]).map(item => <button key={item} type="button" lang={item} aria-pressed={item===locale} onClick={()=>setLocale(item)}>{({en:"English",es:"Español",de:"Deutsch"} as const)[item]}</button>)}
-        </fieldset>
         <label>{ui.city}
           <select value={city} onChange={event=>setCity(event.target.value)}>
             {registrationCities.map(item=><option key={item.slug} value={item.slug}>{item.name}</option>)}
@@ -53,7 +50,7 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
         <h3>{ui.extra}</h3>
         <p>{selected.note[locale]}</p>
         <a className="button button-primary" href={selected.officialUrl} target="_blank" rel="noopener noreferrer">{ui.official} ↗</a>
-        <a className="registration-city-link" href={"/cities/"+selected.slug}>{ui.cityLink}: {selected.name} →</a>
+        <a className="registration-city-link" href={cityPath(locale,selected.slug)}>{ui.cityLink}: {selected.name} →</a>
         <h3>{ui.docs}</h3>
         <ul>{ui.documents.map(item=><li key={item}>{item}</li>)}</ul>
         <h3>{ui.tip}</h3>
