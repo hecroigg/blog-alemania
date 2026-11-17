@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { interactiveExtras } from "@/lib/interactive-extras";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
 import { supportedLocales, searchLocales, type Locale, uiCopy } from "@/lib/platform-data";
@@ -116,7 +117,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
   const [locale, updateLocale] = useState<Locale>(initialLocale);
   const observerRef = useRef<MutationObserver | null>(null);
   const [translations, setTranslations] = useState<TranslationCatalog | null>(
-    initialLocale === "es" ? esCatalog as TranslationCatalog : initialLocale === "de" ? deCatalog as TranslationCatalog : null
+    initialLocale === "es" ? { ...esCatalog, ...interactiveExtras.es } : initialLocale === "de" ? { ...deCatalog, ...interactiveExtras.de } : null
   );
 
   useEffect(() => {
@@ -138,7 +139,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
         ...Object.entries(uiCopy.en.navigation).map(([path, label]) => [label, uiCopy[locale].navigation[path]]),
         ["Plan", uiCopy[locale].plan], ["Visas", uiCopy[locale].visa], ["Tools", uiCopy[locale].tools], ["Cities", uiCopy[locale].cities],
       ]);
-      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
+      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog, ...(locale === "es" || locale === "de" ? interactiveExtras[locale] : {}) } : null;
       if (cancelled) return;
       setTranslations(catalog);
       // Metadata titles are rendered by Next.js for each canonical URL.
