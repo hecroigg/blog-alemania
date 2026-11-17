@@ -13,7 +13,6 @@ import {
 import { DepositRuleChecker } from "@/components/deposit-rule-checker";
 import { SalaryCalculator } from "@/components/salary-calculator";
 import { EmploymentTypeTool } from "@/components/employment-type-tool";
-import { registrationCities } from "@/lib/content/city-registration";
 import { sectionPath, toolPath, matchTool, toolSlugs, type SiteLocale, type ToolKey } from "@/lib/localized-paths";
 import { toolKeys, toolText, toolIndexCopy } from "@/lib/localized-tool-copy";
 import { absoluteUrl, siteConfig } from "@/lib/site";
