@@ -57,8 +57,9 @@ function catalogValue(catalog: TranslationCatalog | null, source: string) {
 
 function formatTranslation(catalog: TranslationCatalog | null, source: string, replacements: Record<string, string> = {}, capitalise = false) {
   let value = catalogValue(catalog, source);
+  const translated = value !== source;
   for (const [key, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${key}}`, replacement);
-  return capitalise ? capitaliseFirstLetter(value) : value;
+  return capitalise && !translated ? capitaliseFirstLetter(value) : value;
 }
 
 function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: Locale) {
@@ -78,8 +79,7 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
     const replacement = key !== "GermanyBase" && key !== "Living Germany" ? catalogValue(catalog, key) : key;
-    const polished = replacement; // Preserve source/catalog spelling; especially Spanish and German casing.
-    const next = replacement !== key || polished !== key ? replaceKeepingWhitespace(source, polished) : source;
+    const next = replacement !== key ? replaceKeepingWhitespace(source, replacement) : source;
     if (current !== next) node.nodeValue = next;
     translatedText.set(node, next);
   }
@@ -122,7 +122,6 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
   const pathname = usePathname();
   const [locale, updateLocale] = useState<Locale>(initialLocale);
   const observerRef = useRef<MutationObserver | null>(null);
-  const originalTitleRef = useRef<string | null>(null);
   const [translations, setTranslations] = useState<TranslationCatalog | null>(initialRuntimeCatalogs[initialLocale] || null);
 
   useEffect(() => {
@@ -147,8 +146,8 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
       const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...(initialRuntimeCatalogs[locale] || {}), ...navigationCatalog } : null;
       if (cancelled) return;
       setTranslations(catalog);
-      if (!originalTitleRef.current) originalTitleRef.current = document.title;
-      document.title = catalogValue(catalog, originalTitleRef.current);
+      // Next.js already emits the correct canonical title for each locale.
+      // Do not overwrite the server-rendered SEO title during hydration.
       translateRoot(document.body, catalog, locale);
       document.documentElement.lang = locale;
       observerRef.current = new MutationObserver((mutations) => {

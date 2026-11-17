@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  type OtherPageId, otherPages, otherUrl, cityUrl, sectionPath, toolIds, toolUrl,
+  type OtherPageId, otherPages, otherUrl, sectionPath, toolIds, toolUrl,
   type ToolId,
 } from "@/lib/locale-paths";
 
@@ -41,10 +41,10 @@ export function proxy(request: NextRequest) {
   // Non-canonical language-specific legacy paths created during the previous migration.
   if (parts[0] === "es" || parts[0] === "de") {
     const lang=parts[0];
-    if (parts[1] === "guides") return redirect(sectionPath(lang,"guides") + (parts[2] ? "/" + parts[2] : ""));
-    if (parts[1] === "cities") {
-      return redirect(parts[2] ? cityUrl(lang,parts[2]) || sectionPath(lang,"cities") : sectionPath(lang,"cities"));
-    }
+    // Detail aliases are resolved by their App Router pages because their slugs
+    // changed between languages. Do not blindly prefix the original slug here.
+    if (parts.length === 2 && parts[1] === "guides") return redirect(sectionPath(lang, "guides"));
+    if (parts.length === 2 && parts[1] === "cities") return redirect(sectionPath(lang, "cities"));
   }
 
   const requestedLanguage = parts[0];
