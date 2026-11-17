@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { cityProfiles } from "@/lib/platform-data";
 import { useLanguage } from "@/components/language-provider";
 import { cityUrl } from "@/lib/locale-paths";
+import { localizedCityName } from "@/lib/city-labels";
 
 const housingOptions = ["All", "Moderate", "High", "Very high"] as const;
 const sectorOptions = ["All", ...Array.from(new Set(cityProfiles.flatMap((city) => city.sectors))).sort()] as const;
@@ -30,7 +31,7 @@ export function GermanyCityExplorer() {
       <label className="form-field"><span>{translate("Employment sector",undefined,true)}</span><select value={sector} onChange={(event) => setSector(event.target.value)}>{sectorOptions.map((item) => <option key={item} value={item}>{translate(item,undefined,true)}</option>)}</select></label>
     </div>
     <div className="explorer-summary"><strong>{results.length} {translate("cities match")}</strong><span>{translate("These are planning filters, not a quality ranking. Open a city for local housing, work, study and Anmeldung links.")}</span></div>
-    <div className="explore-city-grid explorer-results">{results.map((city) => <Link href={cityUrl(lang,city.slug)!} key={city.slug}><span>{translate(city.state,undefined,true)}</span><strong>{city.name}</strong><small className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure,undefined,true)} {translate("housing pressure")}</small><small>{translate(city.transport,undefined,true)}</small><small>{city.sectors.map(x=>translate(x)).join(" · ")}</small><em>{translate("Open city guide",undefined,true)} →</em></Link>)}</div>
+    <div className="explore-city-grid explorer-results">{results.map((city) => <Link href={cityUrl(lang,city.slug)!} key={city.slug}><span>{translate(city.state,undefined,true)}</span><strong>{localizedCityName(lang,city.slug,city.name)}</strong><small className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure,undefined,true)} {translate("housing pressure")}</small><small>{translate(city.transport,undefined,true)}</small><small>{city.sectors.map(x=>translate(x)).join(" · ")}</small><em>{translate("Open city guide",undefined,true)} →</em></Link>)}</div>
     {results.length === 0 && <div className="empty-results"><strong>{translate("No city matches every filter.")}</strong><p>{translate("Try removing one filter. A city can still work well when your exact job, university or housing offer changes the trade-off.")}</p></div>}
   </div>;
 }
