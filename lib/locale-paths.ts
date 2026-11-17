@@ -143,9 +143,11 @@ export function equivalentPath(source: string, targetLocale: SiteLocale): string
   if (langPart === "cities") return slug
     ? (cityUrl(targetLocale, cityFromSlug(src, slug) || slug) || null)
     : sectionPath(targetLocale, "cities");
-  if (langPart === "tools") return slug
-    ? toolUrl(targetLocale, toolFromSlug(src, slug) || slug as ToolId)
-    : sectionPath(targetLocale, "tools");
+  if (langPart === "tools") {
+    if (!slug) return sectionPath(targetLocale, "tools");
+    const tool = toolFromSlug(src, slug) || (toolIds.includes(slug as ToolId) ? slug as ToolId : null);
+    return tool ? toolUrl(targetLocale, tool) : null;
+  }
   if (langPart === "search") return sectionPath(targetLocale, "search");
   const hub = anyHubFromSlug(src, part);
   if (hub && !slug) return hubUrl(targetLocale, hub);
