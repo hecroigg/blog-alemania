@@ -1,3 +1,4 @@
+import { cityPath, sectionPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -38,14 +39,14 @@ const i18n = {
 const locales = ["en", "es", "de"] as const;
 export function cityStaticParams() { return cities.map((city) => ({ slug: city.slug })); }
 const languageLinks = (pathSuffix: string) => Object.fromEntries(
-  locales.map((lang) => [lang, absoluteUrl("/" + lang + "/cities" + pathSuffix)])
+  locales.map((lang) => [lang, absoluteUrl(sectionPath(lang, "cities") + pathSuffix)])
 );
 
 export function citiesIndexMetadata(locale: EditorialLocale): Metadata {
   const c = i18n[locale];
   return {
     title: c.heading, description: c.intro,
-    alternates: { canonical: absoluteUrl("/" + locale + "/cities"), languages: languageLinks("") },
+    alternates: { canonical: absoluteUrl(sectionPath(locale, "cities")), languages: languageLinks("") },
     robots: { index: true, follow: true },
     openGraph: { title: c.heading, description: c.intro, locale },
   };
@@ -56,7 +57,7 @@ export function cityDetailMetadata(locale: EditorialLocale, slug: string): Metad
   if (!raw) return {};
   const city = getLocalizedCity(raw, locale);
   const title = i18n[locale].living + " " + city.name;
-  const canonical = absoluteUrl("/" + locale + "/cities/" + city.slug);
+  const canonical = absoluteUrl(cityPath(locale, city.slug));
   return {
     title, description: city.description,
     alternates: { canonical, languages: languageLinks("/" + city.slug) },
@@ -137,7 +138,7 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
         </section>
         <nav className="locale-alternates" aria-label={c.cities}>
           {locales.map((lang) =>
-            <Link href={"/" + lang + "/cities/" + city.slug} lang={lang} hrefLang={lang} key={lang}
+            <Link href={cityPath(lang, city.slug)} lang={lang} hrefLang={lang} key={lang}
               aria-current={locale === lang ? "page" : undefined}>{({ en: "🇬🇧 English", es: "🇪🇸 Español", de: "🇩🇪 Deutsch" } as const)[lang]}</Link>
           )}
         </nav>
