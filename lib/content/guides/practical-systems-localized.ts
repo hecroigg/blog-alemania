@@ -1,3 +1,4 @@
+import { guidePath } from "@/lib/localized-paths";
 import { practicalSystemsGuides } from "@/lib/content/guides/practical-systems";
 import type { Guide } from "@/lib/types";
 
@@ -263,7 +264,7 @@ export function getLocalizedPracticalGuide(locale: "en"|"es"|"de"|"fr", key: Pra
 }
 
 export function practicalGuidePath(locale: "en"|"es"|"de"|"fr", key: PracticalGuideKey) {
-  return `/${locale}/guides/${practicalGuideSlugs[key][locale]}`;
+  return locale === "fr" ? `/${locale}/guides/${practicalGuideSlugs[key][locale]}` : guidePath(locale, practicalGuideSlugs[key][locale]);
 }
 
 export function practicalGuideStaticParams(locale: "en"|"es"|"de"|"fr") {
