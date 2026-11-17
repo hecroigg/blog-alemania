@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { hubPath, matchHub, type HubKey } from "@/lib/localized-paths";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ExactGuideCard } from "@/components/exact-guide-card";
@@ -21,21 +22,22 @@ const dictionaries = { es: esCatalog as Record<string, string>, de: deCatalog as
 const t = (locale: EditorialLocale, value: string) => locale === "en" ? value : dictionaries[locale][value] || value;
 const locales = ["en", "es", "de"] as const;
 
-export function localizedHubStaticParams() {
-  return [...categories, ...audiences].map((item) => ({ slug: item.slug })).concat(allTrustPageSlugs().map((slug) => ({ slug })));
+export function localizedHubStaticParams(locale: EditorialLocale) {
+  return [...categories, ...audiences].map((item) => ({ slug: item.slug })).concat(allTrustPageSlugs().map((slug) => ({ slug }))).map((item) => ({ slug: hubPath(locale, item.slug as HubKey).split("/").pop()! }));
 }
 export function localizedHubMetadata(locale: EditorialLocale, slug: string): Metadata {
-  const item = categoryMap.get(slug) || audienceMap.get(slug);
-  const trust = trustPageForLocale(locale, slug);
+  const original = matchHub(locale, slug);
+  const item = original ? categoryMap.get(original) || audienceMap.get(original) : null;
+  const trust = original ? trustPageForLocale(locale, original) : null;
   if (!item && !trust) return {};
-  const url = absoluteUrl("/" + locale + "/" + slug);
+  const url = absoluteUrl(hubPath(locale, original!));
   const title = trust ? trust.title : t(locale, item!.name);
   const description = trust ? trust.description : t(locale, item!.description);
   return {
     title, description,
     alternates: {
       canonical: url,
-      languages: Object.fromEntries(locales.map((lang) => [lang, absoluteUrl("/" + lang + "/" + slug)])),
+      languages: Object.fromEntries(locales.map((lang) => [lang, absoluteUrl(hubPath(lang, original!))])),
     },
     robots: { index: true, follow: true },
     openGraph: { title, description, url, locale },
@@ -43,9 +45,10 @@ export function localizedHubMetadata(locale: EditorialLocale, slug: string): Met
 }
 
 export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; slug: string }) {
-  const c = categoryMap.get(slug);
-  const a = audienceMap.get(slug);
-  const trust = trustPageForLocale(locale, slug);
+  const original = matchHub(locale, slug);
+  const c = original ? categoryMap.get(original) : null;
+  const a = original ? audienceMap.get(original) : null;
+  const trust = original ? trustPageForLocale(locale, original) : null;
   if (!c && !a && !trust) notFound();
   const ui = exactGuideUi[locale];
   if (trust) return (
