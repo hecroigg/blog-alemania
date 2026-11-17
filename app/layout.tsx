@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.name,
   other: { "google-adsense-account": "ca-pub-8337311370258201" },
-  alternates: { canonical: absoluteUrl("/") },
   openGraph: { type: "website", locale: "en_GB", siteName: siteConfig.name, title: "GermanyBase", description: siteConfig.description, url: absoluteUrl("/") },
   twitter: { card: "summary", title: "GermanyBase", description: siteConfig.description },
   robots: { index: true, follow: true },
@@ -29,6 +28,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const requestedLocale = requestHeaders.get("x-germanybase-page-language");
   const language = requestedLocale === "es" || requestedLocale === "de" ? requestedLocale : "en";
   const organization = { "@context": "https://schema.org", "@type": "Organization", name: siteConfig.name, url: siteConfig.url, description: siteConfig.description };
-  const website = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url, inLanguage: language, potentialAction: { "@type": "SearchAction", target: `${absoluteUrl("/search")}?q={search_term_string}`, "query-input": "required name=search_term_string" } };
+  const website = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url, inLanguage: language, potentialAction: { "@type": "SearchAction", target: `${absoluteUrl("/en/search")}?q={search_term_string}`, "query-input": "required name=search_term_string" } };
   return <html lang={language}><head><Script id="google-adsense-cmp" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337311370258201" crossOrigin="anonymous" strategy="beforeInteractive"/></head><body><LanguageProvider initialLocale={language}><a className="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content">{children}</main><Footer/><CookieBanner/><Analytics/><JsonLd data={[organization, website]}/></LanguageProvider></body></html>;
 }
