@@ -4,7 +4,7 @@ import { LocalizedHubPage, localizedHubMetadata, localizedHubStaticParams } from
 const locale = "de" as const;
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() { return localizedHubStaticParams(); }
+export function generateStaticParams() { return localizedHubStaticParams("de"); }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return localizedHubMetadata(locale, (await params).slug);
