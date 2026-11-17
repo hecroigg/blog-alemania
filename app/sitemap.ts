@@ -18,7 +18,7 @@ const localizedAlternates = (path: (locale: typeof languages[number]) => string)
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const stable = [
-    "", "/en", "/es", "/de", "/guides", "/tools", "/plan",
+    "/en", "/es", "/de", "/guides", "/tools", "/plan",
     "/visas-residence", "/explore-germany", "/glossary", "/authorities",
     "/emergency", "/data-status", "/costs-deadlines",
     "/trabajo/calculadora-salario", "/trabajo/tipos-de-empleo",
@@ -30,10 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...stable.map((path) => ({
-      url: absoluteUrl(path || "/"),
+      url: absoluteUrl(path),
       lastModified: new Date(["/en", "/es", "/de"].includes(path) ? "2026-11-17" : path === "/tools/anmeldung-finder" ? "2026-10-20" : "2026-10-08"),
-      changeFrequency: path === "" ? "weekly" as const : "monthly" as const,
-      priority: path === "" ? 1 : ["/en", "/es", "/de"].includes(path) ? .9 : .7,
+      changeFrequency: path === "/en" ? "weekly" as const : "monthly" as const,
+      priority: path === "/en" ? 1 : ["/es", "/de"].includes(path) ? .9 : .7,
       ...(["/en", "/es", "/de"].includes(path) ? { alternates: { languages: localizedAlternates((locale) => "/" + locale) } } : {}),
     })),
     ...[...categories, ...audiences, ...trustPages].flatMap((item) =>
