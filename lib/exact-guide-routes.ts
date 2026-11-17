@@ -1,4 +1,4 @@
-import { guidePath, localizedTarget, isSiteLocale, sectionPath } from "@/lib/localized-paths";
+import { guidePath, localizedTarget, isSiteLocale, sectionPath, matchSection, matchHub, hubPath } from "@/lib/localized-paths";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { supportedLocales, type Locale } from "@/lib/platform-data";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
@@ -34,8 +34,7 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
   // The old unprefixed guide library remains available, but new language choices
   // always navigate to a distinct language-specific URL.
   if (pathname === "/guides" || pathname === "/guides/") return isSiteLocale(locale) ? sectionPath(locale, "guides") : targetHome + "/guides";
-  if (parts.length === 2 && parts[1] === "guides" &&
-      (supportedLocales as readonly string[]).includes(parts[0])) return targetHome + "/guides";
+  if (parts.length === 2 && parts[0] && isSiteLocale(parts[0]) && matchSection(parts[0], parts[1]) === "guides") return isSiteLocale(locale) ? sectionPath(locale, "guides") : targetHome + "/guides";
 
   let sourceLocale: Locale | null = null;
   let sourceSlug: string | null = null;
@@ -46,6 +45,16 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
   } else if (parts.length === 2 && parts[0] === "guides") {
     sourceLocale = "en";
     sourceSlug = parts[1];
+  }
+
+  if (isSiteLocale(locale) && parts.length === 2 && isSiteLocale(parts[0])) {
+    const hub = matchHub(parts[0], parts[1]);
+    if (hub) return hubPath(locale, hub);
+  }
+  if (isSiteLocale(locale) && parts.length === 3 && isSiteLocale(parts[0]) &&
+      matchSection(parts[0], parts[1]) === "guides") {
+    sourceLocale = parts[0];
+    sourceSlug = parts[2];
   }
 
   if (sourceLocale && sourceSlug) {
