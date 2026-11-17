@@ -1,4 +1,4 @@
-import { sectionPath, hubPath, cityPath, toolPath, toolSlugs, type HubKey, type ToolKey } from "@/lib/localized-paths";
+import { sectionPath, hubPath, cityPath, toolPath, auxiliaryPath, auxiliarySlugs, toolSlugs, type HubKey, type ToolKey, type AuxiliaryKey } from "@/lib/localized-paths";
 import type { MetadataRoute } from "next";
 import { audiences } from "@/lib/content/audiences";
 import { categories } from "@/lib/content/categories";
@@ -18,17 +18,12 @@ const localizedAlternates = (path: (locale: typeof languages[number]) => string)
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const stable = [
-    "/en", "/es", "/de", "/plan",
-    "/visas-residence", "/explore-germany", "/glossary", "/authorities",
-    "/emergency", "/data-status", "/costs-deadlines",
-
-  ].filter((value) => value !== "/guides"); // /guides redirects to /en/guides.
+  const stable = ["/en", "/es", "/de"];
 
   return [
     ...stable.map((path) => ({
       url: absoluteUrl(path),
-      lastModified: new Date(["/en", "/es", "/de"].includes(path) ? "2026-11-17" : path === "/tools/anmeldung-finder" ? "2026-10-20" : "2026-10-08"),
+      lastModified: new Date("2026-11-17"),
       changeFrequency: path === "/en" ? "weekly" as const : "monthly" as const,
       priority: path === "/en" ? 1 : ["/es", "/de"].includes(path) ? .9 : .7,
       ...(["/en", "/es", "/de"].includes(path) ? { alternates: { languages: localizedAlternates((locale) => "/" + locale) } } : {}),
@@ -39,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date("2026-11-17"),
         changeFrequency: "monthly" as const,
         priority: .7,
-        alternates: { languages: localizedAlternates((lang) => "/" + lang + "/" + item.slug) },
+        alternates: { languages: localizedAlternates((lang) => hubPath(lang, item.slug as HubKey)) },
       }))
     ),
     ...searchLocales.map((locale) => ({
@@ -47,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-11-17"),
       changeFrequency: "monthly" as const,
       priority: .9,
-      alternates: { languages: localizedAlternates((item) => "/" + item + "/guides") },
+      alternates: { languages: localizedAlternates((item) => sectionPath(item, "guides")) },
     })),
     ...generalEnglishGuides.flatMap((guide) =>
       searchLocales.map((locale) => ({
@@ -76,6 +71,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: { languages: localizedAlternates((item) => practicalGuidePath(item, key)) },
       }))
     ),
+    ...(Object.keys(auxiliarySlugs) as AuxiliaryKey[]).filter((key) => key !== "search").flatMap((key) =>
+      searchLocales.map((locale) => ({
+        url: absoluteUrl(auxiliaryPath(locale, key)),
+        lastModified: new Date("2026-11-17"),
+        changeFrequency: "monthly" as const,
+        priority: .75,
+        alternates: { languages: localizedAlternates((lang) => auxiliaryPath(lang, key)) },
+      }))
+    ),
     ...searchLocales.map((locale) => ({
       url: absoluteUrl(sectionPath(locale, "tools")),
       lastModified: new Date("2026-11-17"),
@@ -97,7 +101,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-11-17"),
       changeFrequency: "monthly" as const,
       priority: .8,
-      alternates: { languages: localizedAlternates((item) => "/" + item + "/cities") },
+      alternates: { languages: localizedAlternates((item) => sectionPath(item, "cities")) },
     })),
     ...cities.flatMap((city) =>
       searchLocales.map((locale) => ({
@@ -105,7 +109,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(city.updated || "2026-09-23"),
         changeFrequency: "monthly" as const,
         priority: city.featured ? .8 : .7,
-        alternates: { languages: localizedAlternates((lang) => "/" + lang + "/cities/" + city.slug) },
+        alternates: { languages: localizedAlternates((lang) => cityPath(lang, city.slug)) },
       }))
     ),
   ];
