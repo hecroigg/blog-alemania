@@ -44,7 +44,7 @@ const copy: Record<PublicLanguage, Copy> = {
 export const localizedHomeAlternates = {
   en: absoluteUrl("/en"), es: absoluteUrl("/es"),
   de: absoluteUrl("/de"),
-  "x-default": absoluteUrl("/"),
+  "x-default": absoluteUrl("/en"),
 };
 
 export function localizedHomeMetadata(locale: PublicLanguage): Metadata {
