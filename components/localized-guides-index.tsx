@@ -14,9 +14,9 @@ import { sectionPath } from "@/lib/locale-paths";
 
 export function localizedGuidesMetadata(locale: Locale): Metadata {
   const ui = exactGuideUi[locale];
-  const canonical = absoluteUrl("/" + locale + "/guides");
+  const canonical = absoluteUrl(locale === "fr" ? "/fr/guides" : sectionPath(locale, "guides"));
   const languages = Object.fromEntries(
-    searchLocales.map((item) => [item, absoluteUrl("/" + item + "/guides")])
+    searchLocales.map((item) => [item, absoluteUrl(sectionPath(item, "guides"))])
   );
   return {
     title: ui.libraryTitle,
