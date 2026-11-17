@@ -27,7 +27,7 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
   // The old unprefixed guide library remains available, but new language choices
   // always navigate to a distinct language-specific URL.
   if (pathname === "/guides" || pathname === "/guides/") return (locale === "es" || locale === "de" || locale === "en") ? sectionPath(locale, "guides") : targetHome;
-  if (parts.length === 2 && parts[1] === "guides" &&
+  if (parts.length === 2 && ["guides", "guias", "ratgeber"].includes(parts[1]) &&
       (supportedLocales as readonly string[]).includes(parts[0])) return (locale === "es" || locale === "de" || locale === "en") ? sectionPath(locale, "guides") : targetHome;
 
   let sourceLocale: Locale | null = null;
