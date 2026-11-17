@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { LocalizedToolPage, toolMetadata } from "@/components/localized-functional-pages";
 import { toolFromSlug, toolIds, toolUrl } from "@/lib/locale-paths";
 type Props = {params:Promise<{slug:string}>;searchParams:Promise<{city?:string}>};
