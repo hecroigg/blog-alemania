@@ -299,5 +299,20 @@
   "privateMonthlyPremium": "privatMonatlichPremium",
   "taxClass": "Steuerklasse",
   "weeklyHours": "wöchentliche Stunden",
-  "{city} practical snapshot": "Praktischer Überblick zu {city}"
+  "{city} practical snapshot": "Praktischer Überblick zu {city}",
+  "Planning estimate": "Planungsschätzung",
+  "/month": "/Monat",
+  "Approximate annual budget:": "Geschätztes Jahresbudget:",
+  "Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.": "Krankenversicherungsbeiträge sind nicht enthalten, da sie vom persönlichen Status abhängen und möglicherweise bereits vom Gehalt abgezogen wurden.",
+  "remains after housing;": "bleiben nach den Wohnkosten übrig;",
+  "after the fixed commitments you entered.": "nach den angegebenen festen Ausgaben.",
+  "Your entries equal": "Ihre Angaben ergeben",
+  "gross per hour, below €13.90. Check whether a legal exception applies or correct the salary and hours.": "brutto pro Stunde und liegen damit unter 13,90 €. Prüfen Sie mögliche gesetzliche Ausnahmen oder korrigieren Sie Gehalt und Arbeitszeit.",
+  "/ hour": "/Stunde",
+  "hours / week": "Stunden/Woche",
+  "estimated take-home": "geschätzte Nettoquote",
+  "/ month": "/Monat",
+  "Your employee social contributions use an estimated base of": "Die Arbeitnehmerbeiträge zur Sozialversicherung werden auf einer geschätzten Grundlage von",
+  "instead of the full": "statt des vollen Bruttobetrags von",
+  "gross. The reduction fades progressively up to €2,000.": "Brutto berechnet. Die Ermäßigung nimmt bis zu 2.000 € schrittweise ab."
 }
