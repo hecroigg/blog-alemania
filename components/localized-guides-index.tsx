@@ -1,3 +1,4 @@
+import { sectionPath } from "@/lib/localized-paths";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ExactGuideCard } from "@/components/exact-guide-card";
@@ -13,9 +14,9 @@ import { absoluteUrl } from "@/lib/site";
 
 export function localizedGuidesMetadata(locale: Locale): Metadata {
   const ui = exactGuideUi[locale];
-  const canonical = absoluteUrl("/" + locale + "/guides");
+  const canonical = absoluteUrl(locale === "fr" ? "/fr/guides" : sectionPath(locale as "en" | "es" | "de", "guides"));
   const languages = Object.fromEntries(
-    searchLocales.map((item) => [item, absoluteUrl("/" + item + "/guides")])
+    searchLocales.map((item) => [item, absoluteUrl(sectionPath(item, "guides"))])
   );
   return {
     title: ui.libraryTitle,
