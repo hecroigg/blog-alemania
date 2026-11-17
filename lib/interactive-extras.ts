@@ -1,5 +1,9 @@
 export const interactiveExtras: Record<"es" | "de", Record<string, string>> = {
   es: {
+    "Search results for": "Resultados de búsqueda de",
+    "No guides found for": "No se han encontrado guías sobre",
+    "Try a broader term.": "Prueba una búsqueda más general.",
+    "Open city guide": "Abrir guía de la ciudad",
     "/month": "/mes",
     "Planning estimate": "Estimación de presupuesto",
     "Approximate annual budget": "Presupuesto anual aproximado",
@@ -21,6 +25,10 @@ export const interactiveExtras: Record<"es" | "de", Record<string, string>> = {
     "Monthly deduction": "Deducción mensual",
   },
   de: {
+    "Search results for": "Suchergebnisse für",
+    "No guides found for": "Keine Ratgeber gefunden für",
+    "Try a broader term.": "Versuchen Sie einen allgemeineren Suchbegriff.",
+    "Open city guide": "Stadtführer öffnen",
     "/month": "/Monat",
     "Planning estimate": "Budgetschätzung",
     "Approximate annual budget": "Ungefähres Jahresbudget",
