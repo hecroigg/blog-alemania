@@ -8,7 +8,9 @@ import EmergencyPage from "@/app/emergency/page";
 import DataPage from "@/app/data-status/page";
 import GlossaryPage from "@/app/glossary/page";
 import ExplorePage from "@/app/explore-germany/page";
-import SearchPage from "@/app/search/page";
+import { SearchContent } from "@/components/search-content";
+import { generalEnglishGuides, localizedGeneralGuide } from "@/lib/content/localized-general-guides";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { guideMap } from "@/lib/content/guides";
 import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import {
@@ -134,7 +136,15 @@ export async function LocalizedAuxiliaryPage({ locale, slug, q }: { locale: Site
     case "data": page = DataPage(); break;
     case "glossary": page = GlossaryPage(); break;
     case "explore": page = ExplorePage(); break;
-    case "search": page = await SearchPage({ searchParams: Promise.resolve({ q }) }); break;
+    case "search": {
+      const title = t(locale, "Find a practical answer");
+      page = <section className="shell search-page">
+        <Breadcrumbs items={[{ label: t(locale, "Home"), href: "/" + locale }, { label: t(locale, "Search") }]}/>
+        <span className="eyebrow">{t(locale, "Site search")}</span><h1>{title}</h1>
+        <SearchContent guides={generalEnglishGuides.map((guide) => localizedGeneralGuide(guide, locale))} initialQuery={q || ""}/>
+      </section>;
+      break;
+    }
   }
   return <div lang={locale} data-no-translate>{translateTree(page, locale)}</div>;
 }
