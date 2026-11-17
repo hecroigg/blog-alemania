@@ -15,7 +15,7 @@ const pages = {
     sections: ["Moving", "Work", "Housing", "Paperwork", "Healthcare", "Money", "Transport", "Daily life"],
     audience: ["Students", "Workers", "Families", "Freelancers", "EU citizens", "Non-EU citizens"],
     legal: ["About us", "Editorial policy", "How we research", "Corrections", "Affiliate disclosure", "Advertising disclosure", "Privacy", "Cookies", "Terms", "Contact"],
-    guides: "All guides", cities: "Cities",
+    guides: "All guides", cities: "Cities", tools: "Tools",
   },
   es: {
     intro: "Información práctica e independiente para vivir en Alemania.",
@@ -24,7 +24,7 @@ const pages = {
     sections: ["Mudanza", "Trabajo", "Vivienda", "Trámites", "Salud", "Dinero", "Transporte", "Vida diaria"],
     audience: ["Estudiantes", "Trabajadores", "Familias", "Autónomos", "Ciudadanos de la UE", "Ciudadanos no comunitarios"],
     legal: ["Quiénes somos", "Política editorial", "Cómo investigamos", "Correcciones", "Afiliación", "Publicidad", "Privacidad", "Cookies", "Condiciones", "Contacto"],
-    guides: "Todas las guías", cities: "Ciudades",
+    guides: "Todas las guías", cities: "Ciudades", tools: "Herramientas",
   },
   de: {
     intro: "Unabhängige, praktische Informationen für das Leben in Deutschland.",
@@ -33,7 +33,7 @@ const pages = {
     sections: ["Umzug", "Arbeit", "Wohnen", "Behörden", "Gesundheit", "Finanzen", "Verkehr", "Alltag"],
     audience: ["Studierende", "Arbeitnehmende", "Familien", "Selbstständige", "EU-Bürger", "Nicht-EU-Bürger"],
     legal: ["Über uns", "Redaktionelle Leitlinien", "Unsere Recherche", "Korrekturen", "Affiliate-Hinweise", "Werbehinweise", "Datenschutz", "Cookies", "Nutzungsbedingungen", "Kontakt"],
-    guides: "Alle Ratgeber", cities: "Städte",
+    guides: "Alle Ratgeber", cities: "Städte", tools: "Werkzeuge",
   },
 } as const;
 
@@ -61,6 +61,7 @@ export function Footer() {
           {sectionSlugs.map((slug, index) => <Link href={hubUrl(locale, slug)!} key={slug}>{copy.sections[index]}</Link>)}
           <Link href={sectionPath(locale,"guides")}>{copy.guides}</Link>
           <Link href={sectionPath(locale,"cities")}>{copy.cities}</Link>
+          <Link href={sectionPath(locale,"tools")}>{copy.tools}</Link>
         </div>
         <div>
           <h2>{copy.people}</h2>
