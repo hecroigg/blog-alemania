@@ -146,7 +146,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
         ...Object.entries(uiCopy.en.navigation).map(([path, label]) => [label, uiCopy[locale].navigation[path]]),
         ["Plan", uiCopy[locale].plan], ["Visas", uiCopy[locale].visa], ["Tools", uiCopy[locale].tools], ["Cities", uiCopy[locale].cities],
       ]);
-      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
+      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...(initialRuntimeCatalogs[locale] || {}), ...navigationCatalog } : null;
       if (cancelled) return;
       setTranslations(catalog);
       if (!originalTitleRef.current) originalTitleRef.current = document.title;
