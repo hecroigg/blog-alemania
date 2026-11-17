@@ -4,10 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { cityProfiles, getCitizenshipGroup, nationalityOptions, trackedFacts } from "@/lib/platform-data";
 
-function money(value: number) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
+function formatCurrency(value: number, locale: string) { return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
 
 export function CostOfLivingCalculator() {
-  const { translate } = useLanguage();
+  const { translate, locale } = useLanguage();
+  const money = (value: number) => formatCurrency(value, locale);
   const [city, setCity] = useState("Berlin");
   const [household, setHousehold] = useState("One person");
   const [lifestyle, setLifestyle] = useState("Normal");
@@ -43,9 +44,9 @@ export function CostOfLivingCalculator() {
 
   return <div className="calculator-layout">
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
-      <label className="form-field"><span>{translate("City or region")}</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug}>{item.name}</option>)}</select></label>
-      <label className="form-field"><span>{translate("Household")}</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item}>{translate(item)}</option>)}</select></label>
-      <label className="form-field"><span>{translate("Lifestyle")}</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item}>{item}</option>)}</select></label>
+      <label className="form-field"><span>{translate("City or region")}</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug} value={item.name}>{item.name}</option>)}</select></label>
+      <label className="form-field"><span>{translate("Household")}</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item} value={item}>{translate(item)}</option>)}</select></label>
+      <label className="form-field"><span>{translate("Lifestyle")}</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item}>{translate(item)}</option>)}</select></label>
       <label className="form-field"><span>{translate("Transport")}</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item}>{item}</option>)}</select></label>
       <label className="calculator-check"><input type="checkbox" checked={broadcastPaid} onChange={(event) => setBroadcastPaid(event.target.checked)}/><span><strong>{translate("Add Rundfunkbeitrag (€18.36 per dwelling)")}</strong><small>{translate("Switch this off if another person in your dwelling already pays.")}</small></span></label>
       <label className="range-field"><span>{translate("Expected warm rent")}<strong>{money(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>{translate("Use a current listing or offer. This is the largest source of variation.")}</small></label>
@@ -53,7 +54,7 @@ export function CostOfLivingCalculator() {
     <section className="calculator-result" aria-live="polite">
       <span className="eyebrow">Planning estimate · {city}</span>
       <h2>≈ {money(result.total)}<small>{translate("/month")}</small></h2>
-      <p>Approximate annual budget: {money(result.total * 12)}. Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.</p>
+      <p>{translate("Approximate annual budget")}: {money(result.total * 12)}. {translate("Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.")}</p>
       <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{translate(label)}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{money(amount)}</strong></div>)}</div>
       <aside className="method-note"><strong>{translate("One useful estimate, with the assumptions visible")}</strong><p>{translate("Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.")}</p></aside>
     </section>
@@ -160,7 +161,8 @@ export function ArrivalChecklist() {
 }
 
 export function ApartmentAffordabilityCalculator() {
-  const { translate } = useLanguage();
+  const { translate, locale } = useLanguage();
+  const money = (value: number) => formatCurrency(value, locale);
   const [income, setIncome] = useState(2600);
   const [warmRent, setWarmRent] = useState(900);
   const [excludedUtilities, setExcludedUtilities] = useState(90);
@@ -179,7 +181,7 @@ export function ApartmentAffordabilityCalculator() {
     </form>
     <section className="calculator-result" aria-live="polite">
       <span className="eyebrow">{translate("Apartment affordability check")}</span><h2>{housingShare}%<small>{translate("of net income for housing")}</small></h2>
-      <div className={`affordability-status affordability-${housingShare <= 30 ? "good" : housingShare <= 40 ? "medium" : "high"}`}><strong>{translate(label)}</strong><span>{money(leftAfterHousing)} remains after housing; {money(flexibleAmount)} after the fixed commitments you entered.</span></div>
+      <div className={`affordability-status affordability-${housingShare <= 30 ? "good" : housingShare <= 40 ? "medium" : "high"}`}><strong>{translate(label)}</strong><span>{translate("Remaining after housing")}: {money(leftAfterHousing)}; {translate("Remaining after fixed commitments")}: {money(flexibleAmount)}.</span></div>
       <div className="cost-bars"><div><span>{translate("Warm rent")}</span><div><i style={{ width: `${Math.min(100, (warmRent / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(warmRent)}</strong></div><div><span>{translate("Excluded utilities")}</span><div><i style={{ width: `${Math.min(100, (excludedUtilities / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(excludedUtilities)}</strong></div><div><span>{translate("Other commitments")}</span><div><i style={{ width: `${Math.min(100, (fixedCommitments / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(fixedCommitments)}</strong></div></div>
       <aside className="method-note"><strong>{translate("This is a stress check, not an approval rule")}</strong><p>{translate("There is no universal legal 30% rent rule. Landlords use their own evidence and criteria. Check whether heating is included, then add food, transport, health costs, savings and irregular bills before deciding.")}</p></aside>
     </section>
