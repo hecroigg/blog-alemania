@@ -299,5 +299,20 @@
   "privateMonthlyPremium": "privadoMensualPremium",
   "taxClass": "clase de impuestos",
   "weeklyHours": "Horas semanales",
-  "{city} practical snapshot": "Resumen práctico de {city}"
+  "{city} practical snapshot": "Resumen práctico de {city}",
+  "Planning estimate": "Estimación orientativa",
+  "/month": "/mes",
+  "Approximate annual budget:": "Presupuesto anual aproximado:",
+  "Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.": "No se incluyen las cotizaciones al seguro médico, ya que dependen de tu situación y es posible que ya estén descontadas del salario.",
+  "remains after housing;": "quedan después de pagar la vivienda;",
+  "after the fixed commitments you entered.": "después de los gastos fijos que has indicado.",
+  "Your entries equal": "Tus datos equivalen a",
+  "gross per hour, below €13.90. Check whether a legal exception applies or correct the salary and hours.": "brutos por hora, por debajo de 13,90 €. Comprueba si existe una excepción legal o corrige el salario y las horas.",
+  "/ hour": "/hora",
+  "hours / week": "horas/semana",
+  "estimated take-home": "de salario neto estimado",
+  "/ month": "/mes",
+  "Your employee social contributions use an estimated base of": "Las cotizaciones sociales del trabajador se calculan sobre una base estimada de",
+  "instead of the full": "en lugar del salario completo de",
+  "gross. The reduction fades progressively up to €2,000.": "brutos. La reducción disminuye progresivamente hasta los 2.000 €."
 }
