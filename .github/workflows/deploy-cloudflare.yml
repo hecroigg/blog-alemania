@@ -46,3 +46,46 @@ jobs:
           curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/robots.txt | grep -q sitemap.xml
           curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/ads.txt | grep -q 'pub-8337311370258201'
           curl -fsSL --retry 3 --retry-delay 3 https://germanybase.de/tools/anmeldung-finder >/dev/null
+
+      - name: Verify native-language routes and SEO metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          check_page() {
+            local path="$1" locale="$2"
+            local page
+            page="$(mktemp)"
+            curl -fsSL --retry 3 --retry-delay 3 "https://germanybase.de${path}" -o "$page"
+            if ! grep -Fq "<html lang=\"${locale}\"" "$page"; then
+              echo "::error::Wrong HTML language for ${path}, expected ${locale}"
+              exit 1
+            fi
+            if ! grep -Fq 'rel="canonical"' "$page"; then
+              echo "::error::Canonical metadata missing for ${path}"
+              exit 1
+            fi
+            if ! grep -Fq "https://germanybase.de${path}" "$page"; then
+              echo "::error::Native canonical URL missing for ${path}"
+              exit 1
+            fi
+            rm -f "$page"
+            echo "Verified ${locale}: ${path}"
+          }
+
+          check_page "/es/guias/midijob-alemania-2026" es
+          check_page "/en/guides/midijob-germany-2026" en
+          check_page "/de/ratgeber/midijob-deutschland-2026" de
+          check_page "/es/herramientas/calculadora-salario" es
+          check_page "/en/tools/cost-of-living" en
+          check_page "/de/werkzeuge/gehaltsrechner" de
+          check_page "/es/ciudades/berlin" es
+          check_page "/de/staedte/berlin" de
+          check_page "/es/guias" es
+          check_page "/de/ratgeber" de
+
+          redirect_code="$(curl -sS -o /dev/null -w '%{http_code}' 'https://germanybase.de/es/guides/midijob-alemania-2026')"
+          if [[ "$redirect_code" != "301" && "$redirect_code" != "308" ]]; then
+            echo "::error::Old Spanish guide route should permanently redirect; got $redirect_code"
+            exit 1
+          fi
+          echo "Legacy route redirects correctly ($redirect_code)"
