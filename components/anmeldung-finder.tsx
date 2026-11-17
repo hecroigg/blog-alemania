@@ -4,6 +4,7 @@ import { useState } from "react";
 import { registrationCities, type RegistrationLocale } from "@/lib/content/city-registration";
 import { useLanguage } from "@/components/language-provider";
 import { cityUrl } from "@/lib/locale-paths";
+import { localizedCityName } from "@/lib/city-labels";
 
 const text = {
   en: {
@@ -27,7 +28,7 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
       <div className="registration-finder-controls">
         <label>{ui.city}
           <select value={city} onChange={event=>setCity(event.target.value)}>
-            {registrationCities.map(item=><option key={item.slug} value={item.slug}>{item.name}</option>)}
+            {registrationCities.map(item=><option key={item.slug} value={item.slug}>{localizedCityName(locale,item.slug,item.name)}</option>)}
           </select>
         </label>
         <label>{ui.case}
@@ -44,7 +45,7 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
         </label>
       </div>
       <div className="registration-finder-result" aria-live="polite" lang={locale}>
-        <span className="eyebrow">{selected.name} · Anmeldung</span>
+        <span className="eyebrow">{localizedCityName(locale,selected.slug,selected.name)} · Anmeldung</span>
         <h2>{ui.title}</h2>
         <p>{ui.normal}</p>
         <div className="registration-info"><strong>{from==="abroad"?ui.abroad:ui.domestic}</strong><p>{from==="abroad"?ui.first:ui.within}</p></div>
@@ -52,7 +53,7 @@ export function AnmeldungFinder({ initialCity = "mannheim" }: { initialCity?: st
         <h3>{ui.extra}</h3>
         <p>{selected.note[locale]}</p>
         <a className="button button-primary" href={selected.officialUrl} target="_blank" rel="noopener noreferrer">{ui.official} ↗</a>
-        <a className="registration-city-link" href={cityUrl(locale,selected.slug)!}>{ui.cityLink}: {selected.name} →</a>
+        <a className="registration-city-link" href={cityUrl(locale,selected.slug)!}>{ui.cityLink}: {localizedCityName(locale,selected.slug,selected.name)} →</a>
         <h3>{ui.docs}</h3>
         <ul>{ui.documents.map(item=><li key={item}>{item}</li>)}</ul>
         <h3>{ui.tip}</h3>
