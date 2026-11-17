@@ -145,7 +145,7 @@ export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:
   }
   const url=absoluteUrl(toolUrl(locale,id));
   const meta=labels[id][locale];
-  return <div lang={locale}>
+  return <div lang={locale} data-no-translate>
     {id==="rental-deposit" && <section className="page-hero"><div className="shell"><h1>{meta.title}</h1><p>{meta.description}</p></div></section>}
     {translateTree(tree,locale)}
     <JsonLd data={{
@@ -213,5 +213,5 @@ export function LocalizedOtherPage({locale,id}:{locale:SiteLocale;id:OtherPageId
     id==="authorities" ? OldAuthorities() : id==="emergency" ? OldEmergency() :
     id==="data-status" ? OldDataStatus() : id==="costs-deadlines" ? OldDeadlines() :
     OldExplorer();
-  return <div lang={locale}>{translateTree(content,locale)}</div>;
+  return <div lang={locale} data-no-translate>{translateTree(content,locale)}</div>;
 }
