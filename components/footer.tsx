@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { sectionPath, hubPath, type HubKey } from "@/lib/localized-paths";
+import { sectionPath, hubPath, auxiliaryPath, type HubKey } from "@/lib/localized-paths";
 import { siteConfig } from "@/lib/site";
 
 type Lang = "en" | "es" | "de";
@@ -61,6 +61,8 @@ export function Footer() {
           {sectionSlugs.map((slug, index) => <Link href={hubPath(locale, slug as HubKey)} key={slug}>{copy.sections[index]}</Link>)}
           <Link href={sectionPath(locale, "guides")}>{copy.guides}</Link>
           <Link href={sectionPath(locale, "cities")}>{copy.cities}</Link>
+          <Link href={sectionPath(locale, "tools")}>{locale === "es" ? "Herramientas" : locale === "de" ? "Werkzeuge" : "Tools"}</Link>
+          <Link href={auxiliaryPath(locale, "plan")}>{locale === "es" ? "Planifica tu mudanza" : locale === "de" ? "Umzug planen" : "Plan your move"}</Link>
         </div>
         <div>
           <h2>{copy.people}</h2>
