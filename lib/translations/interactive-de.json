@@ -86,7 +86,7 @@
   "English": "Englisch",
   "Enrolled student": "Eingeschriebener Student",
   "Enter weekly hours to calculate": "Geben Sie die zu berechnenden Wochenstunden ein",
-  "Erasmus / exchange": "Erasmus / Austausch",
+  "Erasmus / exchange": "Erasmus und Austausch",
   "Erasmus confirmation": "Erasmus-Bestätigung",
   "Español": "Spanisch",
   "Estimated deduction breakdown": "Geschätzte Abzugsaufschlüsselung",
@@ -99,7 +99,7 @@
   "First week": "Erste Woche",
   "For example: technology, tram, Bavaria": "Zum Beispiel: Technik, Straßenbahn, Bayern",
   "Format and amount are route-specific. Do not rely on a generic checklist.": "Format und Betrag sind streckenspezifisch. Verlassen Sie sich nicht auf eine generische Checkliste.",
-  "Freelancer": "Freiberufler",
+  "Freelancer": "Freiberufliche Tätigkeit",
   "Get a more precise result": "Erhalten Sie ein genaueres Ergebnis",
   "Groceries": "Lebensmittel",
   "Gross monthly pay is above the Midijob ceiling. Standard social-insurance rules normally apply up to the contribution ceilings.": "Der Bruttomonatslohn liegt über der Midijob-Obergrenze. Bis zu den Beitragsgrenzen gelten in der Regel die üblichen Sozialversicherungsregeln.",
@@ -117,7 +117,7 @@
   "Housing (your input)": "Wohnen (Ihre Eingabe)",
   "Housing and registration": "Wohnen und Anmeldung",
   "Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.": "Wohnen ist Ihr Input. Minimum setzt Hausmannskost, einen kostengünstigen Mobilfunktarif, eingeschränktes Auswärtsessen und nur grundlegende Hygiene- und Haushaltseinkäufe voraus; Es wird keine unerklärte Erfolgsgebühr hinzugefügt. Der Deutschlandticket (63 €), der förderfähige Deutschlandsemesterticket (37,80 €) und der Rundfunkbeitrag (18,36 € pro Wohnung) sind offizielle Beträge für 2026.",
-  "Housing pressure": "Gehäusedruck",
+  "Housing pressure": "Wohnungsmarktdruck",
   "Hygiene & household basics": "Hygiene- und Haushaltsgrundlagen",
   "Identity and travel document. Check validity before booking.": "Identitäts- und Reisedokument. Überprüfen Sie vor der Buchung die Gültigkeit.",
   "Identity or property documents appear inconsistent or altered": "Identitäts- oder Eigentumsdokumente scheinen inkonsistent oder geändert zu sein",
@@ -315,5 +315,6 @@
   "Your employee social contributions use an estimated base of": "Die Arbeitnehmerbeiträge zur Sozialversicherung werden auf einer geschätzten Grundlage von",
   "instead of the full": "statt des vollen Bruttobetrags von",
   "gross. The reduction fades progressively up to €2,000.": "Brutto berechnet. Die Ermäßigung nimmt bis zu 2.000 € schrittweise ab.",
-  "Open city guide": "Stadtführer öffnen"
+  "Open city guide": "Stadtführer öffnen",
+  "housing pressure": "Wohnungsmarktdruck"
 }
