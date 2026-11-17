@@ -9,7 +9,7 @@ import { HolidayMinimumCalculator } from "@/components/holiday-minimum-calculato
 import { exactGuideUi, getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/content/exact-guides";
 import { exactGuidePath, findExactGuideRoute } from "@/lib/exact-guide-routes";
-import { isSearchLocale, localeLabels, searchLocales, supportedLocales, type Locale } from "@/lib/platform-data";
+import { isSearchLocale, localeLabels, searchLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 const stripCrawlerSuffix = (slug: string) => slug.split(":")[0];
@@ -67,7 +67,7 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
         {guide.sections.map((section) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}</section>)}
         <section className="faq-section" id="faqs"><h2>{ui.questions}</h2>{guide.faqs.map((faq) => <details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>
         <section className="sources-section" id="sources"><h2>{ui.sources}</h2><ul className="source-list">{guide.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span><strong>{source.name}</strong>{source.note && <small>{source.note}</small>}</span><Icon name="external" size={17}/></a></li>)}</ul></section>
-        <nav className="locale-alternates" aria-label={ui.otherLanguages}><strong>{ui.otherLanguages}</strong><div>{supportedLocales.map((item) => <Link href={exactGuidePath(item, match.key)} hrefLang={item} lang={item} aria-current={item === locale ? "page" : undefined} key={item}>{localeLabels[item].flag} {localeLabels[item].label}</Link>)}</div></nav>
+        <nav className="locale-alternates" aria-label={ui.otherLanguages}><strong>{ui.otherLanguages}</strong><div>{searchLocales.map((item) => <Link href={exactGuidePath(item, match.key)} hrefLang={item} lang={item} aria-current={item === locale ? "page" : undefined} key={item}>{localeLabels[item].flag} {localeLabels[item].label}</Link>)}</div></nav>
       </div>
       <aside className="article-side"><div className="source-stamp"><Icon name="shield" size={20}/><strong>{ui.official}</strong><p>{guide.sources[0]?.note}</p></div><AdSlot placement="sidebar"/></aside>
     </div>
