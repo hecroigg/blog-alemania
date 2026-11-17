@@ -56,7 +56,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
   const articleSchema = {
     "@context": "https://schema.org", "@type": "Article",
     headline: guide.title, description: guide.description,
-    datePublished: guide.updated, dateModified: guide.updated,
+    dateModified: guide.updated,
     mainEntityOfPage: canonical, inLanguage: locale,
     author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") },
     publisher: { "@type": "Organization", name: siteConfig.name },
@@ -155,13 +155,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
           <AdSlot placement="sidebar" />
         </aside>
       </div>
-      <JsonLd data={[articleSchema, {
-        "@context": "https://schema.org", "@type": "FAQPage", inLanguage: locale,
-        mainEntity: guide.faqs.map((faq) => ({
-          "@type": "Question", name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
-        })),
-      }]} />
+      <JsonLd data={articleSchema}/>
     </article>
   );
 }
