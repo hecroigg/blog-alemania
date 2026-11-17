@@ -43,10 +43,6 @@ function capitaliseFirstLetter(value: string) {
   return value.replace(/\p{L}/u, (letter) => letter.toLocaleUpperCase());
 }
 
-function startsAVisibleLabel(element: Element) {
-  return Boolean(element.closest("h1, h2, h3, h4, h5, h6, th, summary, option, label, button, .eyebrow, .desktop-nav, .mobile-menu nav, .toc, .topic-list, .site-footer a, .sidebar-card a, .city-snapshot, .requirement-grid, .timeline-stage h3, .status-pill"));
-}
-
 function catalogValue(catalog: TranslationCatalog | null, source: string) {
   const direct = catalog?.[source];
   if (direct) return direct;
@@ -82,7 +78,7 @@ function translateRoot(root: Node, catalog: TranslationCatalog | null, locale: L
     const key = source.replace(/\s+/g, " ").trim();
     if (parent.tagName === "OPTION" && !parent.hasAttribute("value")) parent.setAttribute("value", key);
     const replacement = key !== "GermanyBase" && key !== "Living Germany" ? catalogValue(catalog, key) : key;
-    const polished = startsAVisibleLabel(parent) ? capitaliseFirstLetter(replacement) : replacement;
+    const polished = replacement; // Preserve source/catalog spelling; especially Spanish and German casing.
     const next = replacement !== key || polished !== key ? replaceKeepingWhitespace(source, polished) : source;
     if (current !== next) node.nodeValue = next;
     translatedText.set(node, next);
