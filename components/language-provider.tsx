@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { supportedLocales, searchLocales, type Locale, uiCopy } from "@/lib/platform-data";
 import interactiveEs from "@/lib/translations/interactive-es.json";
 import interactiveDe from "@/lib/translations/interactive-de.json";
@@ -122,6 +123,7 @@ const initialRuntimeCatalogs: Partial<Record<Locale, TranslationCatalog>> = {
 };
 
 export function LanguageProvider({ children, initialLocale = "en" }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const pathname = usePathname();
   const [locale, updateLocale] = useState<Locale>(initialLocale);
   const observerRef = useRef<MutationObserver | null>(null);
   const originalTitleRef = useRef<string | null>(null);
@@ -130,11 +132,11 @@ export function LanguageProvider({ children, initialLocale = "en" }: { children:
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
     const browser = navigator.language.split("-")[0];
-    const routeLocale = window.location.pathname.split("/").filter(Boolean)[0] || null;
+    const routeLocale = pathname.split("/").filter(Boolean)[0] || null;
     const next = isLocale(routeLocale) ? routeLocale : isPublicLocale(saved) ? saved : isPublicLocale(browser) ? browser : "en";
     document.documentElement.lang = next;
     queueMicrotask(() => updateLocale(next));
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     let cancelled = false;
