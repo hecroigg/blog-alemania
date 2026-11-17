@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { cityProfiles, getCitizenshipGroup, movePurposes, nationalityOptions, stayLengths } from "@/lib/platform-data";
+import { toolUrl } from "@/lib/locale-paths";
 
 type Answers = { nationality: string; residence: string; purpose: string; stay: string; city: string; housing: string; status: string; insurance: string; household: string };
 type Translate = (source: string, replacements?: Record<string, string>, capitalise?: boolean) => string;
@@ -15,7 +16,8 @@ function SelectField({ label, value, options, onChange, translate }: { label: st
 }
 
 export function MovePlanner() {
-  const { translate } = useLanguage();
+  const { locale, translate } = useLanguage();
+  const lang=locale==="es"||locale==="de"?locale:"en";
   const [answers, setAnswers] = useState(initial);
   const [generated, setGenerated] = useState(false);
   const update = (key: keyof Answers, value: string) => setAnswers((current) => ({ ...current, [key]: value }));
@@ -78,7 +80,7 @@ export function MovePlanner() {
       <div className="timeline-grid">
         {([ ["Before arriving", plan.before], ["First days", plan.firstDays], ["First week", plan.firstWeek], ["First month", plan.firstMonth], ["Later", plan.later] ] as const).map(([title, items], index) => <article className="timeline-stage" key={title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{translate(title, undefined, true)}</h3><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}
       </div>
-      <div className="plan-next"><Link className="button button-primary" href="/tools/document-checklist">{translate("Build document checklist", undefined, true)}</Link><Link className="button button-secondary" href="/tools/cost-of-living">{translate("Calculate monthly costs", undefined, true)}</Link><a className="button button-secondary" href={city.officialUrl} target="_blank" rel="noreferrer">{translate("Open the official {city} portal", { city: city.name }, true)}</a></div>
+      <div className="plan-next"><Link className="button button-primary" href={toolUrl(lang,"document-checklist")}>{translate("Build document checklist", undefined, true)}</Link><Link className="button button-secondary" href={toolUrl(lang,"cost-of-living")}>{translate("Calculate monthly costs", undefined, true)}</Link><a className="button button-secondary" href={city.officialUrl} target="_blank" rel="noreferrer">{translate("Open the official {city} portal", { city: city.name }, true)}</a></div>
     </section>}
   </div>;
 }

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { employmentFigures } from "@/lib/employment-data";
+import { toolUrl } from "@/lib/locale-paths";
+import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
 
 const employmentAnswers = {
   minijob: { name: "Likely Minijob", note: "Regular average earnings are within the €603 monthly limit. Other jobs can change the classification.", href: "/guides/minijob-germany" },
@@ -14,7 +16,8 @@ const employmentAnswers = {
 } as const;
 
 export function EmploymentTypeTool() {
-  const { translate } = useLanguage();
+  const { locale, translate } = useLanguage();
+  const lang=locale==="es"||locale==="de"?locale:"en";
   const [gross, setGross] = useState(1_200);
   const [hours, setHours] = useState(16);
   const [student, setStudent] = useState(true);
@@ -28,11 +31,11 @@ export function EmploymentTypeTool() {
 
   return <div className="employment-checker">
     <form onSubmit={(event) => event.preventDefault()}>
-      <label className="form-field"><span>Gross pay per month</span><input type="number" min="0" step="25" value={gross} onChange={(event) => setGross(Number(event.target.value) || 0)}/></label>
-      <label className="form-field"><span>Weekly working hours</span><input type="number" min="0" max="80" step="0.5" value={hours} onChange={(event) => setHours(Number(event.target.value) || 0)}/></label>
-      <label className="calculator-check compact-check"><input type="checkbox" checked={student} onChange={(event) => setStudent(event.target.checked)}/><span><strong>Currently enrolled</strong><small>Your studies remain your main activity.</small></span></label>
-      <label className="calculator-check compact-check"><input type="checkbox" checked={specialPattern} onChange={(event) => setSpecialPattern(event.target.checked)}/><span><strong>Qualifying special work pattern</strong><small>Mainly evening, night, weekend or semester-break work for no more than 26 weeks.</small></span></label>
+      <label className="form-field"><span>{translate("Gross pay per month",undefined,true)}</span><input type="number" min="0" step="25" value={gross} onChange={(event) => setGross(Number(event.target.value) || 0)}/></label>
+      <label className="form-field"><span>{translate("Weekly working hours",undefined,true)}</span><input type="number" min="0" max="80" step="0.5" value={hours} onChange={(event) => setHours(Number(event.target.value) || 0)}/></label>
+      <label className="calculator-check compact-check"><input type="checkbox" checked={student} onChange={(event) => setStudent(event.target.checked)}/><span><strong>{translate("Currently enrolled",undefined,true)}</strong><small>{translate("Your studies remain your main activity.")}</small></span></label>
+      <label className="calculator-check compact-check"><input type="checkbox" checked={specialPattern} onChange={(event) => setSpecialPattern(event.target.checked)}/><span><strong>{translate("Qualifying special work pattern",undefined,true)}</strong><small>{translate("Mainly evening, night, weekend or semester-break work for no more than 26 weeks.")}</small></span></label>
     </form>
-    <section aria-live="polite"><span className="eyebrow">Quick classification</span><h3>{translate(answer.name)}</h3><p>{translate(answer.note)}</p><Link className="button button-secondary" href={answer.href}>Check the detailed rules</Link><small>This tool cannot assess residence permission, multiple jobs or every insurance exception.</small></section>
+    <section aria-live="polite"><span className="eyebrow">{translate("Quick classification",undefined,true)}</span><h3>{translate(answer.name)}</h3><p>{translate(answer.note)}</p><Link className="button button-secondary" href={answer.href.includes("/guides/minijob")?localizedGeneralPath(lang,"minijob-germany")!:answer.href.includes("/guides/werkstudent")?localizedGeneralPath(lang,"werkstudent-germany")!:answer.href.includes("#midijob")?toolUrl(lang,"employment-types")+"#midijob":toolUrl(lang,"salary-calculator")}>{translate("Check the detailed rules",undefined,true)}</Link><small>{translate("This tool cannot assess residence permission, multiple jobs or every insurance exception.")}</small></section>
   </div>;
 }

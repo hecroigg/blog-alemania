@@ -1,7 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { supportedLocales, searchLocales, type Locale, uiCopy } from "@/lib/platform-data";
+import interactiveEs from "@/lib/translations/interactive-es.json";
+import interactiveDe from "@/lib/translations/interactive-de.json";
 
 type LanguageContextValue = {
   locale: Locale;
@@ -114,20 +117,26 @@ function isPublicLocale(value: string | null): value is Locale {
   return Boolean(value && (searchLocales as readonly string[]).includes(value));
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, updateLocale] = useState<Locale>("en");
+const initialRuntimeCatalogs: Partial<Record<Locale, TranslationCatalog>> = {
+  es: interactiveEs as TranslationCatalog,
+  de: interactiveDe as TranslationCatalog,
+};
+
+export function LanguageProvider({ children, initialLocale = "en" }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const pathname = usePathname();
+  const [locale, updateLocale] = useState<Locale>(initialLocale);
   const observerRef = useRef<MutationObserver | null>(null);
   const originalTitleRef = useRef<string | null>(null);
-  const [translations, setTranslations] = useState<TranslationCatalog | null>(null);
+  const [translations, setTranslations] = useState<TranslationCatalog | null>(initialRuntimeCatalogs[initialLocale] || null);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(storageKey);
     const browser = navigator.language.split("-")[0];
-    const routeLocale = window.location.pathname.split("/").filter(Boolean)[0] || null;
+    const routeLocale = pathname.split("/").filter(Boolean)[0] || null;
     const next = isLocale(routeLocale) ? routeLocale : isPublicLocale(saved) ? saved : isPublicLocale(browser) ? browser : "en";
     document.documentElement.lang = next;
     queueMicrotask(() => updateLocale(next));
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     let cancelled = false;
@@ -139,7 +148,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         ...Object.entries(uiCopy.en.navigation).map(([path, label]) => [label, uiCopy[locale].navigation[path]]),
         ["Plan", uiCopy[locale].plan], ["Visas", uiCopy[locale].visa], ["Tools", uiCopy[locale].tools], ["Cities", uiCopy[locale].cities],
       ]);
-      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...navigationCatalog } : null;
+      const catalog = baseCatalog && navigationCatalog ? { ...baseCatalog, ...(initialRuntimeCatalogs[locale] || {}), ...navigationCatalog } : null;
       if (cancelled) return;
       setTranslations(catalog);
       if (!originalTitleRef.current) originalTitleRef.current = document.title;

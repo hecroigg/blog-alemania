@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
-import { LocalizedCityPage, cityDetailMetadata, cityStaticParams } from "@/components/localized-cities";
-
+import { permanentRedirect } from "next/navigation";
+import { cityUrl } from "@/lib/locale-paths";
 type Props = { params: Promise<{ slug: string }> };
-export function generateStaticParams() { return cityStaticParams(); }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return cityDetailMetadata("es", (await params).slug);
-}
-export default async function Page({ params }: Props) {
-  return <LocalizedCityPage locale="es" slug={(await params).slug} />;
+export default async function Legacy({ params }: Props) {
+ const slug = (await params).slug;
+ permanentRedirect(cityUrl("es", slug) || "/es/ciudades");
 }

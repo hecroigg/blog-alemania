@@ -1,10 +1,11 @@
 import { exactGuideSlugs, type ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { supportedLocales, type Locale } from "@/lib/platform-data";
+import { guideUrl, equivalentPath, sectionPath } from "@/lib/locale-paths";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
 import { generalGuideFromSlug, localizedGeneralPath, type EditorialLocale } from "@/lib/content/localized-general-guides";
 
 export function exactGuidePath(locale: Locale, key: ExactGuideKey) {
-  return `/${locale}/guides/${exactGuideSlugs[key][locale]}`;
+  return (locale === "en" || locale === "es" || locale === "de") ? guideUrl(locale, exactGuideSlugs[key][locale]) : `/${locale}/guides/${exactGuideSlugs[key][locale]}`;
 }
 
 export function findExactGuideRoute(locale: string, slug: string) {
@@ -25,13 +26,13 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
 
   // The old unprefixed guide library remains available, but new language choices
   // always navigate to a distinct language-specific URL.
-  if (pathname === "/guides" || pathname === "/guides/") return targetHome + "/guides";
-  if (parts.length === 2 && parts[1] === "guides" &&
-      (supportedLocales as readonly string[]).includes(parts[0])) return targetHome + "/guides";
+  if (pathname === "/guides" || pathname === "/guides/") return (locale === "es" || locale === "de" || locale === "en") ? sectionPath(locale, "guides") : targetHome;
+  if (parts.length === 2 && ["guides", "guias", "ratgeber"].includes(parts[1]) &&
+      (supportedLocales as readonly string[]).includes(parts[0])) return (locale === "es" || locale === "de" || locale === "en") ? sectionPath(locale, "guides") : targetHome;
 
   let sourceLocale: Locale | null = null;
   let sourceSlug: string | null = null;
-  if (parts.length === 3 && parts[1] === "guides" &&
+  if (parts.length === 3 && (parts[1] === "guides" || parts[1] === "guias" || parts[1] === "ratgeber") &&
       (supportedLocales as readonly string[]).includes(parts[0])) {
     sourceLocale = parts[0] as Locale;
     sourceSlug = parts[2];
@@ -53,6 +54,10 @@ export function switchLocalizedPath(pathname: string, locale: Locale): string {
     if (exact) return exactGuidePath(locale, exact.key);
   }
 
+  if (locale === "en" || locale === "es" || locale === "de") {
+    const equivalent = equivalentPath(pathname, locale);
+    if (equivalent) return equivalent;
+  }
   // Never pretend an untranslated tool or generic page is a translated page.
   // Take the visitor to the chosen language's real index instead.
   return targetHome;

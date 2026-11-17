@@ -14,6 +14,7 @@ import {
 } from "@/lib/content/guides/practical-systems-localized";
 import { localeLabels, searchLocales } from "@/lib/platform-data";
 import { absoluteUrl, siteConfig } from "@/lib/site";
+import { sectionPath } from "@/lib/locale-paths";
 
 type SearchLocale = "en"|"es"|"de"|"fr";
 const toId=(value:string)=>value.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
@@ -49,7 +50,7 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",inLanguage:locale,mainEntity:guide.faqs.map(faq=>({"@type":"Question",name:faq.question,acceptedAnswer:{"@type":"Answer",text:faq.answer}}))};
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner">
-      <Breadcrumbs items={[{label:t.home,href:"/"},{label:t.guides,href:`/${locale}/guides`},{label:guide.title}]}/>
+      <Breadcrumbs items={[{label:t.home,href:"/"+locale},{label:t.guides,href:sectionPath(locale==="fr"?"en":locale,"guides")},{label:guide.title}]}/>
       <span className="eyebrow">{guide.eyebrow}</span><h1>{guide.title}</h1><p className="article-summary">{guide.summary}</p>
       <div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {t.read}</span><span><Icon name="check" size={16}/> {t.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span>{t.reviewed} <Link href="/about">GermanyBase Editorial</Link></span></div>
     </div></header>

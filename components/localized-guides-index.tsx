@@ -10,12 +10,13 @@ import {
 } from "@/lib/content/localized-general-guides";
 import { isSearchLocale, searchLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl } from "@/lib/site";
+import { sectionPath } from "@/lib/locale-paths";
 
 export function localizedGuidesMetadata(locale: Locale): Metadata {
   const ui = exactGuideUi[locale];
-  const canonical = absoluteUrl("/" + locale + "/guides");
+  const canonical = absoluteUrl(locale === "en" || locale === "es" || locale === "de" ? sectionPath(locale, "guides") : `/${locale}/guides`);
   const languages = Object.fromEntries(
-    searchLocales.map((item) => [item, absoluteUrl("/" + item + "/guides")])
+    searchLocales.map((item) => [item, absoluteUrl(sectionPath(item, "guides"))])
   );
   return {
     title: ui.libraryTitle,

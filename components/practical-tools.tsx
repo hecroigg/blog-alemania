@@ -3,10 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { cityProfiles, getCitizenshipGroup, nationalityOptions, trackedFacts } from "@/lib/platform-data";
+import { localizedCityName } from "@/lib/city-labels";
 
-function money(value: number) { return new Intl.NumberFormat("en-DE", { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
+function money(value: number, locale: string = "en") { return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value); }
 
 export function CostOfLivingCalculator() {
+  const { locale, translate: t } = useLanguage();
+  const localMoney = (value: number) => money(value, locale);
   const [city, setCity] = useState("Berlin");
   const [household, setHousehold] = useState("One person");
   const [lifestyle, setLifestyle] = useState("Normal");
@@ -42,46 +45,48 @@ export function CostOfLivingCalculator() {
 
   return <div className="calculator-layout">
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
-      <label className="form-field"><span>City or region</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug}>{item.name}</option>)}</select></label>
-      <label className="form-field"><span>Household</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="form-field"><span>Lifestyle</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="form-field"><span>Transport</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item}>{item}</option>)}</select></label>
-      <label className="calculator-check"><input type="checkbox" checked={broadcastPaid} onChange={(event) => setBroadcastPaid(event.target.checked)}/><span><strong>Add Rundfunkbeitrag (€18.36 per dwelling)</strong><small>Switch this off if another person in your dwelling already pays.</small></span></label>
-      <label className="range-field"><span>Expected warm rent <strong>{money(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>Use a current listing or offer. This is the largest source of variation.</small></label>
+      <label className="form-field"><span>{t("City or region", undefined, true)}</span><select value={city} onChange={(event) => setCity(event.target.value)}>{cityProfiles.map((item) => <option key={item.slug} value={item.name}>{localizedCityName(locale==="es"||locale==="de"?locale:"en",item.slug,item.name)}</option>)}</select></label>
+      <label className="form-field"><span>{t("Household", undefined, true)}</span><select value={household} onChange={(event) => setHousehold(event.target.value)}>{["One person", "Couple", "Couple + children", "Student", "WG"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
+      <label className="form-field"><span>{t("Lifestyle", undefined, true)}</span><select value={lifestyle} onChange={(event) => setLifestyle(event.target.value)}>{["Minimum", "Normal", "Comfortable"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
+      <label className="form-field"><span>{t("Transport", undefined, true)}</span><select value={transport} onChange={(event) => setTransport(event.target.value)}>{["Deutschlandticket", "Deutschlandsemesterticket", "Bike", "Car", "Mixed"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label>
+      <label className="calculator-check"><input type="checkbox" checked={broadcastPaid} onChange={(event) => setBroadcastPaid(event.target.checked)}/><span><strong>{t("Add Rundfunkbeitrag (€18.36 per dwelling)")}</strong><small>{t("Switch this off if another person in your dwelling already pays.")}</small></span></label>
+      <label className="range-field"><span>{t("Expected warm rent", undefined, true)} <strong>{localMoney(rent)}</strong></span><input type="range" min="250" max="3000" step="25" value={rent} onChange={(event) => setRent(Number(event.target.value))}/><small>{t("Use a current listing or offer. This is the largest source of variation.")}</small></label>
     </form>
     <section className="calculator-result" aria-live="polite">
-      <span className="eyebrow">Planning estimate · {city}</span>
-      <h2>≈ {money(result.total)}<small>/month</small></h2>
-      <p>Approximate annual budget: {money(result.total * 12)}. Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.</p>
-      <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{label}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{money(amount)}</strong></div>)}</div>
-      <aside className="method-note"><strong>One useful estimate, with the assumptions visible</strong><p>Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.</p></aside>
+      <span className="eyebrow">{t("Planning estimate", undefined, true)} · {localizedCityName(locale==="es"||locale==="de"?locale:"en",cityProfiles.find(item=>item.name===city)?.slug||"",city)}</span>
+      <h2>≈ {localMoney(result.total)}<small>{t("/month")}</small></h2>
+      <p>{t("Approximate annual budget:", undefined, true)} {localMoney(result.total * 12)}. {t("Health-insurance contributions are excluded because they depend on status and may already be deducted from salary.")}</p>
+      <div className="cost-bars">{result.rows.map(([label, amount]) => <div key={label}><span>{t(label, undefined, true)}</span><div><i style={{ width: `${Math.min(100, (amount / result.total) * 180)}%` }}/></div><strong>{localMoney(amount)}</strong></div>)}</div>
+      <aside className="method-note"><strong>{t("One useful estimate, with the assumptions visible")}</strong><p>{t("Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.")}</p></aside>
     </section>
   </div>;
 }
 
 export function CityComparison() {
-  const { translate } = useLanguage();
+  const { locale, translate } = useLanguage();
+  const lang = locale==="es"||locale==="de"?locale:"en";
   const [selected, setSelected] = useState(["Berlin", "Munich", "Mannheim"]);
   const toggle = (name: string) => setSelected((current) => current.includes(name) ? current.filter((item) => item !== name) : current.length < 4 ? [...current, name] : current);
   const items = cityProfiles.filter((city) => selected.includes(city.name));
   return <div>
-    <fieldset className="city-picker"><legend>Choose 2–4 cities</legend>{cityProfiles.map((city) => <label key={city.slug}><input type="checkbox" checked={selected.includes(city.name)} onChange={() => toggle(city.name)} disabled={!selected.includes(city.name) && selected.length >= 4}/><span>{city.name}</span></label>)}</fieldset>
-    <div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>Trade-off</th>{items.map((city) => <th key={city.slug}>{city.name}<small>{city.state}</small></th>)}</tr></thead><tbody>
-      <tr><th>Housing pressure</th>{items.map((city) => <td key={city.slug}><span className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure, undefined, true)}</span></td>)}</tr>
-      <tr><th>Transport</th>{items.map((city) => <td key={city.slug}>{translate(city.transport, undefined, true)}</td>)}</tr>
-      <tr><th>Employment sectors</th>{items.map((city) => <td key={city.slug}>{city.sectors.map((sector, index) => <span key={sector}>{index ? " · " : ""}{translate(sector, undefined, index === 0)}</span>)}</td>)}</tr>
-      <tr><th>Universities</th>{items.map((city) => <td key={city.slug}>{translate(city.universities, undefined, true)}</td>)}</tr>
-      <tr><th>Airport/access</th>{items.map((city) => <td key={city.slug}>{city.airport}</td>)}</tr>
-      <tr><th>Nature</th>{items.map((city) => <td key={city.slug}>{translate(city.nature, undefined, true)}</td>)}</tr>
-      <tr><th>Official information</th>{items.map((city) => <td key={city.slug}><a className="text-link" href={city.officialUrl} target="_blank" rel="noreferrer">City portal</a></td>)}</tr>
+    <fieldset className="city-picker"><legend>{translate("Choose 2–4 cities", undefined, true)}</legend>{cityProfiles.map((city) => <label key={city.slug}><input type="checkbox" checked={selected.includes(city.name)} onChange={() => toggle(city.name)} disabled={!selected.includes(city.name) && selected.length >= 4}/><span>{localizedCityName(lang,city.slug,city.name)}</span></label>)}</fieldset>
+    <div className="comparison-wrap"><table className="comparison-table"><thead><tr><th>{translate("Trade-off", undefined, true)}</th>{items.map((city) => <th key={city.slug}>{localizedCityName(lang,city.slug,city.name)}<small>{city.state}</small></th>)}</tr></thead><tbody>
+      <tr><th>{translate("Housing pressure", undefined, true)}</th>{items.map((city) => <td key={city.slug}><span className={`pressure pressure-${city.housingPressure.toLowerCase().replace(" ", "-")}`}>{translate(city.housingPressure, undefined, true)}</span></td>)}</tr>
+      <tr><th>{translate("Transport", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.transport, undefined, true)}</td>)}</tr>
+      <tr><th>{translate("Employment sectors", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{city.sectors.map((sector, index) => <span key={sector}>{index ? " · " : ""}{translate(sector, undefined, index === 0)}</span>)}</td>)}</tr>
+      <tr><th>{translate("Universities", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.universities, undefined, true)}</td>)}</tr>
+      <tr><th>{translate("Airport/access", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.airport,undefined,true)}</td>)}</tr>
+      <tr><th>{translate("Nature", undefined, true)}</th>{items.map((city) => <td key={city.slug}>{translate(city.nature, undefined, true)}</td>)}</tr>
+      <tr><th>{translate("Official information", undefined, true)}</th>{items.map((city) => <td key={city.slug}><a className="text-link" href={city.officialUrl} target="_blank" rel="noreferrer">{translate("City portal", undefined, true)}</a></td>)}</tr>
     </tbody></table></div>
-    <p className="table-caption">No overall ranking: compare the trade-offs against your actual work, study, housing and commute options.</p>
+    <p className="table-caption">{translate("No overall ranking: compare the trade-offs against your actual work, study, housing and commute options.")}</p>
   </div>;
 }
 
 type ChecklistItem = { id: string; title: string; note: string; when: string };
 
 export function DocumentChecklist() {
+  const { locale, translate: t } = useLanguage();
   const [nationality, setNationality] = useState("Spain");
   const [purpose, setPurpose] = useState("Employment");
   const [completed, setCompleted] = useState<string[]>([]);
@@ -105,9 +110,9 @@ export function DocumentChecklist() {
   const items = [...universal, ...routeItems, ...purposeItems];
   const progress = Math.round((completed.filter((id) => items.some((item) => item.id === id)).length / items.length) * 100);
   return <div className="checklist-tool">
-    <div className="checklist-settings"><label className="form-field"><span>Nationality</span><select value={nationality} onChange={(event) => setNationality(event.target.value)}>{nationalityOptions.map((item) => <option key={item}>{item}</option>)}</select></label><label className="form-field"><span>Purpose</span><select value={purpose} onChange={(event) => setPurpose(event.target.value)}>{["Employment", "University", "Erasmus / exchange", "Ausbildung", "Family reunification", "Freelancer"].map((item) => <option key={item}>{item}</option>)}</select></label></div>
-    <div className="progress-card"><div><span>Document readiness</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>Saved on this device. No account required.</small></div>
-    <div className="document-list">{items.map((item) => <label className={completed.includes(item.id) ? "is-complete" : ""} key={item.id}><input type="checkbox" checked={completed.includes(item.id)} onChange={() => toggle(item.id)}/><span><strong>{item.title}</strong><small>{item.note}</small><em>{item.when}</em></span></label>)}</div>
+    <div className="checklist-settings"><label className="form-field"><span>{t("Nationality", undefined, true)}</span><select value={nationality} onChange={(event) => setNationality(event.target.value)}>{nationalityOptions.map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label><label className="form-field"><span>{t("Purpose", undefined, true)}</span><select value={purpose} onChange={(event) => setPurpose(event.target.value)}>{["Employment", "University", "Erasmus / exchange", "Ausbildung", "Family reunification", "Freelancer"].map((item) => <option key={item} value={item}>{t(item, undefined, true)}</option>)}</select></label></div>
+    <div className="progress-card"><div><span>{t("Document readiness", undefined, true)}</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>{t("Saved on this device. No account required.")}</small></div>
+    <div className="document-list">{items.map((item) => <label className={completed.includes(item.id) ? "is-complete" : ""} key={item.id}><input type="checkbox" checked={completed.includes(item.id)} onChange={() => toggle(item.id)}/><span><strong>{item.id === "route" ? (locale === "es" ? `Justificante de ${t(purpose).toLocaleLowerCase("es")}` : locale === "de" ? `Nachweis für ${t(purpose)}` : `${purpose} evidence`) : t(item.title, undefined, true)}</strong><small>{t(item.note)}</small><em>{t(item.when, undefined, true)}</em></span></label>)}</div>
   </div>;
 }
 
@@ -124,9 +129,10 @@ const scamSignals = [
 ];
 
 export function RentalScamChecker() {
+  const { translate: t } = useLanguage();
   const [checked, setChecked] = useState<number[]>([]);
   const level = checked.length >= 6 ? "Many warning signs" : checked.length >= 3 ? "Several warning signs" : checked.length ? "Some warning signs" : "No warning signs selected";
-  return <div className="scam-checker"><div className="scam-list">{scamSignals.map((item, index) => <label key={item}><input type="checkbox" checked={checked.includes(index)} onChange={() => setChecked((current) => current.includes(index) ? current.filter((value) => value !== index) : [...current, index])}/><span>{item}</span></label>)}</div><aside className={`risk-result risk-${checked.length >= 6 ? "high" : checked.length >= 3 ? "medium" : "low"}`}><span>Checklist result</span><h2>{level}</h2><p>This does not prove that a listing is genuine or fraudulent. Pause before paying, independently verify the property and contractual party, and seek qualified help if documents or payment instructions do not make sense.</p></aside></div>;
+  return <div className="scam-checker"><div className="scam-list">{scamSignals.map((item, index) => <label key={item}><input type="checkbox" checked={checked.includes(index)} onChange={() => setChecked((current) => current.includes(index) ? current.filter((value) => value !== index) : [...current, index])}/><span>{t(item)}</span></label>)}</div><aside className={`risk-result risk-${checked.length >= 6 ? "high" : checked.length >= 3 ? "medium" : "low"}`}><span>{t("Checklist result", undefined, true)}</span><h2>{t(level, undefined, true)}</h2><p>{t("This does not prove that a listing is genuine or fraudulent. Pause before paying, independently verify the property and contractual party, and seek qualified help if documents or payment instructions do not make sense.")}</p></aside></div>;
 }
 
 const arrivalTasks = [
@@ -147,15 +153,18 @@ const arrivalTasks = [
 const arrivalPeriods = ["Before arrival", "Arrival", "Anmeldung", "Health insurance", "Tax ID", "Bank", "Work or study", "Broadcast fee", "SIM and internet", "Transport"] as const;
 
 export function ArrivalChecklist() {
+  const { translate: t } = useLanguage();
   const storageKey = "living-germany-arrival-v1";
   const [completed, setCompleted] = useState<string[]>([]);
   useEffect(() => { let saved: string[] = []; try { saved = JSON.parse(window.localStorage.getItem(storageKey) || "[]"); } catch { saved = []; } queueMicrotask(() => setCompleted(saved)); }, []);
   const toggle = (id: string) => setCompleted((current) => { const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id]; window.localStorage.setItem(storageKey, JSON.stringify(next)); return next; });
   const progress = Math.round((completed.length / arrivalTasks.length) * 100);
-  return <div className="checklist-tool"><div className="progress-card"><div><span>Your Germany setup</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>Saved on this device. You can leave and return without creating an account.</small></div><div className="arrival-checklist arrival-timeline">{arrivalPeriods.map((period, index) => <section key={period}><h2><span>{String(index + 1).padStart(2, "0")}</span>{period}</h2>{arrivalTasks.filter(([group]) => group === period).map(([, id, task]) => <label className={completed.includes(id) ? "is-complete" : ""} key={id}><input type="checkbox" checked={completed.includes(id)} onChange={() => toggle(id)}/><span>{task}</span></label>)}</section>)}</div></div>;
+  return <div className="checklist-tool"><div className="progress-card"><div><span>{t("Your Germany setup", undefined, true)}</span><strong>{progress}%</strong></div><progress max="100" value={progress}>{progress}%</progress><small>{t("Saved on this device. You can leave and return without creating an account.")}</small></div><div className="arrival-checklist arrival-timeline">{arrivalPeriods.map((period, index) => <section key={period}><h2><span>{String(index + 1).padStart(2, "0")}</span>{t(period, undefined, true)}</h2>{arrivalTasks.filter(([group]) => group === period).map(([, id, task]) => <label className={completed.includes(id) ? "is-complete" : ""} key={id}><input type="checkbox" checked={completed.includes(id)} onChange={() => toggle(id)}/><span>{t(task)}</span></label>)}</section>)}</div></div>;
 }
 
 export function ApartmentAffordabilityCalculator() {
+  const { locale, translate: t } = useLanguage();
+  const localMoney = (value: number) => money(value, locale);
   const [income, setIncome] = useState(2600);
   const [warmRent, setWarmRent] = useState(900);
   const [excludedUtilities, setExcludedUtilities] = useState(90);
@@ -167,16 +176,16 @@ export function ApartmentAffordabilityCalculator() {
   const label = housingShare <= 30 ? "More breathing room" : housingShare <= 40 ? "Tight but possible" : "High housing pressure";
   return <div className="calculator-layout affordability-tool">
     <form className="calculator-controls" onSubmit={(event) => event.preventDefault()}>
-      <label className="form-field"><span>Monthly household net income</span><input type="number" min="0" step="50" value={income} onChange={(event) => setIncome(Number(event.target.value))}/></label>
-      <label className="form-field"><span>Warm rent (Warmmiete)</span><input type="number" min="0" step="25" value={warmRent} onChange={(event) => setWarmRent(Number(event.target.value))}/></label>
-      <label className="form-field"><span>Electricity, internet and costs outside warm rent</span><input type="number" min="0" step="10" value={excludedUtilities} onChange={(event) => setExcludedUtilities(Number(event.target.value))}/></label>
-      <label className="form-field"><span>Debt, insurance and other fixed commitments</span><input type="number" min="0" step="10" value={fixedCommitments} onChange={(event) => setFixedCommitments(Number(event.target.value))}/></label>
+      <label className="form-field"><span>{t("Monthly household net income", undefined, true)}</span><input type="number" min="0" step="50" value={income} onChange={(event) => setIncome(Number(event.target.value))}/></label>
+      <label className="form-field"><span>{t("Warm rent (Warmmiete)", undefined, true)}</span><input type="number" min="0" step="25" value={warmRent} onChange={(event) => setWarmRent(Number(event.target.value))}/></label>
+      <label className="form-field"><span>{t("Electricity, internet and costs outside warm rent", undefined, true)}</span><input type="number" min="0" step="10" value={excludedUtilities} onChange={(event) => setExcludedUtilities(Number(event.target.value))}/></label>
+      <label className="form-field"><span>{t("Debt, insurance and other fixed commitments", undefined, true)}</span><input type="number" min="0" step="10" value={fixedCommitments} onChange={(event) => setFixedCommitments(Number(event.target.value))}/></label>
     </form>
     <section className="calculator-result" aria-live="polite">
-      <span className="eyebrow">Apartment affordability check</span><h2>{housingShare}%<small>of net income for housing</small></h2>
-      <div className={`affordability-status affordability-${housingShare <= 30 ? "good" : housingShare <= 40 ? "medium" : "high"}`}><strong>{label}</strong><span>{money(leftAfterHousing)} remains after housing; {money(flexibleAmount)} after the fixed commitments you entered.</span></div>
-      <div className="cost-bars"><div><span>Warm rent</span><div><i style={{ width: `${Math.min(100, (warmRent / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(warmRent)}</strong></div><div><span>Excluded utilities</span><div><i style={{ width: `${Math.min(100, (excludedUtilities / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(excludedUtilities)}</strong></div><div><span>Other commitments</span><div><i style={{ width: `${Math.min(100, (fixedCommitments / Math.max(income, 1)) * 100)}%` }}/></div><strong>{money(fixedCommitments)}</strong></div></div>
-      <aside className="method-note"><strong>This is a stress check, not an approval rule</strong><p>There is no universal legal 30% rent rule. Landlords use their own evidence and criteria. Check whether heating is included, then add food, transport, health costs, savings and irregular bills before deciding.</p></aside>
+      <span className="eyebrow">{t("Apartment affordability check", undefined, true)}</span><h2>{housingShare}%<small>{t("of net income for housing")}</small></h2>
+      <div className={`affordability-status affordability-${housingShare <= 30 ? "good" : housingShare <= 40 ? "medium" : "high"}`}><strong>{t(label, undefined, true)}</strong><span>{localMoney(leftAfterHousing)} {t("remains after housing;")} {localMoney(flexibleAmount)} {t("after the fixed commitments you entered.")}</span></div>
+      <div className="cost-bars"><div><span>{t("Warm rent", undefined, true)}</span><div><i style={{ width: `${Math.min(100, (warmRent / Math.max(income, 1)) * 100)}%` }}/></div><strong>{localMoney(warmRent)}</strong></div><div><span>{t("Excluded utilities", undefined, true)}</span><div><i style={{ width: `${Math.min(100, (excludedUtilities / Math.max(income, 1)) * 100)}%` }}/></div><strong>{localMoney(excludedUtilities)}</strong></div><div><span>{t("Other commitments", undefined, true)}</span><div><i style={{ width: `${Math.min(100, (fixedCommitments / Math.max(income, 1)) * 100)}%` }}/></div><strong>{localMoney(fixedCommitments)}</strong></div></div>
+      <aside className="method-note"><strong>{t("This is a stress check, not an approval rule")}</strong><p>{t("There is no universal legal 30% rent rule. Landlords use their own evidence and criteria. Check whether heating is included, then add food, transport, health costs, savings and irregular bills before deciding.")}</p></aside>
     </section>
   </div>;
 }

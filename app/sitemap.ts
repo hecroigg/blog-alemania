@@ -1,99 +1,60 @@
 import type { MetadataRoute } from "next";
-import { audiences } from "@/lib/content/audiences";
-import { categories } from "@/lib/content/categories";
 import { cities } from "@/lib/content/cities";
 import { exactGuides } from "@/lib/content/exact-guides";
 import { generalEnglishGuides, localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
 import { practicalGuidePath, practicalGuideSlugs, type PracticalGuideKey } from "@/lib/content/guides/practical-systems-localized";
-import { trustPages } from "@/lib/content/trust";
-import { searchLocales } from "@/lib/platform-data";
+import {
+  locales, hubIds, hubUrl, cityUrl, sectionPath, toolIds, toolUrl,
+  otherPages, otherUrl, type SiteLocale, type OtherPageId,
+} from "@/lib/locale-paths";
 import { absoluteUrl } from "@/lib/site";
 
-const languages = ["en", "es", "de"] as const;
-const localizedAlternates = (path: (locale: typeof languages[number]) => string) => {
-  const mapped = Object.fromEntries(languages.map((locale) => [locale, absoluteUrl(path(locale))]));
-  return { ...mapped, "x-default": mapped.en as string };
+const alternates = (path: (lang: SiteLocale) => string) => {
+  const values = Object.fromEntries(locales.map((lang) => [lang, absoluteUrl(path(lang))]));
+  return { ...values, "x-default": values.en as string };
 };
+const record = (url: string, date: string, priority: number, localized: (lang: SiteLocale) => string): MetadataRoute.Sitemap[number] => ({
+  url: absoluteUrl(url), lastModified: new Date(date),
+  changeFrequency: "monthly", priority, alternates: { languages: alternates(localized) },
+});
 
+/**
+ * Only 200-OK, self-canonical URLs are allowed in the sitemap.
+ * Excludes all redirect aliases (/guides, /es/guides, /de/cities etc).
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const stable = [
-    "/en", "/es", "/de", "/guides", "/tools", "/plan",
-    "/visas-residence", "/explore-germany", "/glossary", "/authorities",
-    "/emergency", "/data-status", "/costs-deadlines",
-    "/trabajo/calculadora-salario", "/trabajo/tipos-de-empleo",
-    "/tools/cost-of-living", "/tools/compare-cities",
-    "/tools/document-checklist", "/tools/anmeldung-finder",
-    "/tools/rental-scam-checker", "/tools/first-30-days",
-    "/tools/apartment-affordability",
-  ].filter((value) => value !== "/guides"); // /guides redirects to /en/guides.
-
   return [
-    ...stable.map((path) => ({
-      url: absoluteUrl(path),
-      lastModified: new Date(["/en", "/es", "/de"].includes(path) ? "2026-11-17" : path === "/tools/anmeldung-finder" ? "2026-10-20" : "2026-10-08"),
-      changeFrequency: path === "/en" ? "weekly" as const : "monthly" as const,
-      priority: path === "/en" ? 1 : ["/es", "/de"].includes(path) ? .9 : .7,
-      ...(["/en", "/es", "/de"].includes(path) ? { alternates: { languages: localizedAlternates((locale) => "/" + locale) } } : {}),
-    })),
-    ...[...categories, ...audiences, ...trustPages].flatMap((item) =>
-      searchLocales.map((locale) => ({
-        url: absoluteUrl("/" + locale + "/" + item.slug),
-        lastModified: new Date("2026-11-17"),
-        changeFrequency: "monthly" as const,
-        priority: .7,
-        alternates: { languages: localizedAlternates((lang) => "/" + lang + "/" + item.slug) },
-      }))
+    ...locales.map((lang) => record("/" + lang, "2026-11-17", 1, (x) => "/" + x)),
+    ...hubIds.flatMap((id) => locales.map((lang) =>
+      record(hubUrl(lang, id)!, "2026-11-17", .7, (x) => hubUrl(x, id)!)
+    )),
+    ...locales.map((lang) =>
+      record(sectionPath(lang, "guides"), "2026-11-17", .9, (x) => sectionPath(x, "guides"))
     ),
-    ...searchLocales.map((locale) => ({
-      url: absoluteUrl("/" + locale + "/guides"),
-      lastModified: new Date("2026-11-17"),
-      changeFrequency: "monthly" as const,
-      priority: .9,
-      alternates: { languages: localizedAlternates((item) => "/" + item + "/guides") },
-    })),
-    ...generalEnglishGuides.flatMap((guide) =>
-      searchLocales.map((locale) => ({
-        url: absoluteUrl(localizedGeneralPath(locale, guide.slug)!),
-        lastModified: new Date(guide.updated),
-        changeFrequency: "monthly" as const,
-        priority: guide.featured ? .9 : .8,
-        alternates: { languages: localizedAlternates((item) => localizedGeneralPath(item, guide.slug)!) },
-      }))
-    ),
-    ...exactGuides.flatMap((guide) =>
-      searchLocales.map((locale) => ({
-        url: absoluteUrl(exactGuidePath(locale, guide.key)),
-        lastModified: new Date(guide.updated),
-        changeFrequency: "monthly" as const,
-        priority: .9,
-        alternates: { languages: localizedAlternates((item) => exactGuidePath(item, guide.key)) },
-      }))
-    ),
+    ...generalEnglishGuides.flatMap((guide) => locales.map((lang) =>
+      record(localizedGeneralPath(lang, guide.slug)!, guide.updated, guide.featured ? .9 : .8, (x) => localizedGeneralPath(x,guide.slug)!)
+    )),
+    ...exactGuides.flatMap((guide) => locales.map((lang) =>
+      record(exactGuidePath(lang, guide.key), guide.updated, .9, (x) => exactGuidePath(x, guide.key))
+    )),
     ...(Object.keys(practicalGuideSlugs) as PracticalGuideKey[]).flatMap((key) =>
-      searchLocales.map((locale) => ({
-        url: absoluteUrl(practicalGuidePath(locale, key)),
-        lastModified: new Date("2026-10-08"),
-        changeFrequency: "monthly" as const,
-        priority: .9,
-        alternates: { languages: localizedAlternates((item) => practicalGuidePath(item, key)) },
-      }))
+      locales.map((lang) => record(practicalGuidePath(lang,key), "2026-10-08", .9, (x) => practicalGuidePath(x,key)))
     ),
-    ...searchLocales.map((locale) => ({
-      url: absoluteUrl("/" + locale + "/cities"),
-      lastModified: new Date("2026-11-17"),
-      changeFrequency: "monthly" as const,
-      priority: .8,
-      alternates: { languages: localizedAlternates((item) => "/" + item + "/cities") },
-    })),
-    ...cities.flatMap((city) =>
-      searchLocales.map((locale) => ({
-        url: absoluteUrl("/" + locale + "/cities/" + city.slug),
-        lastModified: new Date(city.updated || "2026-09-23"),
-        changeFrequency: "monthly" as const,
-        priority: city.featured ? .8 : .7,
-        alternates: { languages: localizedAlternates((lang) => "/" + lang + "/cities/" + city.slug) },
-      }))
+    ...locales.map((lang) =>
+      record(sectionPath(lang, "cities"), "2026-11-17", .8, (x) => sectionPath(x, "cities"))
     ),
+    ...cities.flatMap((city) => locales.map((lang) =>
+      record(cityUrl(lang, city.slug)!, city.updated || "2026-09-23", city.featured ? .8 : .7, (x) => cityUrl(x,city.slug)!)
+    )),
+    ...locales.map((lang) =>
+      record(sectionPath(lang, "tools"), "2026-11-17", .8, (x) => sectionPath(x, "tools"))
+    ),
+    ...toolIds.flatMap((id) => locales.map((lang) =>
+      record(toolUrl(lang,id), "2026-11-17", .85, (x) => toolUrl(x,id))
+    )),
+    ...(Object.keys(otherPages) as OtherPageId[]).flatMap((id) => locales.map((lang) =>
+      record(otherUrl(lang,id), "2026-11-17", .7, (x) => otherUrl(x,id))
+    )),
   ];
 }

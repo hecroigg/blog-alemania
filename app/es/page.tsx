@@ -6,6 +6,7 @@ import { exactGuidePath } from "@/lib/exact-guide-routes";
 import type { ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { absoluteUrl } from "@/lib/site";
 import { localizedHomeAlternates } from "@/components/localized-home";
+import { sectionPath, toolUrl } from "@/lib/locale-paths";
 
 export const metadata: Metadata = {
   title: "Vivir y trabajar en Alemania: guía práctica en español",
@@ -81,7 +82,7 @@ export default function SpanishHome() {
                 <Link className="button button-primary button-large" href="#tramites">
                   Empieza por los trámites <Icon name="arrow" />
                 </Link>
-                <Link className="button button-secondary button-large" href="/es/guides">
+                <Link className="button button-secondary button-large" href={sectionPath("es","guides")}>
                   Ver todas las guías
                 </Link>
               </div>
@@ -148,17 +149,17 @@ export default function SpanishHome() {
           </p>
         </div>
         <div className="action-card-grid">
-          <Link className="action-card" href="/tools/cost-of-living">
+          <Link className="action-card" href={toolUrl("es","cost-of-living")}>
             <strong>Calculadora de coste de vida</strong>
             <small>Estima un presupuesto mensual a partir de tus propios datos.</small>
             <Icon name="arrow" />
           </Link>
-          <Link className="action-card" href="/tools/compare-cities">
+          <Link className="action-card" href={toolUrl("es","compare-cities")}>
             <strong>Comparador de ciudades</strong>
             <small>Explora diferencias prácticas entre localidades alemanas.</small>
             <Icon name="arrow" />
           </Link>
-          <Link className="action-card" href="/trabajo/calculadora-salario">
+          <Link className="action-card" href={toolUrl("es","salary-calculator")}>
             <strong>Calculadora de salario</strong>
             <small>Explora una estimación orientativa de salario bruto y neto.</small>
             <Icon name="arrow" />

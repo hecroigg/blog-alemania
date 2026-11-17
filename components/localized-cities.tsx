@@ -8,6 +8,7 @@ import { cityMap, cities } from "@/lib/content/cities";
 import { getLocalizedCity } from "@/lib/content/city-registration-i18n";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
 import { absoluteUrl } from "@/lib/site";
+import { cityFromSlug, cityUrl, sectionPath } from "@/lib/locale-paths";
 
 const i18n = {
   en: {
@@ -36,27 +37,27 @@ const i18n = {
   },
 } as const;
 const locales = ["en", "es", "de"] as const;
-export function cityStaticParams() { return cities.map((city) => ({ slug: city.slug })); }
+export function cityStaticParams(locale: EditorialLocale) { return cities.map((city) => ({ slug: cityUrl(locale, city.slug)!.split("/").at(-1)! })); }
 const languageLinks = (pathSuffix: string) => Object.fromEntries(
-  locales.map((lang) => [lang, absoluteUrl("/" + lang + "/cities" + pathSuffix)])
+  locales.map((lang) => [lang, absoluteUrl(pathSuffix ? cityUrl(lang, pathSuffix.slice(1))! : sectionPath(lang, "cities"))])
 );
 
 export function citiesIndexMetadata(locale: EditorialLocale): Metadata {
   const c = i18n[locale];
   return {
     title: c.heading, description: c.intro,
-    alternates: { canonical: absoluteUrl("/" + locale + "/cities"), languages: languageLinks("") },
+    alternates: { canonical: absoluteUrl(sectionPath(locale, "cities")), languages: languageLinks("") },
     robots: { index: true, follow: true },
     openGraph: { title: c.heading, description: c.intro, locale },
   };
 }
 
 export function cityDetailMetadata(locale: EditorialLocale, slug: string): Metadata {
-  const raw = cityMap.get(slug);
+  const raw = cityMap.get(cityFromSlug(locale, slug) || slug);
   if (!raw) return {};
   const city = getLocalizedCity(raw, locale);
   const title = i18n[locale].living + " " + city.name;
-  const canonical = absoluteUrl("/" + locale + "/cities/" + city.slug);
+  const canonical = absoluteUrl(cityUrl(locale, city.slug)!);
   return {
     title, description: city.description,
     alternates: { canonical, languages: languageLinks("/" + city.slug) },
@@ -78,7 +79,7 @@ export function LocalizedCitiesIndex({ locale }: { locale: EditorialLocale }) {
     <section className="section shell"><div className="action-card-grid">
       {cities.map((raw) => {
         const city = getLocalizedCity(raw, locale);
-        return <Link key={city.slug} href={"/" + locale + "/cities/" + city.slug} className="action-card">
+        return <Link key={city.slug} href={cityUrl(locale, city.slug)!} className="action-card">
           <strong>{city.name} · {city.region}</strong>
           <small>{city.description}</small><Icon name="arrow" />
         </Link>;
@@ -91,17 +92,17 @@ const headingId = (value: string) => value.toLowerCase().normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; slug: string }) {
-  const source = cityMap.get(slug);
+  const source = cityMap.get(cityFromSlug(locale, slug) || slug);
   if (!source) notFound();
   const city = getLocalizedCity(source, locale);
   const c = i18n[locale];
   const title = c.living + " " + city.name;
-  const url = absoluteUrl("/" + locale + "/cities/" + city.slug);
+  const url = absoluteUrl(cityUrl(locale, city.slug)!);
   return <article lang={locale} data-no-translate>
     <section className="page-hero city-detail-hero"><div className="shell">
       <Breadcrumbs items={[
         { label: c.home, href: "/" + locale },
-        { label: c.cities, href: "/" + locale + "/cities" },
+        { label: c.cities, href: sectionPath(locale, "cities") },
         { label: city.name },
       ]}/>
       <div className="page-hero-grid"><div className="page-hero-copy">
@@ -137,14 +138,14 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
         </section>
         <nav className="locale-alternates" aria-label={c.cities}>
           {locales.map((lang) =>
-            <Link href={"/" + lang + "/cities/" + city.slug} lang={lang} hrefLang={lang} key={lang}
+            <Link href={cityUrl(lang, city.slug)!} lang={lang} hrefLang={lang} key={lang}
               aria-current={locale === lang ? "page" : undefined}>{({ en: "🇬🇧 English", es: "🇪🇸 Español", de: "🇩🇪 Deutsch" } as const)[lang]}</Link>
           )}
         </nav>
       </div>
       <aside className="sidebar-card">
         <h2>{c.tools}</h2>
-        <Link href={"/" + locale + "/cities"}>{c.compare} <Icon name="arrow" /></Link>
+        <Link href={sectionPath(locale, "cities")}>{c.compare} <Icon name="arrow" /></Link>
         <Link href={"/" + locale + "/guides"}>{c.cost} <Icon name="arrow" /></Link>
       </aside>
     </div>

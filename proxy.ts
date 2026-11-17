@@ -1,38 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  type OtherPageId, otherPages, otherUrl, cityUrl, sectionPath, toolIds, toolUrl,
+  type ToolId,
+} from "@/lib/locale-paths";
 
 /**
- * Search Console previously discovered malformed URLs such as
- * /families:1r5p0rp and /guides/anmeldung-germany:14rmo4r.
- *
- * Normalize those crawler URLs before App Router routing so they resolve to
- * the real canonical page instead of the 404 page.
+ * Normalize malformed crawler URLs and maintain one canonical URL per page
+ * and language. The original path/query are otherwise preserved.
  */
 export function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
-  const originalPath = url.pathname;
-
-  if (originalPath === "/&") {
-    url.pathname = "/";
+  const original = url.pathname;
+  if (original === "/&") {
+    url.pathname = "/en";
     return NextResponse.redirect(url, 301);
   }
-
-  const cleanPath = originalPath
-    .split("/")
-    .map((segment) => (segment.includes(":") ? segment.split(":")[0] : segment))
+  const cleaned = original.split("/")
+    .map((segment) => segment.includes(":") ? segment.split(":")[0] : segment)
     .join("/");
-
-  if (cleanPath !== originalPath) {
-    url.pathname = cleanPath || "/";
+  if (cleaned !== original) {
+    url.pathname = cleaned || "/";
     return NextResponse.redirect(url, 301);
   }
 
-  const requestedLanguage = originalPath.split("/").filter(Boolean)[0];
+  const parts = original.split("/").filter(Boolean);
+  const redirect = (path: string) => {
+    url.pathname = path;
+    return NextResponse.redirect(url, 301);
+  };
+  if (original === "/tools" || original === "/tools/") return redirect(sectionPath("en","tools"));
+  if (parts[0] === "tools" && parts.length === 2 && toolIds.includes(parts[1] as ToolId)) {
+    return redirect(toolUrl("en",parts[1] as ToolId));
+  }
+  if (original === "/trabajo/calculadora-salario") return redirect(toolUrl("es","salary-calculator"));
+  if (original === "/trabajo/tipos-de-empleo") return redirect(toolUrl("es","employment-types"));
+  if (original === "/search") return redirect(sectionPath("en","search"));
+  const other = (Object.keys(otherPages) as OtherPageId[]).find((id)=>otherPages[id].en===original.slice(1));
+  if (other) return redirect(otherUrl("en",other));
+
+  // Non-canonical language-specific legacy paths created during the previous migration.
+  if (parts[0] === "es" || parts[0] === "de") {
+    const lang=parts[0];
+    if (parts[1] === "guides") return redirect(sectionPath(lang,"guides") + (parts[2] ? "/" + parts[2] : ""));
+    if (parts[1] === "cities") {
+      return redirect(parts[2] ? cityUrl(lang,parts[2]) || sectionPath(lang,"cities") : sectionPath(lang,"cities"));
+    }
+  }
+
+  const requestedLanguage = parts[0];
   const pageLanguage = requestedLanguage === "es" || requestedLanguage === "de" ? requestedLanguage : "en";
-  const nextHeaders = new Headers(request.headers);
-  nextHeaders.set("x-germanybase-page-language", pageLanguage);
-  return NextResponse.next({ request: { headers: nextHeaders } });
+  const headers = new Headers(request.headers);
+  headers.set("x-germanybase-page-language", pageLanguage);
+  return NextResponse.next({ request: { headers } });
 }
 
-export const config = {
-  matcher: "/:path*",
-};
+export const config = { matcher: "/:path*" };

@@ -1,5 +1,6 @@
 import { guides } from "@/lib/content/guides";
 import type { Guide } from "@/lib/types";
+import { guideUrl } from "@/lib/locale-paths";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
 
@@ -44,7 +45,7 @@ export function localizedGeneralSlug(locale: EditorialLocale, englishSlug: strin
 }
 export function localizedGeneralPath(locale: EditorialLocale, englishSlug: string) {
   const slug = localizedGeneralSlug(locale, englishSlug);
-  return slug ? "/" + locale + "/guides/" + slug : null;
+  return slug ? guideUrl(locale, slug) : null;
 }
 export function generalGuideFromSlug(locale: EditorialLocale, slug: string) {
   return generalEnglishGuides.find((guide) => localizedGeneralSlug(locale, guide.slug) === slug) || null;

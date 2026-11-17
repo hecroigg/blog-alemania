@@ -1,5 +1,6 @@
 import type { City } from "@/lib/types";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
+import { localizedCityName } from "@/lib/city-labels";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
 
@@ -394,7 +395,7 @@ export function getLocalizedCity(city: City, locale: EditorialLocale): City {
   const t = (value: string) => sourceCatalog[value] || extra[value] || value;
   return {
     ...city,
-    name: t(city.name),
+    name: localizedCityName(locale, city.slug, city.name),
     region: t(city.region),
     description: t(city.description),
     bestFor: t(city.bestFor),
