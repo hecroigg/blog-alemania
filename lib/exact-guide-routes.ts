@@ -18,6 +18,8 @@ export function findExactGuideRoute(locale: string, slug: string) {
 function partsForPath(pathname: string) { return pathname.split("/").filter(Boolean); }
 
 export function switchLocalizedPath(pathname: string, locale: Locale) {
+  if (pathname === "/") return locale === "es" ? "/es" : null;
+  if (pathname === "/es" || pathname === "/es/") return locale === "es" ? "/es" : "/";
   if (pathname === "/guides" || pathname === "/guides/") return `/${locale}/guides`;
   if (partsForPath(pathname).length === 2 && partsForPath(pathname)[0] === "guides") {
     const slug = partsForPath(pathname)[1];
