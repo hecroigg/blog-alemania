@@ -22,7 +22,7 @@ export const toolSlugs = {
 
 export type ToolKey = keyof typeof toolSlugs;
 
-export function sectionPath(locale: SiteLocale, type: keyof typeof sections) {
+export function sectionPath(locale: SiteLocale, type: keyof typeof sections.en) {
   return "/" + locale + "/" + sections[locale][type];
 }
 export const guidePath = (locale: SiteLocale, slug: string) => sectionPath(locale, "guides") + "/" + slug;
