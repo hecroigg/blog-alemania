@@ -47,8 +47,7 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
   const guide=getLocalizedPracticalGuide(locale,key);
   const t=ui[locale];
   const canonical=absoluteUrl(practicalGuidePath(locale,key));
-  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,datePublished:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,citation:guide.sources.map(source=>source.url)};
-  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",inLanguage:locale,mainEntity:guide.faqs.map(faq=>({"@type":"Question",name:faq.question,acceptedAnswer:{"@type":"Answer",text:faq.answer}}))};
+  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,citation:guide.sources.map(source=>source.url)};
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner">
       <Breadcrumbs items={[{label:t.home,href:"/"+locale},{label:t.guides,href:sectionPath(locale==="fr"?"en":locale,"guides")},{label:guide.title}]}/>
@@ -69,6 +68,6 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
       </div>
       <aside className="article-side"><div className="source-stamp"><Icon name="shield" size={20}/><strong>{t.note}</strong><p>{locale === "en" ? guide.sources[0]?.note : t.officialNote}</p></div><AdSlot placement="sidebar"/></aside>
     </div>
-    <JsonLd data={[articleSchema,faqSchema]}/>
+    <JsonLd data={articleSchema}/>
   </article>;
 }
