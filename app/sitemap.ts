@@ -26,9 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tools/document-checklist", "/tools/anmeldung-finder",
     "/tools/rental-scam-checker", "/tools/first-30-days",
     "/tools/apartment-affordability",
-    ...categories.map((item) => "/" + item.slug),
-    ...audiences.map((item) => "/" + item.slug),
-    ...trustPages.map((item) => "/" + item.slug),
   ].filter((value) => value !== "/guides"); // /guides redirects to /en/guides.
 
   return [
@@ -39,6 +36,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: path === "" ? 1 : ["/en", "/es", "/de"].includes(path) ? .9 : .7,
       ...(["/en", "/es", "/de"].includes(path) ? { alternates: { languages: localizedAlternates((locale) => "/" + locale) } } : {}),
     })),
+    ...[...categories, ...audiences, ...trustPages].flatMap((item) =>
+      searchLocales.map((locale) => ({
+        url: absoluteUrl("/" + locale + "/" + item.slug),
+        lastModified: new Date("2026-11-17"),
+        changeFrequency: "monthly" as const,
+        priority: .7,
+        alternates: { languages: localizedAlternates((lang) => "/" + lang + "/" + item.slug) },
+      }))
+    ),
     ...searchLocales.map((locale) => ({
       url: absoluteUrl("/" + locale + "/guides"),
       lastModified: new Date("2026-11-17"),
