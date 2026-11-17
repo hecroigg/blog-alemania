@@ -84,7 +84,7 @@ export function CityComparison() {
 type ChecklistItem = { id: string; title: string; note: string; when: string };
 
 export function DocumentChecklist() {
-  const { translate: t } = useLanguage();
+  const { locale, translate: t } = useLanguage();
   const [nationality, setNationality] = useState("Spain");
   const [purpose, setPurpose] = useState("Employment");
   const [completed, setCompleted] = useState<string[]>([]);
