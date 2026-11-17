@@ -86,7 +86,7 @@
   "English": "ingles",
   "Enrolled student": "estudiante matriculado",
   "Enter weekly hours to calculate": "Ingrese las horas semanales para calcular",
-  "Erasmus / exchange": "Erasmus/intercambio",
+  "Erasmus / exchange": "Erasmus e intercambio",
   "Erasmus confirmation": "Confirmación Erasmus",
   "Español": "Español",
   "Estimated deduction breakdown": "Desglose de deducción estimado",
@@ -99,7 +99,7 @@
   "First week": "primera semana",
   "For example: technology, tram, Bavaria": "Por ejemplo: tecnología, tranvía, Baviera.",
   "Format and amount are route-specific. Do not rely on a generic checklist.": "El formato y el monto son específicos de la ruta. No confíe en una lista de verificación genérica.",
-  "Freelancer": "autónomo",
+  "Freelancer": "Trabajo autónomo",
   "Get a more precise result": "Obtenga un resultado más preciso",
   "Groceries": "comestibles",
   "Gross monthly pay is above the Midijob ceiling. Standard social-insurance rules normally apply up to the contribution ceilings.": "El salario mensual bruto está por encima del límite Midijob. Las normas estándar de seguridad social normalmente se aplican hasta los límites máximos de cotización.",
@@ -117,7 +117,7 @@
   "Housing (your input)": "Vivienda (tu cifra)",
   "Housing and registration": "Vivienda y registro",
   "Housing is your input. Minimum assumes home cooking, a low-cost mobile plan, limited eating out and only basic hygiene and household purchases; it does not add an unexplained contingency charge. The Deutschlandticket (€63), eligible Deutschlandsemesterticket (€37.80) and Rundfunkbeitrag (€18.36 per dwelling) are official 2026 amounts.": "La vivienda es tu aportación. El mínimo supone comida casera, un plan móvil de bajo costo, comidas limitadas fuera de casa y sólo compras básicas de higiene y hogar; no agrega un cargo de contingencia inexplicable. El Deutschlandticket (63€), el Deutschlandsemesterticket elegible (37,80€) y el Rundfunkbeitrag (18,36€ por vivienda) son importes oficiales de 2026.",
-  "Housing pressure": "Presión de la vivienda",
+  "Housing pressure": "Presión del mercado de vivienda",
   "Hygiene & household basics": "Higiene y productos básicos del hogar",
   "Identity and travel document. Check validity before booking.": "Documento de identidad y viaje. Consultar validez antes de reservar.",
   "Identity or property documents appear inconsistent or altered": "Los documentos de identidad o de propiedad parecen inconsistentes o alterados.",
@@ -315,5 +315,6 @@
   "Your employee social contributions use an estimated base of": "Las cotizaciones sociales del trabajador se calculan sobre una base estimada de",
   "instead of the full": "en lugar del salario completo de",
   "gross. The reduction fades progressively up to €2,000.": "brutos. La reducción disminuye progresivamente hasta los 2.000 €.",
-  "Open city guide": "Abrir guía de la ciudad"
+  "Open city guide": "Abrir guía de la ciudad",
+  "housing pressure": "de demanda de vivienda"
 }
