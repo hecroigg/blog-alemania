@@ -89,3 +89,6 @@ jobs:
             exit 1
           fi
           echo "Legacy route redirects correctly ($redirect_code)"
+
+      - name: Verify Google-facing sitemap and indexable HTML
+        run: node scripts/check-live-seo.mjs

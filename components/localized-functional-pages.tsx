@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { RelatedResources } from "@/components/related-resources";
 import { DepositRuleChecker } from "@/components/deposit-rule-checker";
 import { translateTree } from "@/lib/localized-tree";
 import { type SiteLocale, type ToolId, type OtherPageId, toolIds, toolUrl, sectionPath, otherUrl } from "@/lib/locale-paths";
@@ -128,6 +129,19 @@ export function LocalizedToolsIndex({locale}:{locale:SiteLocale}) {
   </div>;
 }
 
+const toolTopics: Record<ToolId, string> = {
+  "anmeldung-finder": "bureaucracy",
+  "cost-of-living": "money",
+  "compare-cities": "transport",
+  "document-checklist": "moving-to-germany",
+  "rental-scam-checker": "housing",
+  "first-30-days": "moving-to-germany",
+  "apartment-affordability": "housing",
+  "salary-calculator": "work",
+  "employment-types": "work",
+  "rental-deposit": "housing",
+};
+
 export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:ToolId;query?:{city?:string}}) {
   let tree: React.ReactNode;
   switch(id) {
@@ -148,6 +162,7 @@ export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:
   return <div lang={locale} data-no-translate>
     {id==="rental-deposit" && <section className="page-hero"><div className="shell"><h1>{meta.title}</h1><p>{meta.description}</p></div></section>}
     {translateTree(tree,locale)}
+    <div className="shell"><RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)}/></div>
     <JsonLd data={{
       "@context":"https://schema.org","@type":"SoftwareApplication",
       name:meta.title,description:meta.description,inLanguage:locale,

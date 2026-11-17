@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { RelatedResources } from "@/components/related-resources";
 import { ExactGuideCard } from "@/components/exact-guide-card";
 import { audienceMap, audiences } from "@/lib/content/audiences";
 import { categories, categoryMap } from "@/lib/content/categories";
@@ -112,6 +113,7 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
         <div className="hub-guide-list">
           {cards.map((card) => <ExactGuideCard key={card.href} guide={card.guide} href={card.href} />)}
         </div>
+        <RelatedResources locale={locale} category={c?.slug || "moving-to-germany"} currentPath={hubUrl(locale, slug)!}/>
       </div>
     </div>
   </div>;

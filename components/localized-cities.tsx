@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { RelatedResources } from "@/components/related-resources";
 import { cityMap, cities } from "@/lib/content/cities";
 import { getLocalizedCity } from "@/lib/content/city-registration-i18n";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
@@ -136,6 +137,7 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
             )}
           </ul>
         </section>
+        <RelatedResources locale={locale} category="bureaucracy" currentPath={cityUrl(locale,city.slug)!}/>
         <nav className="locale-alternates" aria-label={c.cities}>
           {locales.map((lang) =>
             <Link href={cityUrl(lang, city.slug)!} lang={lang} hrefLang={lang} key={lang}

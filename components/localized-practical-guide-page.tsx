@@ -5,6 +5,7 @@ import { AdSlot } from "@/components/commercial";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
+import { RelatedResources } from "@/components/related-resources";
 import {
   getLocalizedPracticalGuide,
   practicalGuideKeyFromSlug,
@@ -46,8 +47,7 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
   const guide=getLocalizedPracticalGuide(locale,key);
   const t=ui[locale];
   const canonical=absoluteUrl(practicalGuidePath(locale,key));
-  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,datePublished:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,citation:guide.sources.map(source=>source.url)};
-  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",inLanguage:locale,mainEntity:guide.faqs.map(faq=>({"@type":"Question",name:faq.question,acceptedAnswer:{"@type":"Answer",text:faq.answer}}))};
+  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,citation:guide.sources.map(source=>source.url)};
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner">
       <Breadcrumbs items={[{label:t.home,href:"/"+locale},{label:t.guides,href:sectionPath(locale==="fr"?"en":locale,"guides")},{label:guide.title}]}/>
@@ -63,10 +63,11 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
         {guide.sections.map((section,index)=><section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(p=><p key={p}>{p}</p>)}{section.bullets&&<ul>{section.bullets.map(b=><li key={b}>{b}</li>)}</ul>}{section.resources&&<div className="resource-grid">{section.resources.map(resource=><a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}><span><strong data-no-translate>{resource.label}</strong><small>{locale === "en" ? resource.note : t.officialNote}</small></span><Icon name="external" size={17}/></a>)}</div>}{section.callout&&<aside className={`callout callout-${section.callout.tone||"note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}{index===1&&<AdSlot placement="article-body"/>}</section>)}
         <section className="faq-section" id="faqs"><h2>{t.questions}</h2>{guide.faqs.map(faq=><details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>
         <section className="sources-section" id="sources"><h2>{t.sources}</h2><ul className="source-list">{guide.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><span><strong>{source.name}</strong><small>{locale === "en" ? source.note : t.officialNote}</small></span><Icon name="external" size={17}/></a></li>)}</ul></section>
-        <nav className="locale-alternates" aria-label={t.languages}><strong>{t.languages}</strong><div>{searchLocales.map(item=><Link href={practicalGuidePath(item,key)} hrefLang={item} lang={item} aria-current={item===locale?"page":undefined} key={item}>{localeLabels[item].flag} {localeLabels[item].label}</Link>)}</div></nav>
+        {locale !== "fr" && <RelatedResources locale={locale} category={guide.category} currentPath={practicalGuidePath(locale, key)}/>}
+      <nav className="locale-alternates" aria-label={t.languages}><strong>{t.languages}</strong><div>{searchLocales.map(item=><Link href={practicalGuidePath(item,key)} hrefLang={item} lang={item} aria-current={item===locale?"page":undefined} key={item}>{localeLabels[item].flag} {localeLabels[item].label}</Link>)}</div></nav>
       </div>
       <aside className="article-side"><div className="source-stamp"><Icon name="shield" size={20}/><strong>{t.note}</strong><p>{locale === "en" ? guide.sources[0]?.note : t.officialNote}</p></div><AdSlot placement="sidebar"/></aside>
     </div>
-    <JsonLd data={[articleSchema,faqSchema]}/>
+    <JsonLd data={articleSchema}/>
   </article>;
 }
