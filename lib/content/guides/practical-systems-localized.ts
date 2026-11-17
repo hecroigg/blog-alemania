@@ -263,7 +263,7 @@ export function getLocalizedPracticalGuide(locale: "en"|"es"|"de"|"fr", key: Pra
 }
 
 export function practicalGuidePath(locale: "en"|"es"|"de"|"fr", key: PracticalGuideKey) {
-  return locale === "en" ? `/guides/${practicalGuideSlugs[key].en}` : `/${locale}/guides/${practicalGuideSlugs[key][locale]}`;
+  return `/${locale}/guides/${practicalGuideSlugs[key][locale]}`;
 }
 
 export function practicalGuideStaticParams(locale: "en"|"es"|"de"|"fr") {
