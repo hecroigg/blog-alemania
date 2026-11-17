@@ -7,7 +7,7 @@ import { exactGuidePath } from "@/lib/exact-guide-routes";
 import type { ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { absoluteUrl } from "@/lib/site";
 
-export type PublicLanguage = "en" | "de" | "fr";
+export type PublicLanguage = "en" | "de";
 type Copy = {
   intro: string; title: string; description: string; start: string; all: string;
   topics: string; reminder: string; official: string;
@@ -39,23 +39,11 @@ const copy: Record<PublicLanguage, Copy> = {
       { id: "everyday", label: "03 · Alltag", title: "Wohnen, Mobilität und Steuern", description: "Wichtige Fragen rund um Mietvertrag, Tickets und Einkommen.", keys: ["deposit", "deutschlandticket", "allowance"] },
     ],
   },
-  fr: {
-    intro: "GermanyBase · Français", title: "Vivre et travailler en Allemagne, étape par étape",
-    description: "Des repères pratiques pour les démarches, l'emploi, l'assurance maladie et la vie quotidienne en Allemagne.",
-    start: "Commencer par les démarches", all: "Tous les guides en français", topics: "Démarches · Travail · Vie quotidienne",
-    reminder: "GermanyBase est indépendant et n'est pas un service public. Les règles varient selon votre situation et peuvent changer. Vérifiez toujours les informations auprès des autorités compétentes.",
-    official: "Portail de l'administration allemande",
-    sections: [
-      { id: "documents", label: "01 · Démarches", title: "Enregistrement et documents essentiels", description: "Préparez les formalités importantes lors de votre arrivée.", keys: ["anmeldung", "rundfunk", "health"] },
-      { id: "work", label: "02 · Travail", title: "Emploi, contrats et salaire", description: "Comparez les différentes formes d'emploi et leurs règles.", keys: ["minijob", "midijob", "leave"] },
-      { id: "everyday", label: "03 · Vie quotidienne", title: "Logement, transport et argent", description: "Des réponses pratiques pour votre budget et votre quotidien.", keys: ["deposit", "deutschlandticket", "allowance"] },
-    ],
-  },
 };
 
 export const localizedHomeAlternates = {
   en: absoluteUrl("/en"), es: absoluteUrl("/es"),
-  de: absoluteUrl("/de"), fr: absoluteUrl("/fr"),
+  de: absoluteUrl("/de"),
   "x-default": absoluteUrl("/"),
 };
 
