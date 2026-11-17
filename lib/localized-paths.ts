@@ -46,3 +46,35 @@ export function localizedTarget(from: SiteLocale, to: SiteLocale, pathname: stri
   }
   return null; // Individual guide equivalents are matched by guide ID elsewhere.
 }
+
+export const hubSlugs = {
+  "moving-to-germany": { en: "moving-to-germany", es: "mudarse-a-alemania", de: "umzug-nach-deutschland" },
+  work: { en: "work", es: "trabajo", de: "arbeit" },
+  housing: { en: "housing", es: "vivienda", de: "wohnen" },
+  bureaucracy: { en: "bureaucracy", es: "tramites", de: "behoerden" },
+  money: { en: "money", es: "dinero", de: "finanzen" },
+  healthcare: { en: "healthcare", es: "salud", de: "gesundheit" },
+  transport: { en: "transport", es: "transporte", de: "verkehr" },
+  "daily-life": { en: "daily-life", es: "vida-diaria", de: "alltag" },
+  students: { en: "students", es: "estudiantes", de: "studierende" },
+  workers: { en: "workers", es: "trabajadores", de: "arbeitnehmer" },
+  families: { en: "families", es: "familias", de: "familien" },
+  freelancers: { en: "freelancers", es: "autonomos", de: "selbststaendige" },
+  "eu-citizens": { en: "eu-citizens", es: "ciudadanos-ue", de: "eu-buerger" },
+  "non-eu-citizens": { en: "non-eu-citizens", es: "ciudadanos-no-ue", de: "nicht-eu-buerger" },
+  about: { en: "about", es: "quienes-somos", de: "ueber-uns" },
+  "editorial-policy": { en: "editorial-policy", es: "politica-editorial", de: "redaktionelle-richtlinien" },
+  "how-we-research": { en: "how-we-research", es: "como-investigamos", de: "unsere-recherche" },
+  "corrections-policy": { en: "corrections-policy", es: "correcciones", de: "korrekturen" },
+  "affiliate-disclosure": { en: "affiliate-disclosure", es: "aviso-afiliados", de: "affiliate-hinweis" },
+  "advertiser-disclosure": { en: "advertiser-disclosure", es: "publicidad", de: "werbehinweis" },
+  "privacy-policy": { en: "privacy-policy", es: "privacidad", de: "datenschutz" },
+  "cookie-policy": { en: "cookie-policy", es: "cookies", de: "cookies" },
+  terms: { en: "terms", es: "condiciones", de: "nutzungsbedingungen" },
+  contact: { en: "contact", es: "contacto", de: "kontakt" },
+} as const;
+export type HubKey = keyof typeof hubSlugs;
+export const hubPath = (locale: SiteLocale, slug: HubKey) => "/" + locale + "/" + hubSlugs[slug][locale];
+export function matchHub(locale: SiteLocale, slug: string): HubKey | null {
+  return (Object.keys(hubSlugs) as HubKey[]).find((key) => hubSlugs[key][locale] === slug) || null;
+}
