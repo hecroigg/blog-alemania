@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auxiliaryPath, type AuxiliaryKey } from "@/lib/localized-paths";
 
 /**
  * Search Console previously discovered malformed URLs such as
@@ -14,6 +15,19 @@ export function proxy(request: NextRequest) {
   if (originalPath === "/&") {
     url.pathname = "/";
     return NextResponse.redirect(url, 301);
+  }
+
+  const legacyPages: Record<string, AuxiliaryKey> = {
+    "/plan": "plan", "/visas-residence": "visas",
+    "/costs-deadlines": "costs", "/authorities": "authorities",
+    "/emergency": "emergency", "/data-status": "data",
+    "/glossary": "glossary", "/explore-germany": "explore",
+    "/search": "search",
+  };
+  const legacyPage = legacyPages[originalPath];
+  if (legacyPage) {
+    url.pathname = auxiliaryPath("en", legacyPage);
+    return NextResponse.redirect(url, 308);
   }
 
   const cleanPath = originalPath
