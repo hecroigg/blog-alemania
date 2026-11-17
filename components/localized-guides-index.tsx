@@ -10,6 +10,7 @@ import {
 } from "@/lib/content/localized-general-guides";
 import { isSearchLocale, searchLocales, type Locale } from "@/lib/platform-data";
 import { absoluteUrl } from "@/lib/site";
+import { sectionPath } from "@/lib/locale-paths";
 
 export function localizedGuidesMetadata(locale: Locale): Metadata {
   const ui = exactGuideUi[locale];
