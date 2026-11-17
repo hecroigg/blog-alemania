@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { toolPath, isSiteLocale } from "@/lib/localized-paths";
+import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import {
@@ -31,6 +33,7 @@ function decimal(value: string) {
 
 export function SalaryCalculator() {
   const { locale, translate } = useLanguage();
+  const routeLocale = isSiteLocale(locale) ? locale : "en";
   const [period, setPeriod] = useState<"monthly" | "annual">("monthly");
   const [amount, setAmount] = useState(3_200);
   const [draft, setDraft] = useState(defaultInputs);
@@ -89,11 +92,11 @@ export function SalaryCalculator() {
 
     <section className="salary-results" aria-live="polite">
       <div className="result-heading"><div><span className="eyebrow">{translate("2026 planning result")}</span><h2>{translate(result.employmentType)}</h2></div><span className="status-pill">{translate(appliedAdvanced ? "More precise estimate" : "Quick estimate based on standard assumptions")}</span></div>
-      {result.belowMinimumWage && <div className="salary-warning"><strong>{translate("Below the 2026 statutory minimum wage")}</strong><p>Your entries equal {money(result.grossHourly, 2)} gross per hour, below €13.90. Check whether a legal exception applies or correct the salary and hours.</p></div>}
+      {result.belowMinimumWage && <div className="salary-warning"><strong>{translate("Below the 2026 statutory minimum wage")}</strong><p>{translate("Your entries equal")} {money(result.grossHourly, 2)} {translate("gross per hour, below €13.90. Check whether a legal exception applies or correct the salary and hours.")}</p></div>}
       <div className="salary-result-cards">
-        <article><span>{translate("Monthly net")}</span><strong>{money(result.netMonthly, 2)}</strong><small>From {money(result.grossMonthly, 2)} {translate("Gross salary")}</small></article>
-        <article><span>{translate("Annual net")}</span><strong>{money(result.netAnnual, 0)}</strong><small>From {money(result.grossAnnual, 0)} {translate("Gross salary")}</small></article>
-        <article><span>{translate("Net per hour")}</span><strong>{applied.weeklyHours ? money(result.netHourly, 2) : "—"}</strong><small>{applied.weeklyHours ? <>Gross: {money(result.grossHourly, 2)} / hour · {number(applied.weeklyHours, 1)} hours / week</> : "Enter weekly hours to calculate"}</small></article>
+        <article><span>{translate("Monthly net")}</span><strong>{money(result.netMonthly, 2)}</strong><small>{translate("From")} {money(result.grossMonthly, 2)} {translate("Gross salary")}</small></article>
+        <article><span>{translate("Annual net")}</span><strong>{money(result.netAnnual, 0)}</strong><small>{translate("From")} {money(result.grossAnnual, 0)} {translate("Gross salary")}</small></article>
+        <article><span>{translate("Net per hour")}</span><strong>{applied.weeklyHours ? money(result.netHourly, 2) : "—"}</strong><small>{applied.weeklyHours ? <>{translate("Gross")}: {money(result.grossHourly, 2)} / {translate("hour")} · {number(applied.weeklyHours, 1)} {translate("hours per week")}</> : translate("Enter weekly hours to calculate")}</small></article>
         <article><span>{translate("Estimated total deductions")}</span><strong>{money(totalDeductions, 2)}</strong><small>{translate("Per month · tax and social insurance")}</small></article>
       </div>
 
@@ -101,13 +104,13 @@ export function SalaryCalculator() {
 
       <details className="deduction-panel" open>
         <summary>{translate("Estimated deduction breakdown")}</summary>
-        <div className="deduction-list">{deductions.map(([label, value]) => <div key={label}><span>{label}</span><strong>{money(value, 2)} / month</strong></div>)}</div>
+        <div className="deduction-list">{deductions.map(([label, value]) => <div key={label}><span>{translate(label)}</span><strong>{money(value, 2)} / {translate("month")}</strong></div>)}</div>
       </details>
 
-      {result.employmentType === "Midijob" && <aside className="method-note"><strong>{translate("Reduced Midijob contribution base")}</strong><p>Your employee social contributions use an estimated base of {money(result.contributionBaseMonthly, 2)} instead of the full {money(result.grossMonthly, 2)} gross. The reduction fades progressively up to €2,000.</p></aside>}
+      {result.employmentType === "Midijob" && <aside className="method-note"><strong>{translate("Reduced Midijob contribution base")}</strong><p>{translate("Your employee social contributions use an estimated base of")} {money(result.contributionBaseMonthly, 2)} {translate("instead of the full")} {money(result.grossMonthly, 2)} {translate("gross. The reduction fades progressively up to €2,000.")}</p></aside>}
       {result.employmentType === "Werkstudent" && <aside className="method-note"><strong>{translate("Werkstudent estimate")}</strong><p>{translate("The result deducts pension insurance but not payroll health, care or unemployment insurance. Your separate student health-insurance premium can still apply and is not included here.")}</p></aside>}
       <p className="salary-disclaimer">{translate("This is an educational planning estimate, not an official payroll statement or personal tax advice. Tax-class payroll tables, individual health-fund rates, allowances, bonuses, private insurance and multiple jobs can change the result. Confirm important decisions with payroll, your insurer or a qualified tax adviser.")}</p>
-      <div className="salary-links"><Link href="/trabajo/tipos-de-empleo">{translate("Compare employment types")}</Link><Link href="/guides/minijob-germany">{translate("Read the Minijob guide")}</Link><Link href="/guides/werkstudent-germany">{translate("Read the Werkstudent guide")}</Link></div>
+      <div className="salary-links"><Link href={toolPath(routeLocale, "employment")}>{translate("Compare employment types")}</Link><Link href={localizedGeneralPath(routeLocale, "minijob-germany")!}>{translate("Read the Minijob guide")}</Link><Link href={localizedGeneralPath(routeLocale, "werkstudent-germany")!}>{translate("Read the Werkstudent guide")}</Link></div>
     </section>
   </div>;
 }
