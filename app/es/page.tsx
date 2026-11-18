@@ -71,7 +71,7 @@ export default function SpanishHome() {
     <div lang="es" data-no-translate>
       <section className="page-hero">
         <div className="shell">
-          <div className="page-hero-grid">
+          <div className="photo-layout">
             <div className="page-hero-copy">
               <span className="eyebrow">GermanyBase · en español</span>
               <h1>Vivir y trabajar en Alemania, paso a paso</h1>
@@ -89,16 +89,10 @@ export default function SpanishHome() {
                 </Link>
               </div>
             </div>
-            <div className="page-stat">
-              <span>Tu ruta en Alemania</span>
-              <strong>3</strong>
-              <small>Trámites · Trabajo · Vida diaria</small>
-            </div>
+            <EditorialPhoto photo={editorialPhotos.berlin} locale="es" aboveFold />
           </div>
         </div>
       </section>
-
-      <div className="shell"><EditorialPhoto photo={editorialPhotos.berlin} locale="es" /></div>
 
       <section className="section shell section-compact" aria-labelledby="como-empezar">
         <div className="section-heading">

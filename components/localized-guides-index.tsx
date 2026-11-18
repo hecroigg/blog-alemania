@@ -40,7 +40,6 @@ export function LocalizedGuidesIndex({ locale }: { locale: Locale }) {
     guide: localizedGeneralGuide(guide, locale as EditorialLocale),
     href: localizedGeneralPath(locale as EditorialLocale, guide.slug)!,
   })) : [];
-  const total = exact.length + practical.length + normal.length;
   const labels = {
     en: { normal: "Step-by-step guides", reference: "Rules and exact figures" },
     es: { normal: "Guías paso a paso", reference: "Normas y cifras concretas" },
@@ -51,14 +50,12 @@ export function LocalizedGuidesIndex({ locale }: { locale: Locale }) {
     <section className="page-hero">
       <div className="shell">
         <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: ui.guides }]}/>
-        <div className="page-hero-grid">
+        <div className="photo-layout">
           <div className="page-hero-copy">
             <span className="eyebrow">{ui.library}</span>
             <h1>{ui.libraryTitle}</h1><p>{ui.libraryIntro}</p>
           </div>
-          <div className="page-stat">
-            <span>{ui.published}</span><strong>{total}</strong><small>{ui.topics}</small>
-          </div>
+          <EditorialPhoto photo={editorialPhotos.documents} locale={locale} aboveFold />
         </div>
       </div>
     </section>
@@ -79,6 +76,5 @@ export function LocalizedGuidesIndex({ locale }: { locale: Locale }) {
         )}
       </div>
     </section>
-    <div className="shell"><EditorialPhoto photo={editorialPhotos.documents} locale={locale} /></div>
   </div>;
 }

@@ -69,19 +69,24 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
   return (
     <article lang={locale} data-no-translate>
       <header className="article-hero">
-        <div className="shell article-hero-inner">
+        <div className="shell">
           <Breadcrumbs items={[
             { label: copy.home, href: "/" + locale },
             { label: copy.guides, href: sectionPath(locale, "guides") },
             { label: guide.title },
           ]} />
-          <span className="eyebrow">{guide.eyebrow}</span>
-          <h1>{guide.title}</h1>
-          <p className="article-summary">{guide.summary}</p>
-          <div className="article-meta">
-            <span><Icon name="clock" size={16} /> {guide.readingMinutes} {copy.read}</span>
-            <span><Icon name="check" size={16} /> {copy.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(guide.updated + "T12:00:00Z"))}</time></span>
-            <span>GermanyBase Editorial</span>
+          <div className="photo-layout">
+            <div>
+              <span className="eyebrow">{guide.eyebrow}</span>
+              <h1>{guide.title}</h1>
+              <p className="article-summary">{guide.summary}</p>
+              <div className="article-meta">
+                <span><Icon name="clock" size={16} /> {guide.readingMinutes} {copy.read}</span>
+                <span><Icon name="check" size={16} /> {copy.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(guide.updated + "T12:00:00Z"))}</time></span>
+                <span>GermanyBase Editorial</span>
+              </div>
+            </div>
+            <EditorialPhoto photo={photo} locale={locale} aboveFold />
           </div>
         </div>
       </header>
@@ -103,7 +108,6 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
               <li key={item}><Icon name="check" size={17} /><span>{item}</span></li>
             )}</ul>
           </section>
-          <EditorialPhoto photo={photo} locale={locale} />
           <AdSlot placement="article-intro" />
           {guide.sections.map((section, index) => (
             <section className="article-section" id={headingId(section.heading)} key={section.heading}>

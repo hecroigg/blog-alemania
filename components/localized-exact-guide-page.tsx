@@ -62,13 +62,27 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
   const photo = editorialPhotos[exactGuidePhotos[match.key]];
   const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, inLanguage: locale, author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: canonical, image: absoluteUrl(photo.src), citation: guide.sources.map((source) => source.url) };
   return <article lang={locale}>
-    <header className="article-hero"><div className="shell article-hero-inner"><Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: ui.guides, href: locale === "en" || locale === "es" || locale === "de" ? sectionPath(locale, "guides") : `/${locale}/guides` }, { label: guide.title }]}/><span className="eyebrow">{guide.eyebrow}</span><h1>{guide.title}</h1><p className="article-summary">{guide.summary}</p><div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {ui.read}</span><span><Icon name="check" size={16}/> {ui.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span><Link href="/about">GermanyBase Editorial</Link></span></div></div></header>
+    <header className="article-hero"><div className="shell">
+      <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: ui.guides, href: locale === "en" || locale === "es" || locale === "de" ? sectionPath(locale, "guides") : `/${locale}/guides` }, { label: guide.title }]}/>
+      <div className="photo-layout">
+        <div>
+          <span className="eyebrow">{guide.eyebrow}</span>
+          <h1>{guide.title}</h1>
+          <p className="article-summary">{guide.summary}</p>
+          <div className="article-meta">
+            <span><Icon name="clock" size={16}/> {guide.readingMinutes} {ui.read}</span>
+            <span><Icon name="check" size={16}/> {ui.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span>
+            <span><Link href="/about">GermanyBase Editorial</Link></span>
+          </div>
+        </div>
+        <EditorialPhoto photo={photo} locale={locale} aboveFold />
+      </div>
+    </div></header>
     <div className="shell article-layout">
       <nav className="toc" aria-label={ui.onPage}><strong>{ui.onPage}</strong><ol>{guide.sections.map((section) => <li key={section.heading}><a href={`#${toId(section.heading)}`}>{section.heading}</a></li>)}<li><a href="#faqs">{ui.questions}</a></li><li><a href="#sources">{ui.sources}</a></li></ol></nav>
       <div className="article-body">
         <section className="key-takeaways"><h2>{ui.first}</h2><ul>{guide.takeaways.map((item) => <li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
         {match.key==="leave" && <HolidayMinimumCalculator locale={locale}/>}
-        <EditorialPhoto photo={photo} locale={locale} />
         <AdSlot placement="article-intro"/>
         {guide.sections.map((section) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}</section>)}
         <section className="faq-section" id="faqs"><h2>{ui.questions}</h2>{guide.faqs.map((faq) => <details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>

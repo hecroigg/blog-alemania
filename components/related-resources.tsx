@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { EditorialPhoto } from "@/components/editorial-photo";
+import type { EditorialPhoto as Photo } from "@/lib/content/editorial-photos";
 import { generalEnglishGuides, localizedGeneralGuide, localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { hubUrl, toolUrl, type SiteLocale, type ToolId } from "@/lib/locale-paths";
 
@@ -88,11 +90,12 @@ const ui: Record<SiteLocale, { heading: string; intro: string; section: string }
 };
 
 export function RelatedResources({
-  locale, category, currentPath,
+  locale, category, currentPath, photo,
 }: {
   locale: SiteLocale;
   category: string;
   currentPath: string;
+  photo?: Photo;
 }) {
   const group = topics[category];
   if (!group) return null;
@@ -111,7 +114,7 @@ export function RelatedResources({
   ];
   if (!links.length) return null;
 
-  return <section className="related-section seo-topic-navigation" aria-label={ui[locale].heading} lang={locale} data-no-translate>
+  const content = <>
     <h2>{ui[locale].heading}</h2>
     <p>{ui[locale].intro}</p>
     <ul className="related-grid">
@@ -119,5 +122,12 @@ export function RelatedResources({
         <Link href={item.href}>{item.label}</Link>
       </li>)}
     </ul>
+  </>;
+  return <section
+    className={photo ? "related-section seo-topic-navigation photo-layout related-with-photo" : "related-section seo-topic-navigation"}
+    aria-label={ui[locale].heading} lang={locale} data-no-translate
+  >
+    {photo ? <div>{content}</div> : content}
+    {photo && <EditorialPhoto photo={photo} locale={locale} />}
   </section>;
 }

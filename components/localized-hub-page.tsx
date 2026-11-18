@@ -56,9 +56,14 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
   if (trust) return (
     <article className="shell trust-page" lang={locale} data-no-translate>
       <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: trust.title }]}/>
-      <span className="eyebrow">{trust.eyebrow}</span>
-      <h1>{trust.title}</h1>
-      <p className="lead">{trust.description}</p>
+      <div className="photo-layout">
+        <div>
+          <span className="eyebrow">{trust.eyebrow}</span>
+          <h1>{trust.title}</h1>
+          <p className="lead">{trust.description}</p>
+        </div>
+        <EditorialPhoto photo={photo} locale={locale} aboveFold />
+      </div>
       {trust.sections.map((section) =>
         <section className="prose-section" key={section.heading}>
           <h2>{section.heading}</h2>
@@ -66,7 +71,6 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
           {section.bullets && <ul>{section.bullets.map((item) => <li key={item}>{item}</li>)}</ul>}
         </section>
       )}
-      <EditorialPhoto photo={photo} locale={locale} />
     </article>
   );
   const pageTitle = t(locale, c?.name || a!.name);
@@ -98,13 +102,12 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
     de: "Ein praktischer Weg mit nächsten Schritten und amtlichen Quellen.",
   } as const)[locale];
   const stepsLabel = ({ en: "Priorities", es: "Prioridades", de: "Prioritäten" } as const)[locale];
-  const topicsLabel = ({ en: "Topics", es: "Temas", de: "Themen" } as const)[locale];
   return <div lang={locale} data-no-translate>
     <section className="page-hero"><div className="shell">
       <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: pageTitle }]}/>
-      <div className="page-hero-grid"><div className="page-hero-copy">
+      <div className="photo-layout"><div className="page-hero-copy">
         <span className="eyebrow">{intro}</span><h1>{pageTitle}</h1><p>{description}</p>
-      </div><div className="page-stat"><span>{topicsLabel}</span><strong>{cards.length}</strong><small>{t(locale, c?.description || a!.description)}</small></div></div>
+      </div><EditorialPhoto photo={photo} locale={locale} aboveFold /></div>
     </div></section>
     <div className="shell content-grid">
       <div className="content-main">
@@ -117,7 +120,6 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
         <div className="hub-guide-list">
           {cards.map((card) => <ExactGuideCard key={card.href} guide={card.guide} href={card.href} />)}
         </div>
-        <EditorialPhoto photo={photo} locale={locale} />
         <RelatedResources locale={locale} category={c?.slug || "moving-to-germany"} currentPath={hubUrl(locale, slug)!}/>
       </div>
     </div>

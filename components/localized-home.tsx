@@ -13,7 +13,7 @@ import { sectionPath } from "@/lib/locale-paths";
 export type PublicLanguage = "en" | "de";
 type Copy = {
   intro: string; title: string; description: string; start: string; all: string;
-  topics: string; reminder: string; official: string;
+  reminder: string; official: string;
   sections: { id: string; label: string; title: string; description: string; keys: readonly ExactGuideKey[] }[];
 };
 
@@ -21,7 +21,7 @@ const copy: Record<PublicLanguage, Copy> = {
   en: {
     intro: "GermanyBase · English", title: "Living and working in Germany, made clearer",
     description: "Practical information on registration, employment, health cover and daily life in Germany. Start with the question you need to answer.",
-    start: "Start with paperwork", all: "All English guides", topics: "Paperwork · Work · Everyday life",
+    start: "Start with paperwork", all: "All English guides",
     reminder: "GermanyBase is independent and is not a government service. Laws and requirements vary by situation and date. Check the responsible authority before making decisions.",
     official: "German administration portal",
     sections: [
@@ -33,7 +33,7 @@ const copy: Record<PublicLanguage, Copy> = {
   de: {
     intro: "GermanyBase · Deutsch", title: "Leben und Arbeiten in Deutschland – einfach erklärt",
     description: "Praktische Informationen zu Anmeldung, Beschäftigung, Krankenversicherung und Alltag. Beginnen Sie bei der Frage, die Sie gerade beschäftigt.",
-    start: "Mit den Behördengängen beginnen", all: "Alle deutschen Ratgeber", topics: "Behörden · Arbeit · Alltag",
+    start: "Mit den Behördengängen beginnen", all: "Alle deutschen Ratgeber",
     reminder: "GermanyBase ist unabhängig und keine Behörde. Gesetze und Anforderungen hängen von der persönlichen Situation ab und können sich ändern. Prüfen Sie die Angaben bei den zuständigen Stellen.",
     official: "Verwaltungsportal des Bundes",
     sections: [
@@ -68,7 +68,7 @@ export function LocalizedHome({ locale }: { locale: PublicLanguage }) {
     <div lang={locale} data-no-translate>
       <section className="page-hero">
         <div className="shell">
-          <div className="page-hero-grid">
+          <div className="photo-layout">
             <div className="page-hero-copy">
               <span className="eyebrow">{page.intro}</span>
               <h1>{page.title}</h1>
@@ -78,11 +78,10 @@ export function LocalizedHome({ locale }: { locale: PublicLanguage }) {
                 <Link className="button button-secondary button-large" href={sectionPath(locale,"guides")}>{page.all}</Link>
               </div>
             </div>
-            <div className="page-stat"><span>GermanyBase</span><strong>3</strong><small>{page.topics}</small></div>
+            <EditorialPhoto photo={editorialPhotos.berlin} locale={locale} aboveFold />
           </div>
         </div>
       </section>
-      <div className="shell"><EditorialPhoto photo={editorialPhotos.berlin} locale={locale} /></div>
       {page.sections.map((section) => (
         <section className="section shell section-compact" key={section.id} id={section.id}>
           <div className="section-heading">

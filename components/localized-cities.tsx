@@ -80,13 +80,12 @@ export function LocalizedCitiesIndex({ locale }: { locale: EditorialLocale }) {
   return <div lang={locale} data-no-translate>
     <section className="page-hero"><div className="shell">
       <Breadcrumbs items={[{ label: c.home, href: "/" + locale }, { label: c.cities }]}/>
-      <div className="page-hero-grid"><div className="page-hero-copy">
+      <div className="photo-layout"><div className="page-hero-copy">
         <span className="eyebrow">GermanyBase · {c.cities}</span>
         <h1>{c.heading}</h1><p>{c.intro}</p>
-      </div><div className="page-stat"><span>{c.cities}</span><strong>{cities.length}</strong><small>GermanyBase</small></div></div>
+      </div><EditorialPhoto photo={editorialPhotos.heidelberg} locale={locale} aboveFold /></div>
     </div></section>
     <section className="section shell">
-      <EditorialPhoto photo={editorialPhotos.heidelberg} locale={locale} />
       <div className="action-card-grid">
       {cities.map((raw) => {
         const city = getLocalizedCity(raw, locale);
@@ -117,16 +116,16 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
         { label: c.cities, href: sectionPath(locale, "cities") },
         { label: city.name },
       ]}/>
-      <div className="page-hero-grid"><div className="page-hero-copy">
+      <div className="photo-layout"><div className="page-hero-copy">
         <span className="eyebrow">{city.region}</span>
         <h1>{title}</h1><p>{city.description}</p>
-      </div><div className="page-stat"><span>{c.best}</span><strong>{city.name.slice(0, 2).toUpperCase()}</strong><small>{city.character}</small></div></div>
+      </div>{photo && <EditorialPhoto photo={photo} locale={locale} aboveFold />}</div>
     </div></section>
     <div className="shell content-grid">
       <div className="content-main">
         <p className="lead">{c.best}: {city.bestFor}</p>
+        <p>{city.character}</p>
         {city.updated && <p>{c.verified}: <time dateTime={city.updated}>{city.updated}</time>. {c.check}</p>}
-        {photo && <EditorialPhoto photo={photo} locale={locale} />}
         {city.sections.map((section) => <section className="article-section" key={section.heading} id={headingId(section.heading)}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

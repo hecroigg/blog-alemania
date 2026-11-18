@@ -118,18 +118,16 @@ export function LocalizedToolsIndex({locale}:{locale:SiteLocale}) {
   return <div lang={locale} data-no-translate>
     <section className="page-hero"><div className="shell">
       <Breadcrumbs items={[{label:c.home,href:"/"+locale},{label:c.tools}]}/>
-      <div className="page-hero-grid"><div className="page-hero-copy"><span className="eyebrow">GermanyBase</span>
+      <div className="photo-layout"><div className="page-hero-copy"><span className="eyebrow">GermanyBase</span>
         <h1>{c.heading}</h1><p>{c.explanation}</p>
-      </div><div className="page-stat"><span>{c.tools}</span><strong>{toolIds.length}</strong><small>{c.free}</small></div></div>
+      </div><EditorialPhoto photo={editorialPhotos.salary} locale={locale} aboveFold /></div>
     </div></section>
     <section className="section shell"><div className="tools-grid">
       {toolIds.map((id)=><Link href={toolUrl(locale,id)} key={id} className="tool-card">
         <span>{c.free}</span><h2>{labels[id][locale].title}</h2>
         <p>{labels[id][locale].description}</p><em>{c.open} <Icon name="arrow" size={16}/></em>
       </Link>)}
-    </div>
-      <EditorialPhoto photo={editorialPhotos.salary} locale={locale} />
-    </section>
+    </div></section>
   </div>;
 }
 
@@ -167,8 +165,7 @@ export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:
     {id==="rental-deposit" && <section className="page-hero"><div className="shell"><h1>{meta.title}</h1><p>{meta.description}</p></div></section>}
     {translateTree(tree,locale)}
     <div className="shell">
-      <EditorialPhoto photo={editorialPhotos[toolPhotos[id]]} locale={locale} />
-      <RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)}/>
+      <RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)} photo={editorialPhotos[toolPhotos[id]]}/>
     </div>
     <JsonLd data={{
       "@context":"https://schema.org","@type":"SoftwareApplication",
@@ -229,6 +226,17 @@ export function otherMetadata(locale:SiteLocale,id:OtherPageId):Metadata{
     robots:{index:true,follow:true},openGraph:{title:page.title,description:page.description,locale,url:absoluteUrl(otherUrl(locale,id))},
   };
 }
+const resourceTopics: Record<OtherPageId, string> = {
+  plan: "moving-to-germany",
+  visa: "moving-to-germany",
+  glossary: "bureaucracy",
+  authorities: "bureaucracy",
+  emergency: "healthcare",
+  "data-status": "money",
+  "costs-deadlines": "money",
+  "explore-germany": "transport",
+};
+
 export function LocalizedOtherPage({locale,id}:{locale:SiteLocale;id:OtherPageId}) {
   const content = id==="plan" ? OldPlan() :
     id==="visa" ? OldVisa() : id==="glossary" ? OldGlossary() :
@@ -237,6 +245,8 @@ export function LocalizedOtherPage({locale,id}:{locale:SiteLocale;id:OtherPageId
     OldExplorer();
   return <div lang={locale} data-no-translate>
     {translateTree(content,locale)}
-    <div className="shell"><EditorialPhoto photo={editorialPhotos[resourcePhotos[id]]} locale={locale} /></div>
+    <div className="shell">
+      <RelatedResources locale={locale} category={resourceTopics[id]} currentPath={otherUrl(locale,id)} photo={editorialPhotos[resourcePhotos[id]]}/>
+    </div>
   </div>;
 }
