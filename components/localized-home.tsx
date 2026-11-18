@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { EditorialPhoto } from "@/components/editorial-photo";
+import { editorialPhotos } from "@/lib/content/editorial-photos";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
@@ -80,6 +82,7 @@ export function LocalizedHome({ locale }: { locale: PublicLanguage }) {
           </div>
         </div>
       </section>
+      <div className="shell"><EditorialPhoto photo={editorialPhotos.berlin} locale={locale} /></div>
       {page.sections.map((section) => (
         <section className="section shell section-compact" key={section.id} id={section.id}>
           <div className="section-heading">

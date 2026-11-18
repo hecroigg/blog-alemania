@@ -1,3 +1,5 @@
+import { EditorialPhoto, photoOpenGraph } from "@/components/editorial-photo";
+import { generalGuidePhoto } from "@/lib/content/editorial-photos";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,6 +26,7 @@ export function generalGuideMetadata(locale: EditorialLocale, slug: string): Met
   if (!original) return null;
   const guide = localizedGeneralGuide(original, locale);
   const canonical = absoluteUrl(localizedGeneralPath(locale, original.slug)!);
+  const photo = generalGuidePhoto(original.slug);
   const languages = Object.fromEntries(
     (["en", "es", "de"] as const).map((item) =>
       [item, absoluteUrl(localizedGeneralPath(item, original.slug)!)]
@@ -33,7 +36,7 @@ export function generalGuideMetadata(locale: EditorialLocale, slug: string): Met
     title: guide.title, description: guide.description,
     alternates: { canonical, languages: { ...languages, "x-default": languages.en } },
     robots: { index: true, follow: true },
-    openGraph: { type: "article", title: guide.title, description: guide.description, url: canonical, locale, modifiedTime: guide.updated },
+    openGraph: { type: "article", title: guide.title, description: guide.description, url: canonical, locale, modifiedTime: guide.updated, images: [photoOpenGraph(photo, locale)] },
     twitter: { card: "summary", title: guide.title, description: guide.description },
   };
 }
@@ -44,6 +47,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
   const guide = localizedGeneralGuide(original, locale);
   const copy = exactGuideUi[locale];
   const canonical = absoluteUrl(localizedGeneralPath(locale, original.slug)!);
+  const photo = generalGuidePhoto(original.slug);
   const related = original.related
     .map((relatedSlug) => {
       const path = localizedGeneralPath(locale, relatedSlug);
@@ -57,7 +61,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
     "@context": "https://schema.org", "@type": "Article",
     headline: guide.title, description: guide.description,
     dateModified: guide.updated,
-    mainEntityOfPage: canonical, inLanguage: locale,
+    mainEntityOfPage: canonical, image: absoluteUrl(photo.src), inLanguage: locale,
     author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") },
     publisher: { "@type": "Organization", name: siteConfig.name },
     citation: guide.sources.map((source) => source.url),
@@ -99,6 +103,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
               <li key={item}><Icon name="check" size={17} /><span>{item}</span></li>
             )}</ul>
           </section>
+          <EditorialPhoto photo={photo} locale={locale} />
           <AdSlot placement="article-intro" />
           {guide.sections.map((section, index) => (
             <section className="article-section" id={headingId(section.heading)} key={section.heading}>

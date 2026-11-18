@@ -1,3 +1,5 @@
+import { EditorialPhoto, photoOpenGraph } from "@/components/editorial-photo";
+import { editorialPhotos, exactGuidePhotos } from "@/lib/content/editorial-photos";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -31,6 +33,7 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
   if (!match) return {};
   const guide = getLocalizedExactGuide(locale, match.key);
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
+  const photo = editorialPhotos[exactGuidePhotos[match.key]];
   const topicalDescriptions: Partial<Record<ExactGuideKey, Partial<Record<Locale,string>>>> = {
     leave: {
       es: "¿Trabajas 2, 3, 4 o 5 días por semana en Alemania? Calcula el mínimo legal de vacaciones pagadas con el §3 BUrlG y descubre cuándo pueden corresponderte más días.",
@@ -44,7 +47,7 @@ export function localizedExactGuideMetadata(locale: Locale, slug: string): Metad
     }
   };
   const description = topicalDescriptions[match.key]?.[locale] || guide.description;
-  return { title: guide.title, description, alternates: { canonical, languages: languageUrls(match.key) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { type: "article", title: guide.title, description, url: canonical, locale, modifiedTime: guide.updated }, twitter: { card: "summary", title: guide.title, description } };
+  return { title: guide.title, description, alternates: { canonical, languages: languageUrls(match.key) }, robots: isSearchLocale(locale) ? undefined : { index: false, follow: true }, openGraph: { type: "article", title: guide.title, description, url: canonical, locale, modifiedTime: guide.updated, images: [photoOpenGraph(photo, locale)] }, twitter: { card: "summary", title: guide.title, description } };
 }
 
 export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug: string }) {
@@ -56,7 +59,8 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
   const guide = getLocalizedExactGuide(locale, match.key);
   const ui = exactGuideUi[locale];
   const canonical = absoluteUrl(exactGuidePath(locale, match.key));
-  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, inLanguage: locale, author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: canonical, citation: guide.sources.map((source) => source.url) };
+  const photo = editorialPhotos[exactGuidePhotos[match.key]];
+  const articleSchema = { "@context": "https://schema.org", "@type": "Article", headline: guide.title, description: guide.description, dateModified: guide.updated, inLanguage: locale, author: { "@type": "Organization", name: "GermanyBase Editorial", url: absoluteUrl("/about") }, publisher: { "@type": "Organization", name: siteConfig.name }, mainEntityOfPage: canonical, image: absoluteUrl(photo.src), citation: guide.sources.map((source) => source.url) };
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner"><Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: ui.guides, href: locale === "en" || locale === "es" || locale === "de" ? sectionPath(locale, "guides") : `/${locale}/guides` }, { label: guide.title }]}/><span className="eyebrow">{guide.eyebrow}</span><h1>{guide.title}</h1><p className="article-summary">{guide.summary}</p><div className="article-meta"><span><Icon name="clock" size={16}/> {guide.readingMinutes} {ui.read}</span><span><Icon name="check" size={16}/> {ui.updated}: <time dateTime={guide.updated}>{new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${guide.updated}T12:00:00Z`))}</time></span><span><Link href="/about">GermanyBase Editorial</Link></span></div></div></header>
     <div className="shell article-layout">
@@ -64,6 +68,7 @@ export function LocalizedExactGuidePage({ locale, slug }: { locale: Locale; slug
       <div className="article-body">
         <section className="key-takeaways"><h2>{ui.first}</h2><ul>{guide.takeaways.map((item) => <li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
         {match.key==="leave" && <HolidayMinimumCalculator locale={locale}/>}
+        <EditorialPhoto photo={photo} locale={locale} />
         <AdSlot placement="article-intro"/>
         {guide.sections.map((section) => <section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}{section.callout && <aside className={`callout callout-${section.callout.tone || "note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}</section>)}
         <section className="faq-section" id="faqs"><h2>{ui.questions}</h2>{guide.faqs.map((faq) => <details className="faq-item" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section>

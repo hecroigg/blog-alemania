@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { EditorialPhoto } from "@/components/editorial-photo";
 import { RelatedResources } from "@/components/related-resources";
 import { ExactGuideCard } from "@/components/exact-guide-card";
 import { audienceMap, audiences } from "@/lib/content/audiences";
@@ -14,7 +15,8 @@ import {
 } from "@/lib/content/guides/practical-systems-localized";
 import { exactGuideUi } from "@/lib/content/localized-exact-guides";
 import { absoluteUrl } from "@/lib/site";
-import { hubUrl } from "@/lib/locale-paths";
+import { hubUrl, type HubId } from "@/lib/locale-paths";
+import { editorialPhotos, hubPhotos } from "@/lib/content/editorial-photos";
 import { allTrustPageSlugs, trustPageForLocale } from "@/lib/content/localized-trust";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
@@ -44,12 +46,13 @@ export function localizedHubMetadata(locale: EditorialLocale, slug: string): Met
   };
 }
 
-export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; slug: string }) {
+export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; slug: HubId }) {
   const c = categoryMap.get(slug);
   const a = audienceMap.get(slug);
   const trust = trustPageForLocale(locale, slug);
   if (!c && !a && !trust) notFound();
   const ui = exactGuideUi[locale];
+  const photo = editorialPhotos[hubPhotos[slug]];
   if (trust) return (
     <article className="shell trust-page" lang={locale} data-no-translate>
       <Breadcrumbs items={[{ label: ui.home, href: "/" + locale }, { label: trust.title }]}/>
@@ -63,6 +66,7 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
           {section.bullets && <ul>{section.bullets.map((item) => <li key={item}>{item}</li>)}</ul>}
         </section>
       )}
+      <EditorialPhoto photo={photo} locale={locale} />
     </article>
   );
   const pageTitle = t(locale, c?.name || a!.name);
@@ -113,6 +117,7 @@ export function LocalizedHubPage({ locale, slug }: { locale: EditorialLocale; sl
         <div className="hub-guide-list">
           {cards.map((card) => <ExactGuideCard key={card.href} guide={card.guide} href={card.href} />)}
         </div>
+        <EditorialPhoto photo={photo} locale={locale} />
         <RelatedResources locale={locale} category={c?.slug || "moving-to-germany"} currentPath={hubUrl(locale, slug)!}/>
       </div>
     </div>

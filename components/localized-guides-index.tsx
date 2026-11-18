@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { EditorialPhoto } from "@/components/editorial-photo";
+import { editorialPhotos } from "@/lib/content/editorial-photos";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ExactGuideCard } from "@/components/exact-guide-card";
 import { exactGuideUi, getLocalizedExactGuides } from "@/lib/content/localized-exact-guides";
@@ -77,5 +79,6 @@ export function LocalizedGuidesIndex({ locale }: { locale: Locale }) {
         )}
       </div>
     </section>
+    <div className="shell"><EditorialPhoto photo={editorialPhotos.documents} locale={locale} /></div>
   </div>;
 }

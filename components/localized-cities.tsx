@@ -1,58 +1,19 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { EditorialPhoto, photoOpenGraph } from "@/components/editorial-photo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedResources } from "@/components/related-resources";
+import { editorialPhotos, type EditorialPhoto as Photo } from "@/lib/content/editorial-photos";
 import { cityMap, cities } from "@/lib/content/cities";
 import { getLocalizedCity } from "@/lib/content/city-registration-i18n";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
 import { absoluteUrl } from "@/lib/site";
 import { cityFromSlug, cityUrl, sectionPath } from "@/lib/locale-paths";
 
-type CityPhoto = {
-  src: string;
-  alt: Record<EditorialLocale, string>;
-  author: string;
-  source: string;
-  license: string;
-  licenseUrl: string;
-};
-
-const cityPhotos: Partial<Record<string, CityPhoto>> = {
-  mannheim: {
-    src: "/images/cities/mannheim.webp",
-    alt: {
-      es: "La torre del agua de Mannheim en Friedrichsplatz",
-      en: "Mannheim's water tower on Friedrichsplatz",
-      de: "Der Mannheimer Wasserturm am Friedrichsplatz",
-    },
-    author: "LeonSiPL",
-    source: "https://commons.wikimedia.org/wiki/File:Mannheim_turm.JPG",
-    license: "CC BY-SA 3.0 DE",
-    licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/de/",
-  },
-  heidelberg: {
-    src: "/images/cities/heidelberg.webp",
-    alt: {
-      es: "El Puente Viejo de Heidelberg sobre el Neckar, con el castillo al fondo",
-      en: "Heidelberg’s Old Bridge over the Neckar with the castle in the background",
-      de: "Die Alte Brücke in Heidelberg über dem Neckar mit dem Schloss im Hintergrund",
-    },
-    author: "DRAI92",
-    source: "https://commons.wikimedia.org/wiki/File:Heidelberg_Old_Bridge_with_the_Castle_in_background.jpg",
-    license: "CC BY-SA 4.0",
-    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
-  },
-};
-
-const photoEdit = {
-  es: "Imagen reducida y convertida a WebP",
-  en: "Resized and converted to WebP",
-  de: "Verkleinert und in WebP umgewandelt",
-};
+const cityPhotos: Partial<Record<string, Photo>> = editorialPhotos;
 
 const i18n = {
   en: {
@@ -109,7 +70,7 @@ export function cityDetailMetadata(locale: EditorialLocale, slug: string): Metad
     robots: { index: true, follow: true },
     openGraph: {
       type: "article", title, description: city.description, url: canonical, locale,
-      ...(photo && { images: [{ url: absoluteUrl(photo.src), width: 1200, height: 900, alt: photo.alt[locale] }] }),
+      ...(photo && { images: [photoOpenGraph(photo, locale)] }),
     },
   };
 }
@@ -124,7 +85,9 @@ export function LocalizedCitiesIndex({ locale }: { locale: EditorialLocale }) {
         <h1>{c.heading}</h1><p>{c.intro}</p>
       </div><div className="page-stat"><span>{c.cities}</span><strong>{cities.length}</strong><small>GermanyBase</small></div></div>
     </div></section>
-    <section className="section shell"><div className="action-card-grid">
+    <section className="section shell">
+      <EditorialPhoto photo={editorialPhotos.heidelberg} locale={locale} />
+      <div className="action-card-grid">
       {cities.map((raw) => {
         const city = getLocalizedCity(raw, locale);
         return <Link key={city.slug} href={cityUrl(locale, city.slug)!} className="action-card">
@@ -163,15 +126,7 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
       <div className="content-main">
         <p className="lead">{c.best}: {city.bestFor}</p>
         {city.updated && <p>{c.verified}: <time dateTime={city.updated}>{city.updated}</time>. {c.check}</p>}
-        {photo && (
-          <figure className="city-photo">
-            <Image src={photo.src} alt={photo.alt[locale]} width={1200} height={900} unoptimized />
-            <figcaption>
-              <a href={photo.source}>{photo.author}</a> · <a href={photo.licenseUrl} rel="license">{photo.license}</a>
-              {" · "}{photoEdit[locale]}
-            </figcaption>
-          </figure>
-        )}
+        {photo && <EditorialPhoto photo={photo} locale={locale} />}
         {city.sections.map((section) => <section className="article-section" key={section.heading} id={headingId(section.heading)}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

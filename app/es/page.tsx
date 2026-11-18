@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { EditorialPhoto } from "@/components/editorial-photo";
 import { JsonLd } from "@/components/json-ld";
 import { Icon } from "@/components/icon";
+import { editorialPhotos } from "@/lib/content/editorial-photos";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
 import type { ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { absoluteUrl } from "@/lib/site";
@@ -95,6 +97,8 @@ export default function SpanishHome() {
           </div>
         </div>
       </section>
+
+      <div className="shell"><EditorialPhoto photo={editorialPhotos.berlin} locale="es" /></div>
 
       <section className="section shell section-compact" aria-labelledby="como-empezar">
         <div className="section-heading">

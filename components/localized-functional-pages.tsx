@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { EditorialPhoto } from "@/components/editorial-photo";
+import { editorialPhotos, resourcePhotos, toolPhotos } from "@/lib/content/editorial-photos";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -125,7 +127,9 @@ export function LocalizedToolsIndex({locale}:{locale:SiteLocale}) {
         <span>{c.free}</span><h2>{labels[id][locale].title}</h2>
         <p>{labels[id][locale].description}</p><em>{c.open} <Icon name="arrow" size={16}/></em>
       </Link>)}
-    </div></section>
+    </div>
+      <EditorialPhoto photo={editorialPhotos.salary} locale={locale} />
+    </section>
   </div>;
 }
 
@@ -162,7 +166,10 @@ export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:
   return <div lang={locale} data-no-translate>
     {id==="rental-deposit" && <section className="page-hero"><div className="shell"><h1>{meta.title}</h1><p>{meta.description}</p></div></section>}
     {translateTree(tree,locale)}
-    <div className="shell"><RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)}/></div>
+    <div className="shell">
+      <EditorialPhoto photo={editorialPhotos[toolPhotos[id]]} locale={locale} />
+      <RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)}/>
+    </div>
     <JsonLd data={{
       "@context":"https://schema.org","@type":"SoftwareApplication",
       name:meta.title,description:meta.description,inLanguage:locale,
@@ -228,5 +235,8 @@ export function LocalizedOtherPage({locale,id}:{locale:SiteLocale;id:OtherPageId
     id==="authorities" ? OldAuthorities() : id==="emergency" ? OldEmergency() :
     id==="data-status" ? OldDataStatus() : id==="costs-deadlines" ? OldDeadlines() :
     OldExplorer();
-  return <div lang={locale} data-no-translate>{translateTree(content,locale)}</div>;
+  return <div lang={locale} data-no-translate>
+    {translateTree(content,locale)}
+    <div className="shell"><EditorialPhoto photo={editorialPhotos[resourcePhotos[id]]} locale={locale} /></div>
+  </div>;
 }

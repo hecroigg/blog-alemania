@@ -1,3 +1,5 @@
+import { EditorialPhoto, photoOpenGraph } from "@/components/editorial-photo";
+import { editorialPhotos, practicalGuidePhotos } from "@/lib/content/editorial-photos";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -36,7 +38,8 @@ export function localizedPracticalGuideMetadata(locale: SearchLocale, slug:strin
   if(!key) return null;
   const guide=getLocalizedPracticalGuide(locale,key);
   const canonical=absoluteUrl(practicalGuidePath(locale,key));
-  return {title:guide.title,description:guide.description,alternates:{canonical,languages:languageUrls(key)},robots:locale === "fr" ? {index:false,follow:true} : undefined,openGraph:{type:"article",title:guide.title,description:guide.description,url:canonical,locale,modifiedTime:guide.updated},twitter:{card:"summary",title:guide.title,description:guide.description}};
+  const photo = editorialPhotos[practicalGuidePhotos[key]];
+  return {title:guide.title,description:guide.description,alternates:{canonical,languages:languageUrls(key)},robots:locale === "fr" ? {index:false,follow:true} : undefined,openGraph:{type:"article",title:guide.title,description:guide.description,url:canonical,locale,modifiedTime:guide.updated,images:[photoOpenGraph(photo, locale)]},twitter:{card:"summary",title:guide.title,description:guide.description}};
 }
 
 export { practicalGuideStaticParams };
@@ -47,7 +50,8 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
   const guide=getLocalizedPracticalGuide(locale,key);
   const t=ui[locale];
   const canonical=absoluteUrl(practicalGuidePath(locale,key));
-  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,citation:guide.sources.map(source=>source.url)};
+  const photo = editorialPhotos[practicalGuidePhotos[key]];
+  const articleSchema={"@context":"https://schema.org","@type":"Article",headline:guide.title,description:guide.description,dateModified:guide.updated,inLanguage:locale,author:{"@type":"Organization",name:"GermanyBase Editorial",url:absoluteUrl("/about")},publisher:{"@type":"Organization",name:siteConfig.name},mainEntityOfPage:canonical,image:absoluteUrl(photo.src),citation:guide.sources.map(source=>source.url)};
   return <article lang={locale}>
     <header className="article-hero"><div className="shell article-hero-inner">
       <Breadcrumbs items={[{label:t.home,href:"/"+locale},{label:t.guides,href:sectionPath(locale==="fr"?"en":locale,"guides")},{label:guide.title}]}/>
@@ -58,6 +62,7 @@ export function LocalizedPracticalGuidePage({locale,slug}:{locale:SearchLocale;s
       <nav className="toc" aria-label={t.onPage}><strong>{t.onPage}</strong><ol>{guide.sections.map(section=><li key={section.heading}><a href={`#${toId(section.heading)}`}>{section.heading}</a></li>)}<li><a href="#faqs">{t.questions}</a></li><li><a href="#sources">{t.sources}</a></li></ol></nav>
       <div className="article-body">
         <section className="key-takeaways"><h2>{t.first}</h2><ul>{guide.takeaways.map(item=><li key={item}><Icon name="check" size={17}/><span>{item}</span></li>)}</ul></section>
+        <EditorialPhoto photo={photo} locale={locale} />
         <aside className="editorial-note"><div className="editorial-note-head"><span>{t.note}</span><small>{t.updated}: {new Intl.DateTimeFormat(locale,{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(`${guide.updated}T12:00:00Z`))} · {guide.sources.length} {t.sources.toLowerCase()}</small></div><p>{t.method}</p><p className="editorial-note-method"><Link href="/how-we-research">{t.reviewed} GermanyBase Editorial</Link></p></aside>
         <AdSlot placement="article-intro"/>
         {guide.sections.map((section,index)=><section className="article-section" id={toId(section.heading)} key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map(p=><p key={p}>{p}</p>)}{section.bullets&&<ul>{section.bullets.map(b=><li key={b}>{b}</li>)}</ul>}{section.resources&&<div className="resource-grid">{section.resources.map(resource=><a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}><span><strong data-no-translate>{resource.label}</strong><small>{locale === "en" ? resource.note : t.officialNote}</small></span><Icon name="external" size={17}/></a>)}</div>}{section.callout&&<aside className={`callout callout-${section.callout.tone||"note"}`}><strong>{section.callout.title}</strong><p>{section.callout.text}</p></aside>}{index===1&&<AdSlot placement="article-body"/>}</section>)}

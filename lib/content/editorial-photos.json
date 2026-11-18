@@ -1,0 +1,618 @@
+{
+  "berlin": {
+    "src": "/images/cities/berlin.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "Brandenburg Gate in Berlin",
+      "es": "Puerta de Brandeburgo en Berlín",
+      "de": "Brandenburger Tor in Berlin"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Brandenburg_gate.jpg",
+    "author": "Kasra karimi",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "cropped": false
+  },
+  "bremen": {
+    "src": "/images/cities/bremen.webp",
+    "width": 585,
+    "height": 780,
+    "alt": {
+      "en": "Bremen’s Town Hall and Roland statue on the Market Square",
+      "es": "Ayuntamiento de Bremen y estatua de Rolando en la plaza del Mercado",
+      "de": "Bremer Rathaus und Roland auf dem Marktplatz"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Bremen-roland-marktplatz-rathaus.JPG",
+    "author": "Roland.h.bueb",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+  },
+  "cologne": {
+    "src": "/images/cities/cologne.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "Cologne Cathedral and the Hohenzollern Bridge",
+      "es": "Catedral de Colonia y puente Hohenzollern",
+      "de": "Kölner Dom und Hohenzollernbrücke"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Cologne_Cathedral_and_Hohenzollern_Bridge.jpg",
+    "author": "Kevin Kreitner",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "cropped": false
+  },
+  "dresden": {
+    "src": "/images/cities/dresden.webp",
+    "width": 960,
+    "height": 641,
+    "alt": {
+      "en": "Dresden’s old town skyline beside the Elbe",
+      "es": "Vista del casco antiguo de Dresde junto al Elba",
+      "de": "Silhouette der Dresdner Altstadt an der Elbe"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Skyline_Dresden_by_Gaurav_Chingale.jpg",
+    "author": "Gaurav Chingale",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "dusseldorf": {
+    "src": "/images/cities/dusseldorf.webp",
+    "width": 623,
+    "height": 780,
+    "alt": {
+      "en": "The Rhine Tower in Düsseldorf",
+      "es": "Torre del Rin en Düsseldorf",
+      "de": "Rheinturm in Düsseldorf"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Rheinturm_D%C3%BCsseldorf.jpg",
+    "author": "Dheeraj.sakaray",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "frankfurt": {
+    "src": "/images/cities/frankfurt.webp",
+    "width": 960,
+    "height": 633,
+    "alt": {
+      "en": "The Frankfurt am Main skyline",
+      "es": "Vista de los rascacielos de Fráncfort del Meno",
+      "de": "Skyline von Frankfurt am Main"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Skyline_Frankfurt_am_Main_2019.jpg",
+    "author": "Marco Almbauer",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "freiburg": {
+    "src": "/images/cities/freiburg.webp",
+    "width": 895,
+    "height": 780,
+    "alt": {
+      "en": "Freiburg Minster in Freiburg im Breisgau",
+      "es": "Catedral de Friburgo de Brisgovia",
+      "de": "Freiburger Münster in Freiburg im Breisgau"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Freiburg_im_Breisgau_M%C3%BCnster.jpg",
+    "author": "C. M.",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "cropped": false
+  },
+  "hamburg": {
+    "src": "/images/cities/hamburg.webp",
+    "width": 1040,
+    "height": 627,
+    "alt": {
+      "en": "Wasserschloss and canals in Hamburg’s Speicherstadt",
+      "es": "Wasserschloss y canales de la Speicherstadt de Hamburgo",
+      "de": "Wasserschloss und Kanäle in der Hamburger Speicherstadt"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Wasserschloss_Speicherstadt.jpg",
+    "author": "Elchin Jabbarov",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "cropped": false
+  },
+  "hannover": {
+    "src": "/images/cities/hannover.webp",
+    "width": 1040,
+    "height": 780,
+    "alt": {
+      "en": "Hanover’s New Town Hall in Maschpark",
+      "es": "Nuevo Ayuntamiento de Hannover en el Maschpark",
+      "de": "Neues Rathaus im Maschpark in Hannover"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Neues_Rathaus_mit_Maschpark.jpg",
+    "author": "Vivimeri",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  "heidelberg": {
+    "src": "/images/cities/heidelberg.webp",
+    "width": 1200,
+    "height": 900,
+    "alt": {
+      "en": "Heidelberg’s Old Bridge over the Neckar with the castle in the background",
+      "es": "El Puente Viejo de Heidelberg sobre el Neckar, con el castillo al fondo",
+      "de": "Die Alte Brücke in Heidelberg über dem Neckar mit dem Schloss im Hintergrund"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Heidelberg_Old_Bridge_with_the_Castle_in_background.jpg",
+    "author": "DRAI92",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "cropped": false
+  },
+  "karlsruhe": {
+    "src": "/images/cities/karlsruhe.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "Karlsruhe Palace and its grounds from above",
+      "es": "Vista aérea del Palacio de Karlsruhe y sus alrededores",
+      "de": "Karlsruher Schloss und Umgebung aus der Luft"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:MKa_0553_Schloss_Karlsruhe.jpg",
+    "author": "Martin Kraft / Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "cropped": false
+  },
+  "leipzig": {
+    "src": "/images/cities/leipzig.webp",
+    "width": 1000,
+    "height": 667,
+    "alt": {
+      "en": "Leipzig’s Old Town Hall on the Market Square",
+      "es": "Antiguo Ayuntamiento de Leipzig en la plaza del Mercado",
+      "de": "Altes Rathaus am Leipziger Markt"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Leipzig_AltesRathaus.jpg",
+    "author": "Maddl79",
+    "license": "CC BY-SA 3.0 DE",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/",
+    "cropped": false
+  },
+  "mannheim": {
+    "src": "/images/cities/mannheim.webp",
+    "width": 1200,
+    "height": 900,
+    "alt": {
+      "en": "Mannheim’s water tower on Friedrichsplatz",
+      "es": "La torre del agua de Mannheim en Friedrichsplatz",
+      "de": "Der Mannheimer Wasserturm am Friedrichsplatz"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Mannheim_turm.JPG",
+    "author": "LeonSiPL",
+    "license": "CC BY-SA 3.0 DE",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/",
+    "cropped": false
+  },
+  "munich": {
+    "src": "/images/cities/munich.webp",
+    "width": 1040,
+    "height": 718,
+    "alt": {
+      "en": "Marienplatz and the New Town Hall in Munich",
+      "es": "Marienplatz y el Nuevo Ayuntamiento de Múnich",
+      "de": "Marienplatz und Neues Rathaus in München"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Neues_Rathaus_und_Marienplatz_M%C3%BCnchen.jpg",
+    "author": "Chris 73 / Wikimedia Commons",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "cropped": false
+  },
+  "nuremberg": {
+    "src": "/images/cities/nuremberg.webp",
+    "width": 1040,
+    "height": 454,
+    "alt": {
+      "en": "Nuremberg’s historic old town",
+      "es": "Casco histórico de Núremberg",
+      "de": "Historische Altstadt von Nürnberg"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:N%C3%BCrnberg_Altstadt.jpg",
+    "author": "WolfgangP66",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "stuttgart": {
+    "src": "/images/cities/stuttgart.webp",
+    "width": 1040,
+    "height": 780,
+    "alt": {
+      "en": "The New Palace on Schlossplatz in Stuttgart",
+      "es": "Palacio Nuevo en la Schlossplatz de Stuttgart",
+      "de": "Neues Schloss am Schlossplatz in Stuttgart"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:Neues_Schloss,_Schlossplatz,_Stuttgart.jpg",
+    "author": "Saptarshi Pal",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "cropped": false
+  },
+  "banking": {
+    "src": "/images/editorial/banking.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A person holding a bank card",
+      "es": "Una persona sostiene una tarjeta bancaria",
+      "de": "Eine Person hält eine Bankkarte"
+    },
+    "source": "https://www.pexels.com/photo/a-person-holding-bank-card-7534775/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "contract": {
+    "src": "/images/editorial/contract.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "A hand writing on a contract",
+      "es": "Una mano escribe sobre un contrato",
+      "de": "Eine Hand schreibt auf einem Vertrag",
+      "fr": "Une main écrit sur un contrat",
+      "it": "Una mano scrive su un contratto",
+      "pt": "Uma mão escreve num contrato",
+      "pl": "Ręka pisze na umowie",
+      "uk": "Рука пише на договорі"
+    },
+    "source": "https://www.pexels.com/photo/close-up-shot-of-a-person-writing-on-a-contract-7841506/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "doctor": {
+    "src": "/images/editorial/doctor.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A stethoscope and notebook on a desk",
+      "es": "Estetoscopio y cuaderno sobre una mesa",
+      "de": "Stethoskop und Notizbuch auf einem Schreibtisch",
+      "fr": "Stéthoscope et carnet sur un bureau"
+    },
+    "source": "https://www.pexels.com/photo/stethoscope-and-notebook-on-desk-5407238/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "documents": {
+    "src": "/images/editorial/documents.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A person filling in paperwork at a desk",
+      "es": "Una persona rellena documentos en una mesa",
+      "de": "Eine Person füllt Unterlagen am Schreibtisch aus",
+      "fr": "Une personne remplit des documents à un bureau",
+      "it": "Una persona compila documenti alla scrivania",
+      "pt": "Uma pessoa preenche documentos numa secretária",
+      "pl": "Osoba wypełniająca dokumenty przy biurku",
+      "uk": "Людина заповнює документи за столом"
+    },
+    "source": "https://www.pexels.com/photo/a-person-filling-in-documents-16282318/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "families": {
+    "src": "/images/editorial/families.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "A family shopping for groceries in a supermarket",
+      "es": "Una familia hace la compra en un supermercado",
+      "de": "Eine Familie kauft im Supermarkt ein",
+      "fr": "Une famille fait ses courses dans un supermarché",
+      "it": "Una famiglia fa la spesa al supermercato",
+      "pt": "Uma família faz compras num supermercado",
+      "pl": "Rodzina robi zakupy w supermarkecie",
+      "uk": "Родина робить покупки в супермаркеті"
+    },
+    "source": "https://www.pexels.com/photo/family-doing-shopping-in-the-grocery-store-3985092/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "grocery": {
+    "src": "/images/editorial/grocery.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A shopper choosing a red pepper in a supermarket",
+      "es": "Una persona elige un pimiento rojo en el supermercado",
+      "de": "Eine Kundin wählt eine rote Paprika im Supermarkt"
+    },
+    "source": "https://www.pexels.com/photo/a-woman-holding-a-red-bell-pepper-in-a-supermarket-9475226/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "health": {
+    "src": "/images/editorial/health.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "Stethoscope, notebook and medicines on a desk",
+      "es": "Estetoscopio, cuaderno y medicamentos sobre una mesa",
+      "de": "Stethoskop, Notizbuch und Medikamente auf einem Schreibtisch",
+      "fr": "Stéthoscope, carnet et médicaments sur un bureau",
+      "it": "Stetoscopio, taccuino e medicinali su una scrivania",
+      "pt": "Estetoscópio, caderno e medicamentos numa secretária",
+      "pl": "Stetoskop, notes i leki na biurku",
+      "uk": "Стетоскоп, блокнот і ліки на столі"
+    },
+    "source": "https://www.pexels.com/photo/stethoscope-notebook-and-medicines-on-doctors-office-desk-5407237/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "holiday": {
+    "src": "/images/editorial/holiday.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A calendar and pen on a desk",
+      "es": "Calendario y bolígrafo sobre una mesa",
+      "de": "Kalender und Stift auf einem Tisch",
+      "fr": "Calendrier et stylo sur une table",
+      "it": "Calendario e penna su un tavolo",
+      "pt": "Calendário e caneta numa mesa",
+      "pl": "Kalendarz i długopis na stole",
+      "uk": "Календар і ручка на столі"
+    },
+    "source": "https://www.pexels.com/photo/a-black-and-white-calendar-with-a-pen-on-top-28353121/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "housing": {
+    "src": "/images/editorial/housing.webp",
+    "width": 1040,
+    "height": 780,
+    "alt": {
+      "en": "Apartment buildings lining a residential street",
+      "es": "Edificios de viviendas en una calle residencial",
+      "de": "Wohnhäuser in einer Wohnstraße"
+    },
+    "source": "https://www.pexels.com/photo/modern-residential-street-with-apartment-buildings-34819643/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "internet": {
+    "src": "/images/editorial/internet.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "A wireless router for a home network",
+      "es": "Router inalámbrico para una red doméstica",
+      "de": "WLAN-Router für ein Heimnetzwerk"
+    },
+    "source": "https://www.pexels.com/de-de/foto/drahtlose-netzwerkausrustung-heimrouter-29711663/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "keys": {
+    "src": "/images/editorial/keys.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "House keys, a model house and a contract on a table",
+      "es": "Llaves de una vivienda, una casa en miniatura y un contrato en una mesa",
+      "de": "Wohnungsschlüssel, ein Modellhaus und ein Vertrag auf einem Tisch",
+      "fr": "Clés, maison miniature et contrat sur une table",
+      "it": "Chiavi, modellino di una casa e contratto su un tavolo",
+      "pt": "Chaves, uma casa em miniatura e um contrato numa mesa",
+      "pl": "Klucze, model domu i umowa na stole",
+      "uk": "Ключі, модель будинку та договір на столі"
+    },
+    "source": "https://www.pexels.com/photo/wooden-house-moder-keys-and-contract-on-table-12955837/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "mobile": {
+    "src": "/images/editorial/mobile.webp",
+    "width": 1040,
+    "height": 780,
+    "alt": {
+      "en": "A mobile phone, SIM card and memory card on a yellow surface",
+      "es": "Móvil, tarjeta SIM y tarjeta de memoria sobre un fondo amarillo",
+      "de": "Mobiltelefon, SIM-Karte und Speicherkarte auf gelbem Untergrund"
+    },
+    "source": "https://www.pexels.com/photo/a-mobile-phone-with-sim-and-memory-card-on-yellow-surface-14434414/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "moving": {
+    "src": "/images/editorial/moving.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "Cardboard boxes being packed for a move",
+      "es": "Cajas de cartón preparadas para una mudanza",
+      "de": "Umzugskartons beim Packen"
+    },
+    "source": "https://www.pexels.com/photo/young-woman-arranging-cardboard-boxes-during-relocation-7203811/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "passport": {
+    "src": "/images/editorial/passport.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "A German passport, banknotes and a watch on a table",
+      "es": "Pasaporte alemán, billetes y reloj sobre una mesa",
+      "de": "Deutscher Reisepass, Geldscheine und Uhr auf einem Tisch"
+    },
+    "source": "https://www.pexels.com/photo/round-black-chronograph-watch-on-table-near-germany-passport-an-banknote-on-table-1438863/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "radio": {
+    "src": "/images/editorial/radio.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A vintage radio on a table",
+      "es": "Una radio antigua sobre una mesa",
+      "de": "Ein altes Radio auf einem Tisch",
+      "fr": "Un poste de radio ancien sur une table",
+      "it": "Una radio d’epoca su un tavolo",
+      "pt": "Um rádio antigo numa mesa",
+      "pl": "Stare radio na stole",
+      "uk": "Старовинне радіо на столі"
+    },
+    "source": "https://www.pexels.com/photo/vintage-radio-on-table-19920957/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "registration": {
+    "src": "/images/editorial/registration.webp",
+    "width": 1040,
+    "height": 691,
+    "alt": {
+      "en": "The Red Town Hall in Berlin",
+      "es": "Ayuntamiento Rojo de Berlín",
+      "de": "Rotes Rathaus in Berlin",
+      "fr": "Hôtel de ville rouge de Berlin",
+      "it": "Municipio Rosso di Berlino",
+      "pt": "Câmara Municipal Vermelha de Berlim",
+      "pl": "Czerwony Ratusz w Berlinie",
+      "uk": "Червона ратуша в Берліні"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Rotes_Rathaus,_Berlin.jpg",
+    "author": "Richard Eisenmenger",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  "salary": {
+    "src": "/images/editorial/salary.webp",
+    "width": 1040,
+    "height": 561,
+    "alt": {
+      "en": "Euro banknotes, paperwork and a calculator",
+      "es": "Billetes de euro, documentos y una calculadora",
+      "de": "Euro-Banknoten, Unterlagen und ein Taschenrechner",
+      "fr": "Billets en euros, documents et calculatrice",
+      "it": "Banconote in euro, documenti e calcolatrice",
+      "pt": "Notas de euro, documentos e calculadora",
+      "pl": "Banknoty euro, dokumenty i kalkulator",
+      "uk": "Банкноти євро, документи й калькулятор"
+    },
+    "source": "https://www.pexels.com/photo/euro-banknotes-with-financial-documents-and-calculator-28763701/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "student": {
+    "src": "/images/editorial/student.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "Students studying in a library",
+      "es": "Estudiantes que estudian en una biblioteca",
+      "de": "Studierende lernen in einer Bibliothek"
+    },
+    "source": "https://www.pexels.com/photo/students-studying-inside-the-library-8199659/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "tax": {
+    "src": "/images/editorial/tax.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A person using a calculator beside paperwork",
+      "es": "Una persona usa una calculadora junto a varios documentos",
+      "de": "Eine Person benutzt einen Taschenrechner neben Unterlagen",
+      "fr": "Une personne utilise une calculatrice à côté de documents",
+      "it": "Una persona usa una calcolatrice accanto a dei documenti",
+      "pt": "Uma pessoa usa uma calculadora junto a documentos",
+      "pl": "Osoba korzysta z kalkulatora obok dokumentów",
+      "uk": "Людина користується калькулятором поруч із документами"
+    },
+    "source": "https://www.pexels.com/photo/a-person-working-on-the-documents-using-a-calculator-8297220/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "transport": {
+    "src": "/images/editorial/transport.webp",
+    "width": 1040,
+    "height": 780,
+    "alt": {
+      "en": "A regional train at a station in Germany",
+      "es": "Tren regional en una estación de Alemania",
+      "de": "Regionalzug an einem Bahnhof in Deutschland",
+      "fr": "Train régional dans une gare en Allemagne",
+      "it": "Treno regionale in una stazione in Germania",
+      "pt": "Comboio regional numa estação na Alemanha",
+      "pl": "Pociąg regionalny na stacji w Niemczech",
+      "uk": "Регіональний поїзд на станції в Німеччині"
+    },
+    "cropped": false,
+    "source": "https://commons.wikimedia.org/wiki/File:Bonn_Hauptbahnhof_lub_2024-06-01_img02_Voreifelbahn.jpg",
+    "author": "Lukas Beck",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "work": {
+    "src": "/images/editorial/work.webp",
+    "width": 780,
+    "height": 780,
+    "alt": {
+      "en": "A person working on a laptop",
+      "es": "Una persona trabaja con un portátil",
+      "de": "Eine Person arbeitet am Laptop",
+      "fr": "Une personne travaille sur un ordinateur portable",
+      "it": "Una persona lavora al portatile",
+      "pt": "Uma pessoa trabalha num portátil",
+      "pl": "Osoba pracuje na laptopie",
+      "uk": "Людина працює за ноутбуком"
+    },
+    "source": "https://www.pexels.com/photo/person-using-laptop-3747069/",
+    "author": "Pexels",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  }
+}
