@@ -4,8 +4,10 @@ import { moveAndAdminGuides } from "./move-and-admin";
 import { newcomerReferenceGuides } from "./newcomer-reference";
 import { workAndHousingGuides } from "./work-and-housing";
 import { practicalSystemsGuides } from "./practical-systems";
+import { familyGuideForLocale, familyGuides } from "./family-guides";
 
 export const guides = [
+  ...Array.from(familyGuides.values(), (article) => familyGuideForLocale(article, "en")),
   ...moveAndAdminGuides,
   ...workAndHousingGuides,
   ...lifeServicesGuides,

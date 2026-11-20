@@ -20,7 +20,7 @@ export const audiences: Audience[] = [
     name: "Families",
     description: "Coordinate housing, registration, healthcare, childcare research, and daily mobility as one move.",
     priorities: ["Map every family member's documentation", "Research childcare or schools early", "Choose housing around daily journeys", "Confirm family health coverage"],
-    guideSlugs: ["moving-to-germany", "finding-housing-germany", "renting-in-germany", "german-health-insurance", "cost-of-living-germany", "best-cities-germany"],
+    guideSlugs: ["child-benefits-germany", "elterngeld-germany", "elterngeld-reform-2027", "primary-school-childcare-germany", "moving-to-germany", "finding-housing-germany", "renting-in-germany", "german-health-insurance", "cost-of-living-germany", "best-cities-germany"],
   },
   {
     slug: "freelancers",

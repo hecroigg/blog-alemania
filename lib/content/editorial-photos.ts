@@ -19,6 +19,10 @@ export const editorialPhotos = photos satisfies Record<string, EditorialPhoto>;
 type PhotoId = keyof typeof editorialPhotos;
 
 const generalGuidePhotos: Record<string, PhotoId | undefined> = {
+  "child-benefits-germany": "families",
+  "elterngeld-germany": "newborn",
+  "elterngeld-reform-2027": "newborn",
+  "primary-school-childcare-germany": "classroom",
   "moving-to-germany": "moving",
   "first-30-days-germany": "moving",
   "anmeldung-germany": "documents",

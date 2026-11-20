@@ -42,7 +42,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Paperwork and authorities", es: "Trámites y organismos oficiales", de: "Behörden und Unterlagen" },
   },
   money: {
-    guideSlugs: ["cost-of-living-germany", "german-bank-account"],
+    guideSlugs: ["child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
     tool: "cost-of-living",
     toolTitle: { en: "Estimate your monthly living costs", es: "Calcula tus gastos mensuales", de: "Monatliche Lebenshaltungskosten berechnen" },
     hub: "money",

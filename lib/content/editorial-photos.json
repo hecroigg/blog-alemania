@@ -614,5 +614,35 @@
     "license": "Pexels License",
     "licenseUrl": "https://www.pexels.com/license/",
     "cropped": false
+  },
+  "classroom": {
+    "src": "/images/editorial/classroom.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "Empty classroom with desks and a whiteboard",
+      "es": "Aula vacía con pupitres y una pizarra",
+      "de": "Leeres Klassenzimmer mit Tischen und einer Tafel"
+    },
+    "source": "https://www.pexels.com/photo/classroom-with-whiteboard-and-desk-with-stationery-5905441/",
+    "author": "Katerina Holmes",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
+  },
+  "newborn": {
+    "src": "/images/editorial/newborn.webp",
+    "width": 1040,
+    "height": 693,
+    "alt": {
+      "en": "A parent holding the hand of a newborn baby",
+      "es": "Un progenitor sostiene la mano de un bebé recién nacido",
+      "de": "Ein Elternteil hält die Hand eines Neugeborenen"
+    },
+    "source": "https://www.pexels.com/photo/close-up-of-the-father-holding-his-newborn-baby-hand-15961870/",
+    "author": "Danik Prihodko",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "cropped": false
   }
 }
