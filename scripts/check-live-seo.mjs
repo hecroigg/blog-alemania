@@ -10,6 +10,11 @@ import { execFileSync } from "node:child_process";
 const base = "https://germanybase.de";
 const samples = [
   "/en", "/es", "/de",
+  "/de/ratgeber/internetanschluss-deutschland",
+  "/de/ratgeber/krankenversicherung-kosten-deutschland-2026",
+  "/es/guias/steuer-id-alemania",
+  "/es/guias/dias-vacaciones-pagadas-alemania",
+  "/en/guides/deutschlandticket-price-rules-2026",
   "/en/guides/midijob-germany-2026",
   "/es/guias/midijob-alemania-2026",
   "/de/ratgeber/midijob-deutschland-2026",
@@ -92,3 +97,21 @@ for (const path of samples) {
   console.log("PASS " + path);
 }
 console.log("SEO crawl smoke test completed. Indexing and rankings still depend on Google.");
+
+// Historic Search Console URLs must redirect directly, never become duplicate pages.
+const legacyPairs = [
+  ["/de/guides/krankenversicherung-kosten-deutschland-2026", "/de/ratgeber/krankenversicherung-kosten-deutschland-2026"],
+  ["/de/guides/kindergeld-deutschland-2026", "/de/ratgeber/kindergeld-deutschland-2026"],
+  ["/de/guides/midijob-deutschland-2026", "/de/ratgeber/midijob-deutschland-2026"],
+  ["/es/guides/dias-vacaciones-pagadas-alemania", "/es/guias/dias-vacaciones-pagadas-alemania"],
+  ["/guides/best-cities-germany", "/en/guides/best-cities-germany"],
+  ["/guides/finding-doctor-germany", "/en/guides/finding-doctor-germany"],
+];
+for (const [oldPath, newPath] of legacyPairs) {
+  const result = execFileSync("curl", ["-sS", "--max-time", "20", "-o", "/dev/null", "-w", "%{http_code} %{redirect_url}", base + oldPath], { encoding: "utf8" });
+  const [code, destination] = result.trim().split(" ");
+  assert.ok(code === "301" || code === "308", "Expected permanent redirect: " + oldPath + " got " + result);
+  assert.equal(destination, base + newPath, "Wrong redirect target: " + oldPath);
+  assert.ok(!known.has(base + oldPath), "Legacy URL in sitemap: " + oldPath);
+  assert.ok(known.has(base + newPath), "Redirect target missing from sitemap: " + newPath);
+}

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { cities } from "@/lib/content/cities";
 import { exactGuides } from "@/lib/content/exact-guides";
-import { generalEnglishGuides, localizedGeneralPath } from "@/lib/content/localized-general-guides";
+import { generalEnglishGuides, localizedGeneralPath, localizedGeneralGuide } from "@/lib/content/localized-general-guides";
+import { getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
 import { practicalGuidePath, practicalGuideSlugs, type PracticalGuideKey } from "@/lib/content/guides/practical-systems-localized";
 import {
@@ -33,10 +34,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       record(sectionPath(lang, "guides"), "2026-11-17", .9, (x) => sectionPath(x, "guides"))
     ),
     ...generalEnglishGuides.flatMap((guide) => locales.map((lang) =>
-      record(localizedGeneralPath(lang, guide.slug)!, guide.updated, guide.featured ? .9 : .8, (x) => localizedGeneralPath(x,guide.slug)!)
+      record(localizedGeneralPath(lang, guide.slug)!, localizedGeneralGuide(guide, lang).updated, guide.featured ? .9 : .8, (x) => localizedGeneralPath(x,guide.slug)!)
     )),
     ...exactGuides.flatMap((guide) => locales.map((lang) =>
-      record(exactGuidePath(lang, guide.key), guide.updated, .9, (x) => exactGuidePath(x, guide.key))
+      record(exactGuidePath(lang, guide.key), getLocalizedExactGuide(lang, guide.key).updated, .9, (x) => exactGuidePath(x, guide.key))
     )),
     ...(Object.keys(practicalGuideSlugs) as PracticalGuideKey[]).flatMap((key) =>
       locales.map((lang) => record(practicalGuidePath(lang,key), "2026-10-08", .9, (x) => practicalGuidePath(x,key)))

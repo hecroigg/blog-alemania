@@ -2,10 +2,14 @@ import Link from "next/link";
 import { EditorialPhoto } from "@/components/editorial-photo";
 import type { EditorialPhoto as Photo } from "@/lib/content/editorial-photos";
 import { generalEnglishGuides, localizedGeneralGuide, localizedGeneralPath } from "@/lib/content/localized-general-guides";
+import { exactGuidePath } from "@/lib/exact-guide-routes";
+import { getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
+import type { ExactGuideKey } from "@/lib/exact-guide-slugs";
 import { hubUrl, toolUrl, type SiteLocale, type ToolId } from "@/lib/locale-paths";
 
 type Topic = {
   guideSlugs: readonly string[];
+  exactKeys?: readonly ExactGuideKey[];
   tool: ToolId;
   toolTitle: Record<SiteLocale, string>;
   hub: string;
@@ -22,6 +26,7 @@ const topics: Record<string, Topic> = {
   },
   work: {
     guideSlugs: ["working-in-germany", "jobs-without-german"],
+    exactKeys: ["midijob", "leave"],
     tool: "salary-calculator",
     toolTitle: { en: "Calculate your estimated net salary", es: "Calcula tu salario neto estimado", de: "Nettogehalt berechnen" },
     hub: "work",
@@ -36,6 +41,7 @@ const topics: Record<string, Topic> = {
   },
   bureaucracy: {
     guideSlugs: ["anmeldung-germany", "german-tax-id"],
+    exactKeys: ["anmeldung"],
     tool: "anmeldung-finder",
     toolTitle: { en: "Find your local registration office", es: "Encuentra tu oficina de empadronamiento", de: "Zuständige Meldestelle finden" },
     hub: "bureaucracy",
@@ -43,6 +49,7 @@ const topics: Record<string, Topic> = {
   },
   money: {
     guideSlugs: ["child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
+    exactKeys: ["kindergeld", "allowance"],
     tool: "cost-of-living",
     toolTitle: { en: "Estimate your monthly living costs", es: "Calcula tus gastos mensuales", de: "Monatliche Lebenshaltungskosten berechnen" },
     hub: "money",
@@ -50,6 +57,7 @@ const topics: Record<string, Topic> = {
   },
   healthcare: {
     guideSlugs: ["german-health-insurance", "first-30-days-germany"],
+    exactKeys: ["health"],
     tool: "document-checklist",
     toolTitle: { en: "Check your documents", es: "Comprueba los documentos necesarios", de: "Erforderliche Dokumente prüfen" },
     hub: "healthcare",
@@ -57,13 +65,14 @@ const topics: Record<string, Topic> = {
   },
   transport: {
     guideSlugs: ["deutschlandticket", "best-cities-germany"],
+    exactKeys: ["deutschlandticket"],
     tool: "compare-cities",
     toolTitle: { en: "Compare transport and cities", es: "Compara ciudades y transporte", de: "Verkehr und Städte vergleichen" },
     hub: "transport",
     hubTitle: { en: "Transport in Germany", es: "Transporte en Alemania", de: "Verkehr in Deutschland" },
   },
   "daily-life": {
-    guideSlugs: ["german-supermarkets", "german-sim-cards"],
+    guideSlugs: ["internet-germany", "german-supermarkets", "german-sim-cards"],
     tool: "cost-of-living",
     toolTitle: { en: "Plan your monthly expenses", es: "Planifica tus gastos mensuales", de: "Monatliche Ausgaben planen" },
     hub: "daily-life",
@@ -109,6 +118,10 @@ export function RelatedResources({
   const hub = hubUrl(locale, group.hub);
   const links = [
     ...articles,
+    ...(group.exactKeys || []).flatMap(key => {
+      const href = exactGuidePath(locale, key);
+      return href === currentPath ? [] : [{ href, label: getLocalizedExactGuide(locale, key).title }];
+    }),
     ...(tool !== currentPath ? [{ href: tool, label: group.toolTitle[locale] }] : []),
     ...(hub && hub !== currentPath ? [{ href: hub, label: ui[locale].section + ": " + group.hubTitle[locale] }] : []),
   ];

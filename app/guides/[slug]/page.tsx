@@ -1,4 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
+import { exactGuidePath, findExactGuideRoute } from "@/lib/exact-guide-routes";
 import { guides } from "@/lib/content/guides";
 import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
 import { practicalGuideKeyFromSlug, practicalGuidePath } from "@/lib/content/guides/practical-systems-localized";
@@ -16,5 +17,7 @@ export default async function LegacyGuide({ params }: Props) {
   if (practical) permanentRedirect(practicalGuidePath("en", practical));
   const localized = localizedGeneralPath("en", slug);
   if (localized) permanentRedirect(localized);
+  const exact = findExactGuideRoute("en", slug);
+  if (exact) permanentRedirect(exactGuidePath("en", exact.key));
   notFound();
 }

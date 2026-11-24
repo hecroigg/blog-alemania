@@ -7,6 +7,7 @@ import pt from "@/lib/translations/pt.json";
 import uk from "@/lib/translations/uk.json";
 import { exactGuideByKey, exactGuideSlugs, exactGuides, type ExactGuideKey } from "@/lib/content/exact-guides";
 import type { Guide } from "@/lib/types";
+import { enhanceExactGuide } from "@/lib/content/seo-guide-enhancements";
 import type { Locale } from "@/lib/platform-data";
 
 type Catalog = Record<string, string>;
@@ -20,7 +21,7 @@ function text(locale: Locale, value: string) {
 export function getLocalizedExactGuide(locale: Locale, key: ExactGuideKey): Guide & { key: ExactGuideKey } {
   const item = exactGuideByKey.get(key);
   if (!item) throw new Error(`Unknown exact guide: ${key}`);
-  return {
+  return { ...enhanceExactGuide({
     ...item,
     slug: exactGuideSlugs[key][locale],
     title: text(locale, item.title),
@@ -38,8 +39,7 @@ export function getLocalizedExactGuide(locale: Locale, key: ExactGuideKey): Guid
     })),
     faqs: item.faqs.map((faq) => ({ question: text(locale, faq.question), answer: text(locale, faq.answer) })),
     sources: item.sources.map((source) => ({ ...source, name: text(locale, source.name), note: source.note ? text(locale, source.note) : undefined })),
-    key,
-  };
+  }, key, locale), key };
 }
 
 export function getLocalizedExactGuides(locale: Locale) {

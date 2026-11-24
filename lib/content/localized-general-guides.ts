@@ -1,6 +1,7 @@
 import { guides } from "@/lib/content/guides";
 import { familyGuideForLocale, familyGuides } from "@/lib/content/guides/family-guides";
 import type { Guide } from "@/lib/types";
+import { enhanceGeneralGuide } from "@/lib/content/seo-guide-enhancements";
 import { guideUrl } from "@/lib/locale-paths";
 import esCatalog from "@/lib/translations/es.json";
 import deCatalog from "@/lib/translations/de.json";
@@ -60,11 +61,11 @@ function translate(value: string, locale: EditorialLocale) {
   return locale === "en" ? value : catalog[locale][value] || value;
 }
 export function localizedGeneralGuide(guide: Guide, locale: EditorialLocale): Guide {
-  if (locale === "en") return guide;
+  if (locale === "en") return enhanceGeneralGuide(guide, guide.slug, locale);
   const article = familyGuides.get(guide.slug);
   if (article) return familyGuideForLocale(article, locale);
   const t = (value: string) => translate(value, locale);
-  return {
+  return enhanceGeneralGuide({
     ...guide,
     slug: localizedGeneralSlug(locale, guide.slug) || guide.slug,
     title: t(guide.title),
@@ -91,5 +92,5 @@ export function localizedGeneralGuide(guide: Guide, locale: EditorialLocale): Gu
     // Relationship identifiers remain in the original language and are
     // converted to localized links by the page component.
     related: guide.related,
-  };
+  }, guide.slug, locale);
 }
