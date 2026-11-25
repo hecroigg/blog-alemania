@@ -15,6 +15,9 @@ const samples = [
   "/es/guias/steuer-id-alemania",
   "/es/guias/dias-vacaciones-pagadas-alemania",
   "/en/guides/deutschlandticket-price-rules-2026",
+  "/es/guias/mercadillos-navidad-mannheim-heidelberg-francfort-2026",
+  "/en/guides/deutschlandticket-2027",
+  "/de/ratgeber/steuererklaerung-2022-frist-freiwillig",
   "/en/guides/midijob-germany-2026",
   "/es/guias/midijob-alemania-2026",
   "/de/ratgeber/midijob-deutschland-2026",
@@ -77,7 +80,9 @@ for (const path of samples) {
   const language = path.split("/")[1];
   assert.match(html, new RegExp('<html\\b[^>]*\\blang="' + language + '"'),
     "Incorrect HTML language: " + path);
-  const links = [...html.matchAll(/<link\b[^>]*>/g)].map((m) => attributes(m[0]));
+  const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1];
+  assert.ok(head, "Missing crawlable HTML head: " + path);
+  const links = [...head.matchAll(/<link\b[^>]*>/g)].map((m) => attributes(m[0]));
   const canonical = links.filter((tag) => tag.rel === "canonical");
   assert.equal(canonical.length, 1, "Expected exactly one canonical: " + path);
   assert.equal(canonical[0].href, base + path, "Wrong canonical: " + path);
