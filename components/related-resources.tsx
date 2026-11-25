@@ -48,7 +48,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Paperwork and authorities", es: "Trámites y organismos oficiales", de: "Behörden und Unterlagen" },
   },
   money: {
-    guideSlugs: ["child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
+    guideSlugs: ["germany-2022-tax-return-deadline", "child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
     exactKeys: ["kindergeld", "allowance"],
     tool: "cost-of-living",
     toolTitle: { en: "Estimate your monthly living costs", es: "Calcula tus gastos mensuales", de: "Monatliche Lebenshaltungskosten berechnen" },
@@ -64,7 +64,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Health and insurance", es: "Salud y seguros", de: "Gesundheit und Versicherung" },
   },
   transport: {
-    guideSlugs: ["deutschlandticket", "best-cities-germany"],
+    guideSlugs: ["deutschlandticket-2027", "deutschlandticket", "best-cities-germany"],
     exactKeys: ["deutschlandticket"],
     tool: "compare-cities",
     toolTitle: { en: "Compare transport and cities", es: "Compara ciudades y transporte", de: "Verkehr und Städte vergleichen" },
@@ -72,7 +72,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Transport in Germany", es: "Transporte en Alemania", de: "Verkehr in Deutschland" },
   },
   "daily-life": {
-    guideSlugs: ["internet-germany", "german-supermarkets", "german-sim-cards"],
+    guideSlugs: ["christmas-markets-mannheim-heidelberg-frankfurt-2026", "internet-germany", "german-supermarkets", "german-sim-cards"],
     tool: "cost-of-living",
     toolTitle: { en: "Plan your monthly expenses", es: "Planifica tus gastos mensuales", de: "Monatliche Ausgaben planen" },
     hub: "daily-life",

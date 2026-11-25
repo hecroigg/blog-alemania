@@ -1,4 +1,4 @@
-import { applicationLink as link, guideSources, type FamilyGuide } from "./family-guide-types";
+import { applicationLink as link, guideSources, type AuthoredGuide } from "./authored-guide";
 
 const law = "https://www.gesetze-im-internet.de/sgb_8/__24.html";
 const federal = "https://www.bundesregierung.de/breg-de/schwerpunkte/recht-auf-ganztagsfoerderung-2386432";
@@ -10,6 +10,7 @@ const mannheimFaq = "https://www.mannheim.de/sites/default/files/2026-05/13.05.2
 export const primarySchoolChildcare = {
   slugs: { en: "primary-school-childcare-germany", es: "cuidado-escolar-jornada-completa-alemania", de: "ganztagsbetreuung-grundschule-rechtsanspruch" },
   category: "daily-life",
+  updated: "2026-11-20",
   readingMinutes: 4,
   related: ["child-benefits-germany", "elterngeld-germany", "best-cities-germany"],
   copy: {
@@ -56,4 +57,4 @@ export const primarySchoolChildcare = {
       sources: guideSources([["§ 24 SGB VIII: Anspruch und Umfang", law], ["Bundesregierung: Stufenplan", federal], ["Stadt Mannheim: Ganztagsgrundschulen", mannheimSchools], ["Stadt Mannheim: FAQ zur MeKi-Vormerkung", mannheimFaq]]),
     },
   },
-} satisfies FamilyGuide;
+} satisfies AuthoredGuide;

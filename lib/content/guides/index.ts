@@ -4,10 +4,11 @@ import { moveAndAdminGuides } from "./move-and-admin";
 import { newcomerReferenceGuides } from "./newcomer-reference";
 import { workAndHousingGuides } from "./work-and-housing";
 import { practicalSystemsGuides } from "./practical-systems";
-import { familyGuideForLocale, familyGuides } from "./family-guides";
+import { authoredGuideForLocale } from "./authored-guide";
+import { authoredGuides } from "./authored-guides";
 
 export const guides = [
-  ...Array.from(familyGuides.values(), (article) => familyGuideForLocale(article, "en")),
+  ...Array.from(authoredGuides.values(), (article) => authoredGuideForLocale(article, "en")),
   ...moveAndAdminGuides,
   ...workAndHousingGuides,
   ...lifeServicesGuides,

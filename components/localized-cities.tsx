@@ -9,11 +9,13 @@ import { RelatedResources } from "@/components/related-resources";
 import { editorialPhotos, type EditorialPhoto as Photo } from "@/lib/content/editorial-photos";
 import { cityMap, cities } from "@/lib/content/cities";
 import { getLocalizedCity } from "@/lib/content/city-registration-i18n";
+import { christmasMarkets } from "@/lib/content/guides/christmas-markets";
 import type { EditorialLocale } from "@/lib/content/localized-general-guides";
 import { absoluteUrl } from "@/lib/site";
-import { cityFromSlug, cityUrl, sectionPath } from "@/lib/locale-paths";
+import { cityFromSlug, cityUrl, guideUrl, sectionPath } from "@/lib/locale-paths";
 
 const cityPhotos: Partial<Record<string, Photo>> = editorialPhotos;
+const christmasMarketCities = new Set(["mannheim", "heidelberg", "frankfurt"]);
 
 const i18n = {
   en: {
@@ -126,6 +128,11 @@ export function LocalizedCityPage({ locale, slug }: { locale: EditorialLocale; s
         <p className="lead">{c.best}: {city.bestFor}</p>
         <p>{city.character}</p>
         {city.updated && <p>{c.verified}: <time dateTime={city.updated}>{city.updated}</time>. {c.check}</p>}
+        {christmasMarketCities.has(city.slug) && <div className="related-grid">
+          <Link href={guideUrl(locale, christmasMarkets.slugs[locale])}>
+            <span>{christmasMarkets.copy[locale].title}</span><Icon name="arrow" />
+          </Link>
+        </div>}
         {city.sections.map((section) => <section className="article-section" key={section.heading} id={headingId(section.heading)}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

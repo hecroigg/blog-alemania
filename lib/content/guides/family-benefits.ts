@@ -1,6 +1,6 @@
 import { exactGuideSlugs } from "@/lib/exact-guide-slugs";
 import { guideUrl, type SiteLocale } from "@/lib/locale-paths";
-import { applicationLink as link, guideSources, type FamilyGuide } from "./family-guide-types";
+import { applicationLink as link, guideSources, type AuthoredGuide } from "./authored-guide";
 
 const kindergeld = "https://www.arbeitsagentur.de/familie-und-kinder/infos-rund-um-kindergeld/kindergeld-anspruch-hoehe-dauer";
 const rates = "https://www.arbeitsagentur.de/news/kindergeld-steigt-2026";
@@ -15,6 +15,7 @@ const kindergeldGuide = (locale: SiteLocale) => guideUrl(locale, exactGuideSlugs
 export const familyBenefits = {
   slugs: { en: "child-benefits-germany", es: "ayudas-por-hijos-alemania", de: "familienleistungen-kinder-deutschland" },
   category: "money",
+  updated: "2026-11-20",
   readingMinutes: 5,
   related: ["elterngeld-germany", "primary-school-childcare-germany", "cost-of-living-germany"],
   copy: {
@@ -64,4 +65,4 @@ export const familyBenefits = {
       sources: guideSources([["Bundesagentur für Arbeit: Beträge 2026", rates], ["Familienkasse: Kindergeld, Anspruch und Antrag", kindergeld], ["Familienkasse: Kinderzuschlag", supplement], ["Familienkasse: Kindergeld mit Auslandsbezug", foreign], ["Familienportal: Unterhaltsvorschuss", maintenance], ["Familienportal: Elterngeld", parentalPay]]),
     },
   },
-} satisfies FamilyGuide;
+} satisfies AuthoredGuide;

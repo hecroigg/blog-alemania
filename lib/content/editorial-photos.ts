@@ -19,6 +19,9 @@ export const editorialPhotos = photos satisfies Record<string, EditorialPhoto>;
 type PhotoId = keyof typeof editorialPhotos;
 
 const generalGuidePhotos: Record<string, PhotoId | undefined> = {
+  "christmas-markets-mannheim-heidelberg-frankfurt-2026": "mannheim-christmas-market",
+  "deutschlandticket-2027": "transport",
+  "germany-2022-tax-return-deadline": "tax",
   "child-benefits-germany": "families",
   "elterngeld-germany": "newborn",
   "elterngeld-reform-2027": "newborn",

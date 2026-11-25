@@ -1,4 +1,4 @@
-import { applicationLink as link, guideSources, type FamilyGuide } from "./family-guide-types";
+import { applicationLink as link, guideSources, type AuthoredGuide } from "./authored-guide";
 
 const cabinet = "https://www.bundesregierung.de/breg-de/bundesregierung/bundeskanzleramt/kabinett-reform-elterngeld-2460372";
 const ministry = "https://www.bmbfsfj.bund.de/bmbfsfj/ministerium/gesetze/entwurf-eines-gesetzes-zur-aenderung-des-bundeselterngeld-und-elternzeitgesetzes-zur-weiterentwicklung-und-vereinfachung-des-elterngeldes-sowie-des-mutterschutzgesetzes-298792";
@@ -9,6 +9,7 @@ const apply = "https://familienportal.de/familienportal/familienleistungen/elter
 export const parentalAllowanceReform = {
   slugs: { en: "elterngeld-reform-2027", es: "reforma-elterngeld-2027-alemania", de: "elterngeld-reform-2027" },
   category: "money",
+  updated: "2026-11-20",
   readingMinutes: 4,
   related: ["elterngeld-germany", "child-benefits-germany", "primary-school-childcare-germany"],
   copy: {
@@ -55,4 +56,4 @@ export const parentalAllowanceReform = {
       sources: guideSources([["Bundesregierung: Meldung vom 13. November 2026", cabinet], ["Familienministerium: Überblick zum Entwurf", ministry], ["Wortlaut des Gesetzentwurfs", draft], ["BEEG in geltender Fassung", currentLaw]]),
     },
   },
-} satisfies FamilyGuide;
+} satisfies AuthoredGuide;

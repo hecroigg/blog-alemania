@@ -1,4 +1,4 @@
-import { applicationLink as link, guideSources, type FamilyGuide } from "./family-guide-types";
+import { applicationLink as link, guideSources, type AuthoredGuide } from "./authored-guide";
 
 const apply = "https://familienportal.de/familienportal/familienleistungen/elterngeld/faq/wie-kann-ich-elterngeld-beantragen--124762";
 const calculator = "https://familienportal.de/familienportal/rechner-antraege/elterngeldrechner";
@@ -9,6 +9,7 @@ const duration = "https://familienportal.de/familienportal/familienleistungen/el
 export const parentalAllowance = {
   slugs: { en: "elterngeld-germany", es: "elterngeld-alemania", de: "elterngeld-berechnen-beantragen" },
   category: "money",
+  updated: "2026-11-20",
   readingMinutes: 5,
   related: ["elterngeld-reform-2027", "child-benefits-germany", "primary-school-childcare-germany"],
   copy: {
@@ -58,4 +59,4 @@ export const parentalAllowance = {
       sources: guideSources([["Familienportal: Voraussetzungen", conditions], ["Familienportal: Beträge und Berechnung", amounts], ["Familienportal: Dauer und Aufteilung", duration], ["Familienportal: Antrag und Rückwirkung", apply]]),
     },
   },
-} satisfies FamilyGuide;
+} satisfies AuthoredGuide;

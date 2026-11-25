@@ -1,5 +1,6 @@
 import { guides } from "@/lib/content/guides";
-import { familyGuideForLocale, familyGuides } from "@/lib/content/guides/family-guides";
+import { authoredGuideForLocale } from "@/lib/content/guides/authored-guide";
+import { authoredGuides } from "@/lib/content/guides/authored-guides";
 import type { Guide } from "@/lib/types";
 import { enhanceGeneralGuide } from "@/lib/content/seo-guide-enhancements";
 import { guideUrl } from "@/lib/locale-paths";
@@ -39,10 +40,10 @@ const slugs: Record<string, { es: string; de: string }> = {
   "best-cities-germany": { es: "mejores-ciudades-alemania", de: "beste-staedte-deutschland" },
 };
 
-export const generalEnglishGuides = guides.filter((guide) => familyGuides.has(guide.slug) || Object.hasOwn(slugs, guide.slug));
+export const generalEnglishGuides = guides.filter((guide) => authoredGuides.has(guide.slug) || Object.hasOwn(slugs, guide.slug));
 
 export function localizedGeneralSlug(locale: EditorialLocale, englishSlug: string) {
-  const article = familyGuides.get(englishSlug);
+  const article = authoredGuides.get(englishSlug);
   if (article) return article.slugs[locale];
   if (!Object.hasOwn(slugs, englishSlug)) return null;
   return locale === "en" ? englishSlug : slugs[englishSlug][locale];
@@ -61,9 +62,9 @@ function translate(value: string, locale: EditorialLocale) {
   return locale === "en" ? value : catalog[locale][value] || value;
 }
 export function localizedGeneralGuide(guide: Guide, locale: EditorialLocale): Guide {
+  const article = authoredGuides.get(guide.slug);
+  if (article) return authoredGuideForLocale(article, locale);
   if (locale === "en") return enhanceGeneralGuide(guide, guide.slug, locale);
-  const article = familyGuides.get(guide.slug);
-  if (article) return familyGuideForLocale(article, locale);
   const t = (value: string) => translate(value, locale);
   return enhanceGeneralGuide({
     ...guide,

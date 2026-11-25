@@ -1,10 +1,11 @@
 import type { SiteLocale } from "@/lib/locale-paths";
 import type { Guide, Source } from "@/lib/types";
 
-export type FamilyGuide = {
+export type AuthoredGuide = {
   slugs: Record<SiteLocale, string>;
   category: string;
   readingMinutes: number;
+  updated: string;
   related: string[];
   copy: Record<SiteLocale, Omit<Guide, "slug" | "category" | "readingMinutes" | "updated" | "related" | "featured">>;
 };
@@ -15,4 +16,16 @@ export function applicationLink(label: string, url: string, note: string) {
 
 export function guideSources(sources: readonly (readonly [string, string])[]): Source[] {
   return sources.map(([name, url]) => ({ name, url }));
+}
+
+export function authoredGuideForLocale(article: AuthoredGuide, locale: SiteLocale): Guide {
+  return {
+    ...article.copy[locale],
+    slug: article.slugs[locale],
+    category: article.category,
+    updated: article.updated,
+    readingMinutes: article.readingMinutes,
+    related: article.related,
+    featured: true,
+  };
 }

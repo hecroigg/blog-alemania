@@ -179,6 +179,21 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/",
     "cropped": false
   },
+  "mannheim-christmas-market": {
+    "src": "/images/editorial/mannheim-christmas-market.webp",
+    "width": 1200,
+    "height": 675,
+    "alt": {
+      "en": "Archive photograph of Mannheim’s Christmas market at the Water Tower in 2015",
+      "es": "Fotografía de archivo del mercadillo de Navidad junto al Wasserturm de Mannheim en 2015",
+      "de": "Archivfoto des Weihnachtsmarktes am Mannheimer Wasserturm im Jahr 2015"
+    },
+    "source": "https://commons.wikimedia.org/wiki/File:2015_Mannheim_Weihnachtsmarkt.jpg",
+    "author": "Akampfer",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "cropped": false
+  },
   "mannheim": {
     "src": "/images/cities/mannheim.webp",
     "width": 1200,
