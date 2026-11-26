@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import { useLanguage } from "@/components/language-provider";
 import {
   calculateSalary,
+  defaultSalaryInputs,
+  salaryComparisonAmounts,
   type InsuranceType,
   type SalaryInputs,
   type TaxClass,
@@ -12,20 +14,6 @@ import {
 import { germanStates } from "@/lib/platform-data";
 import { toolUrl } from "@/lib/locale-paths";
 import { localizedGeneralPath } from "@/lib/content/localized-general-guides";
-
-const defaultInputs: SalaryInputs = {
-  grossMonthly: 3_200,
-  weeklyHours: 40,
-  taxClass: "I",
-  state: "Berlin",
-  churchTax: false,
-  insurance: "statutory",
-  privateMonthlyPremium: 450,
-  age: 30,
-  children: 0,
-  student: false,
-  minijobPensionExempt: false,
-};
 
 function decimal(value: string) {
   return Number(value.replace(",", ".")) || 0;
@@ -35,9 +23,9 @@ export function SalaryCalculator() {
   const { locale, translate } = useLanguage();
   const lang = locale === "es" || locale === "de" ? locale : "en";
   const [period, setPeriod] = useState<"monthly" | "annual">("monthly");
-  const [amount, setAmount] = useState(3_200);
-  const [draft, setDraft] = useState(defaultInputs);
-  const [applied, setApplied] = useState(defaultInputs);
+  const [amount, setAmount] = useState(defaultSalaryInputs.grossMonthly);
+  const [draft, setDraft] = useState(defaultSalaryInputs);
+  const [applied, setApplied] = useState(defaultSalaryInputs);
   const [advancedUsed, setAdvancedUsed] = useState(false);
   const [appliedAdvanced, setAppliedAdvanced] = useState(false);
   const result = useMemo(() => calculateSalary(applied), [applied]);
@@ -49,8 +37,8 @@ export function SalaryCalculator() {
     set(key, value);
   };
 
-  const calculate = () => {
-    setApplied({ ...draft, grossMonthly: period === "monthly" ? amount : amount / 12 });
+  const calculate = (grossMonthly: number) => {
+    setApplied({ ...draft, grossMonthly });
     setAppliedAdvanced(advancedUsed);
   };
 
@@ -66,11 +54,16 @@ export function SalaryCalculator() {
   const totalDeductions = Object.values(result.deductions).reduce((sum, value) => sum + value, 0);
 
   return <div className="salary-tool">
-    <form className="salary-form" onSubmit={(event) => { event.preventDefault(); calculate(); }}>
+    <form className="salary-form" onSubmit={(event) => { event.preventDefault(); calculate(period === "monthly" ? amount : amount / 12); }}>
       <div className="salary-basic-grid">
-        <label className="form-field salary-amount"><span>{translate("Gross salary", undefined, true)}</span><div className="salary-input"><span>€</span><input inputMode="decimal" min="0" step="50" type="number" value={amount} onChange={(event) => setAmount(decimal(event.target.value))}/></div></label>
+        <label className="form-field salary-amount"><span>{translate("Gross salary", undefined, true)}</span><div className="salary-input"><span>€</span><input inputMode="decimal" min="0" step="0.01" type="number" value={amount} onChange={(event) => setAmount(decimal(event.target.value))}/></div></label>
         <fieldset className="segmented-control"><legend>{translate("Salary period", undefined, true)}</legend><label><input type="radio" name="period" value="monthly" checked={period === "monthly"} onChange={() => setPeriod("monthly")}/><span>{translate("Monthly", undefined, true)}</span></label><label><input type="radio" name="period" value="annual" checked={period === "annual"} onChange={() => setPeriod("annual")}/><span>{translate("Annual", undefined, true)}</span></label></fieldset>
         <label className="form-field"><span>{translate("Weekly hours (optional)", undefined, true)}</span><input min="0" max="80" step="0.5" type="number" value={draft.weeklyHours || ""} onChange={(event) => set("weeklyHours", decimal(event.target.value))}/><small>{translate("Used only for gross and net hourly estimates.")}</small></label>
+      </div>
+
+      <div className="salary-presets" role="group" aria-label={{ es: "Ejemplos de bruto mensual", en: "Sample gross monthly salaries", de: "Beispiele für Monatsbrutto" }[lang]}>
+        {salaryComparisonAmounts.map((gross) => <button className="button button-secondary" type="button" key={gross}
+          onClick={() => { setPeriod("monthly"); setAmount(gross); calculate(gross); }}>{money(gross)}</button>)}
       </div>
 
       <details className="advanced-panel">

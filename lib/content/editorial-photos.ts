@@ -20,6 +20,8 @@ type PhotoId = keyof typeof editorialPhotos;
 
 const generalGuidePhotos: Record<string, PhotoId | undefined> = {
   "christmas-markets-mannheim-heidelberg-frankfurt-2026": "mannheim-christmas-market",
+  "germany-changes-january-2027": "work",
+  "cities-germany-1800-euros": "berlin",
   "deutschlandticket-2027": "transport",
   "germany-2022-tax-return-deadline": "tax",
   "child-benefits-germany": "families",

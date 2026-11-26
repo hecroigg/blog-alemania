@@ -18,7 +18,7 @@ type Topic = {
 
 const topics: Record<string, Topic> = {
   "moving-to-germany": {
-    guideSlugs: ["first-30-days-germany", "anmeldung-germany"],
+    guideSlugs: ["moving-to-germany", "first-30-days-germany", "anmeldung-germany"],
     tool: "first-30-days",
     toolTitle: { en: "Plan your first 30 days", es: "Planifica tus primeros 30 días", de: "Die ersten 30 Tage planen" },
     hub: "moving-to-germany",
@@ -33,7 +33,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Working in Germany", es: "Trabajar en Alemania", de: "Arbeiten in Deutschland" },
   },
   housing: {
-    guideSlugs: ["finding-housing-germany", "renting-in-germany"],
+    guideSlugs: ["cities-germany-1800-euros", "finding-housing-germany", "renting-in-germany"],
     tool: "rental-deposit",
     toolTitle: { en: "Check your rental deposit", es: "Calcula la fianza del alquiler", de: "Mietkaution berechnen" },
     hub: "housing",
@@ -48,7 +48,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Paperwork and authorities", es: "Trámites y organismos oficiales", de: "Behörden und Unterlagen" },
   },
   money: {
-    guideSlugs: ["germany-2022-tax-return-deadline", "child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
+    guideSlugs: ["germany-changes-january-2027", "germany-2022-tax-return-deadline", "child-benefits-germany", "cost-of-living-germany", "german-bank-account"],
     exactKeys: ["kindergeld", "allowance"],
     tool: "cost-of-living",
     toolTitle: { en: "Estimate your monthly living costs", es: "Calcula tus gastos mensuales", de: "Monatliche Lebenshaltungskosten berechnen" },
@@ -64,7 +64,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Health and insurance", es: "Salud y seguros", de: "Gesundheit und Versicherung" },
   },
   transport: {
-    guideSlugs: ["deutschlandticket-2027", "deutschlandticket", "best-cities-germany"],
+    guideSlugs: ["deutschlandticket-2027", "deutschlandticket", "best-cities-germany", "cities-germany-1800-euros"],
     exactKeys: ["deutschlandticket"],
     tool: "compare-cities",
     toolTitle: { en: "Compare transport and cities", es: "Compara ciudades y transporte", de: "Verkehr und Städte vergleichen" },

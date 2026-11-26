@@ -4,7 +4,7 @@ import { exactGuides } from "@/lib/content/exact-guides";
 import { generalEnglishGuides, localizedGeneralPath, localizedGeneralGuide } from "@/lib/content/localized-general-guides";
 import { getLocalizedExactGuide } from "@/lib/content/localized-exact-guides";
 import { exactGuidePath } from "@/lib/exact-guide-routes";
-import { practicalGuidePath, practicalGuideSlugs, type PracticalGuideKey } from "@/lib/content/guides/practical-systems-localized";
+import { getLocalizedPracticalGuide, practicalGuidePath, practicalGuideSlugs, type PracticalGuideKey } from "@/lib/content/guides/practical-systems-localized";
 import {
   locales, hubIds, hubUrl, cityUrl, sectionPath, toolIds, toolUrl,
   otherPages, otherUrl, type SiteLocale, type OtherPageId,
@@ -40,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       record(exactGuidePath(lang, guide.key), getLocalizedExactGuide(lang, guide.key).updated, .9, (x) => exactGuidePath(x, guide.key))
     )),
     ...(Object.keys(practicalGuideSlugs) as PracticalGuideKey[]).flatMap((key) =>
-      locales.map((lang) => record(practicalGuidePath(lang,key), "2026-10-08", .9, (x) => practicalGuidePath(x,key)))
+      locales.map((lang) => record(practicalGuidePath(lang,key), getLocalizedPracticalGuide(lang,key).updated, .9, (x) => practicalGuidePath(x,key)))
     ),
     ...locales.map((lang) =>
       record(sectionPath(lang, "cities"), "2026-11-17", .8, (x) => sectionPath(x, "cities"))
@@ -52,7 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       record(sectionPath(lang, "tools"), "2026-11-17", .8, (x) => sectionPath(x, "tools"))
     ),
     ...toolIds.flatMap((id) => locales.map((lang) =>
-      record(toolUrl(lang,id), "2026-11-17", .85, (x) => toolUrl(x,id))
+      record(toolUrl(lang,id), id === "salary-calculator" ? "2026-11-26" : "2026-11-17", .85, (x) => toolUrl(x,id))
     )),
     ...(Object.keys(otherPages) as OtherPageId[]).flatMap((id) => locales.map((lang) =>
       record(otherUrl(lang,id), "2026-11-17", .7, (x) => otherUrl(x,id))

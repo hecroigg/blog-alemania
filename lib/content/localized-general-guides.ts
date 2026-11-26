@@ -1,3 +1,4 @@
+import { refinePriorityGuide } from "@/lib/content/growth-guide-updates";
 import { guides } from "@/lib/content/guides";
 import { authoredGuideForLocale } from "@/lib/content/guides/authored-guide";
 import { authoredGuides } from "@/lib/content/guides/authored-guides";
@@ -62,6 +63,10 @@ function translate(value: string, locale: EditorialLocale) {
   return locale === "en" ? value : catalog[locale][value] || value;
 }
 export function localizedGeneralGuide(guide: Guide, locale: EditorialLocale): Guide {
+  return refinePriorityGuide(translateGuide(guide, locale), guide.slug, locale);
+}
+
+function translateGuide(guide: Guide, locale: EditorialLocale): Guide {
   const article = authoredGuides.get(guide.slug);
   if (article) return authoredGuideForLocale(article, locale);
   if (locale === "en") return enhanceGeneralGuide(guide, guide.slug, locale);

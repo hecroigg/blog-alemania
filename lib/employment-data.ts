@@ -87,6 +87,22 @@ export type SalaryInputs = {
   minijobPensionExempt: boolean;
 };
 
+export const defaultSalaryInputs: SalaryInputs = {
+  grossMonthly: 3_200,
+  weeklyHours: 40,
+  taxClass: "I",
+  state: "Berlin",
+  churchTax: false,
+  insurance: "statutory",
+  privateMonthlyPremium: 450,
+  age: 30,
+  children: 0,
+  student: false,
+  minijobPensionExempt: false,
+};
+
+export const salaryComparisonAmounts = [2500, 3000, 3500, 4000, 5000] as const;
+
 export type SalaryResult = {
   employmentType: "Minijob" | "Midijob" | "Werkstudent" | "Regular employment";
   grossMonthly: number;

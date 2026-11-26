@@ -1,3 +1,4 @@
+import { refinePriorityGuide } from "@/lib/content/growth-guide-updates";
 import { practicalSystemsGuides } from "@/lib/content/guides/practical-systems";
 import type { Guide } from "@/lib/types";
 import { guideUrl } from "@/lib/locale-paths";
@@ -259,8 +260,8 @@ export function practicalGuideKeyFromSlug(locale: "en"|"es"|"de"|"fr", slug: str
 }
 
 export function getLocalizedPracticalGuide(locale: "en"|"es"|"de"|"fr", key: PracticalGuideKey): Guide {
-  if (locale === "en") return { ...englishGuide[key], slug: practicalGuideSlugs[key].en };
-  return localized[locale][key];
+  const guide = locale === "en" ? { ...englishGuide[key], slug: practicalGuideSlugs[key].en } : localized[locale][key];
+  return locale !== "fr" && key === "sickLeave" ? refinePriorityGuide(guide, "sick-leave-germany", locale) : guide;
 }
 
 export function practicalGuidePath(locale: "en"|"es"|"de"|"fr", key: PracticalGuideKey) {

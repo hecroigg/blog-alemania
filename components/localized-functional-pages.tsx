@@ -20,6 +20,7 @@ import OldRentalScam from "@/app/tools/rental-scam-checker/page";
 import OldArrival from "@/app/tools/first-30-days/page";
 import OldApartment from "@/app/tools/apartment-affordability/page";
 import OldSalary from "@/app/trabajo/calculadora-salario/page";
+import { SalaryComparison } from "@/components/salary-comparison";
 import OldEmployment from "@/app/trabajo/tipos-de-empleo/page";
 import OldPlan from "@/app/plan/page";
 import OldVisa from "@/app/visas-residence/page";
@@ -68,9 +69,9 @@ const labels: Record<ToolId, Record<SiteLocale, Phrase>> = {
     de: { title: "Kann ich mir diese Wohnung leisten?", description: "Vergleichen Sie Mietkosten, Haushaltsnettoeinkommen und feste Ausgaben." },
   },
   "salary-calculator": {
-    en: { title: "German gross-to-net salary calculator 2026", description: "Estimate German net pay and see taxes and social-insurance deductions." },
-    es: { title: "Calculadora de sueldo bruto a neto en Alemania 2026", description: "Estima el salario neto y desglosa impuestos y cotizaciones en Alemania." },
-    de: { title: "Brutto-Netto-Gehaltsrechner 2026", description: "Schätzen Sie Ihr Nettogehalt mit einer Aufschlüsselung von Steuern und Sozialabgaben." },
+    en: { title: "German gross-to-net salary calculator 2026", description: "What do €2,500, €3,000 or €4,000 gross pay net in Germany? See 2026 examples and calculate your take-home pay by tax class and insurance." },
+    es: { title: "Calculadora de sueldo bruto a neto en Alemania 2026", description: "¿Cuánto queda neto de 2.500, 3.000 o 4.000 € brutos? Consulta ejemplos de Alemania en 2026 y calcula tu sueldo por clase fiscal y seguro." },
+    de: { title: "Brutto-Netto-Gehaltsrechner 2026", description: "Wie viel netto bleibt bei 2.500, 3.000 oder 4.000 € brutto? Berechne dein Nettogehalt 2026 nach Steuerklasse und Versicherung." },
   },
   "employment-types": {
     en: { title: "Employment types in Germany", description: "Compare Minijob, Midijob, Werkstudent and regular employment." },
@@ -107,7 +108,10 @@ export function toolMetadata(locale: SiteLocale, tool: ToolId): Metadata {
     title: meta.title, description: meta.description,
     alternates: {
       canonical: absoluteUrl(toolUrl(locale, tool)),
-      languages: Object.fromEntries((["en","es","de"] as const).map((lang) => [lang, absoluteUrl(toolUrl(lang,tool))])),
+      languages: {
+        ...Object.fromEntries((["en","es","de"] as const).map((lang) => [lang, absoluteUrl(toolUrl(lang,tool))])),
+        "x-default": absoluteUrl(toolUrl("en",tool)),
+      },
     },
     robots: { index: true, follow: true },
     openGraph: { title: meta.title, description: meta.description, url: absoluteUrl(toolUrl(locale, tool)), locale },
@@ -164,6 +168,7 @@ export async function LocalizedToolPage({locale,id,query}:{locale:SiteLocale;id:
   return <div lang={locale} data-no-translate>
     {id==="rental-deposit" && <section className="page-hero"><div className="shell"><h1>{meta.title}</h1><p>{meta.description}</p></div></section>}
     {translateTree(tree,locale)}
+    {id === "salary-calculator" && <SalaryComparison locale={locale} />}
     <div className="shell">
       <RelatedResources locale={locale} category={toolTopics[id]} currentPath={toolUrl(locale,id)} photo={editorialPhotos[toolPhotos[id]]}/>
     </div>

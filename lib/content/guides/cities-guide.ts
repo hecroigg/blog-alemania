@@ -27,6 +27,6 @@ export const citiesGuides: Guide[] = [
       { name: "Federal Statistical Office", url: "https://www.destatis.de/EN/Home/_node.html", note: "Official demographic and economic statistics" },
       { name: "Federal Employment Agency", url: "https://www.arbeitsagentur.de/en", note: "Regional employment information" },
     ],
-    related: ["cost-of-living-germany", "finding-housing-germany", "jobs-without-german", "moving-to-germany"],
+    related: ["cities-germany-1800-euros", "cost-of-living-germany", "finding-housing-germany", "jobs-without-german", "moving-to-germany"],
   },
 ];

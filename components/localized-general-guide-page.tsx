@@ -1,3 +1,5 @@
+import { BudgetPlanner } from "@/components/budget-planner";
+import { EditorialTable } from "@/components/editorial-table";
 import { EditorialPhoto, photoOpenGraph } from "@/components/editorial-photo";
 import { generalGuidePhoto } from "@/lib/content/editorial-photos";
 import type { Metadata } from "next";
@@ -48,7 +50,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
   const copy = exactGuideUi[locale];
   const canonical = absoluteUrl(localizedGeneralPath(locale, original.slug)!);
   const photo = generalGuidePhoto(original.slug);
-  const related = original.related
+  const related = guide.related
     .map((relatedSlug) => {
       const path = localizedGeneralPath(locale, relatedSlug);
       if (!path) return null;
@@ -56,6 +58,8 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
       return target ? { path, title: localizedGeneralGuide(target, locale).title } : null;
     })
     .filter((item): item is { path: string; title: string } => item !== null);
+  const budgetMode = original.slug === "moving-to-germany" ? "move" : original.slug === "cities-germany-1800-euros" ? "city" : null;
+  const budgetLabel = { es: "Calculadora de presupuesto", en: "Budget calculator", de: "Budgetrechner" }[locale];
   const relatedHeading = { en: "Continue reading", es: "Sigue leyendo", de: "Weiterlesen" }[locale];
   const articleSchema = {
     "@context": "https://schema.org", "@type": "Article",
@@ -97,6 +101,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
             {guide.sections.map((section) =>
               <li key={section.heading}><a href={"#" + headingId(section.heading)}>{section.heading}</a></li>
             )}
+            {budgetMode && <li><a href={`#${budgetMode}-budget`}>{budgetLabel}</a></li>}
             <li><a href="#faqs">{copy.questions}</a></li>
             <li><a href="#sources">{copy.sources}</a></li>
           </ol>
@@ -113,6 +118,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
             <section className="article-section" id={headingId(section.heading)} key={section.heading}>
               <h2>{section.heading}</h2>
               {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {section.table && <EditorialTable {...section.table} />}
               {section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
               {section.resources && <div className="resource-grid">{section.resources.map((resource) =>
                 <a href={resource.url} key={resource.url} target="_blank" rel="noopener noreferrer">
@@ -126,6 +132,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
               {index === 1 && <AdSlot placement="article-body" />}
             </section>
           ))}
+          {budgetMode && <BudgetPlanner locale={locale} mode={budgetMode} />}
           <section className="faq-section" id="faqs">
             <h2>{copy.questions}</h2>
             {guide.faqs.map((faq) =>

@@ -791,3 +791,11 @@ p { margin: 0; color: var(--muted); }
 .holiday-mini-result strong{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#155989;line-height:1}
 .holiday-mini-warning{font-size:.85rem}
 .holiday-mini-sources a{color:#155989;text-decoration:underline;text-underline-offset:3px}
+
+.editorial-table .comparison-table { min-width: 28rem; }
+.editorial-table caption { text-align: left; padding: .8rem 1rem; font-weight: 650; background: #edf3f8; color: var(--ink); }
+.editorial-budget { background: #edf3f8; border: 1px solid var(--line); border-radius: 1rem; padding: clamp(1rem, 4vw, 2rem); }
+.editorial-budget-fields, .editorial-budget-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 1rem; }
+.editorial-budget-results { margin: 1.25rem 0; }
+.editorial-budget-results dd { margin: 0; color: var(--ink); font-size: 1.5rem; font-weight: 700; }
+.salary-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }

@@ -30,9 +30,12 @@ export type Category = {
   featuredTopics: string[];
 };
 
+export type EditorialTableData = { caption: string; columns: string[]; rows: string[][] };
+
 export type ContentBlock = {
   heading: string;
   paragraphs: string[];
+  table?: EditorialTableData;
   bullets?: string[];
   resources?: { label: string; url: string; note: string }[];
   callout?: { title: string; text: string; tone?: "note" | "warning" | "success" };
