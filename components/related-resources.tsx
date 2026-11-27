@@ -72,7 +72,7 @@ const topics: Record<string, Topic> = {
     hubTitle: { en: "Transport in Germany", es: "Transporte en Alemania", de: "Verkehr in Deutschland" },
   },
   "daily-life": {
-    guideSlugs: ["christmas-markets-mannheim-heidelberg-frankfurt-2026", "internet-germany", "german-supermarkets", "german-sim-cards"],
+    guideSlugs: ["kita-childcare-germany-apply", "christmas-markets-mannheim-heidelberg-frankfurt-2026", "internet-germany", "german-supermarkets", "german-sim-cards"],
     tool: "cost-of-living",
     toolTitle: { en: "Plan your monthly expenses", es: "Planifica tus gastos mensuales", de: "Monatliche Ausgaben planen" },
     hub: "daily-life",

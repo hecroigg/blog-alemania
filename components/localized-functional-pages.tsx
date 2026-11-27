@@ -69,9 +69,9 @@ const labels: Record<ToolId, Record<SiteLocale, Phrase>> = {
     de: { title: "Kann ich mir diese Wohnung leisten?", description: "Vergleichen Sie Mietkosten, Haushaltsnettoeinkommen und feste Ausgaben." },
   },
   "salary-calculator": {
-    en: { title: "German gross-to-net salary calculator 2026", description: "What do €2,500, €3,000 or €4,000 gross pay net in Germany? See 2026 examples and calculate your take-home pay by tax class and insurance." },
-    es: { title: "Calculadora de sueldo bruto a neto en Alemania 2026", description: "¿Cuánto queda neto de 2.500, 3.000 o 4.000 € brutos? Consulta ejemplos de Alemania en 2026 y calcula tu sueldo por clase fiscal y seguro." },
-    de: { title: "Brutto-Netto-Gehaltsrechner 2026", description: "Wie viel netto bleibt bei 2.500, 3.000 oder 4.000 € brutto? Berechne dein Nettogehalt 2026 nach Steuerklasse und Versicherung." },
+    en: { title: "German gross-to-net salary calculator 2026", description: "What do €2,500, €3,000 or €4,000 gross pay net in Germany? Compare 2026 take-home pay and find the gross salary you need for your target." },
+    es: { title: "Calculadora de sueldo bruto a neto en Alemania 2026", description: "¿Cuánto queda neto de 2.500, 3.000 o 4.000 € brutos? Compara sueldos de 2026 y calcula el bruto que necesitas para llegar a tu neto." },
+    de: { title: "Brutto-Netto-Gehaltsrechner 2026", description: "Wie viel netto bleibt bei 2.500, 3.000 oder 4.000 € brutto? Vergleiche Nettogehälter 2026 oder rechne dein Wunsch-Netto in Brutto um." },
   },
   "employment-types": {
     en: { title: "Employment types in Germany", description: "Compare Minijob, Midijob, Werkstudent and regular employment." },

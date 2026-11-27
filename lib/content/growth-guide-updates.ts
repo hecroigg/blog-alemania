@@ -10,6 +10,7 @@ const jobsPortal = "https://www.arbeitsagentur.de/jobsuche/";
 const internationalJobs = "https://www.make-it-in-germany.com/en/working-in-germany/job-listings";
 const recognition = "https://www.anerkennung-in-deutschland.de/html/en/index.php";
 const sickPay = "https://www.gesetze-im-internet.de/entgfg/__3.html";
+const sickBenefit = "https://www.gesetze-im-internet.de/sgb_5/__46.html";
 const certification = "https://www.gesetze-im-internet.de/entgfg/__5.html";
 const sickDismissal = "https://www.gesetze-im-internet.de/entgfg/__8.html";
 const notice = "https://www.gesetze-im-internet.de/bgb/__622.html";
@@ -27,6 +28,9 @@ function moveUpdate(locale: SiteLocale): Update {
       caption: "Ejemplos de presupuesto en euros para una persona", columns: ["Gasto", "Habitación en piso compartido", "Piso propio"],
       rows: ["Primer alquiler con gastos", "Fianza completa", "Viaje y gastos de llegada", "Colchón aparte", "Total con fianza", "Disponible al llegar con el primer plazo"],
       calculator: "Estima tus gastos mensuales", note: "Ajusta alimentación, transporte y gastos fijos a tu situación.",
+      cashHeading: "Cuánto efectivo llevar hasta la primera nómina",
+      cash: "Pregunta a tu empresa la fecha exacta de la primera nómina y anota qué pagos vencen antes. Si tu primer alquiler con gastos es de 550 €, tus gastos de llegada son 350 € y pagas 400 € de primera cuota de fianza, necesitas 1.300 € para esos tres pagos. Si antes de cobrar llega otro alquiler con la segunda cuota, suma otros 950 € más alimentación, luz y los demás gastos de ese segundo mes.",
+      overlap: "Si pasas diez noches en un alojamiento temporal de 40 € por noche mientras se activa tu alquiler definitivo, añade 400 € si ambos costes se solapan. Revisa también si puedes hacer el Anmeldung en esa dirección antes de reservar.",
       q: "¿Cuánto necesito si voy a Alemania sin trabajo?", a: "Añade al cálculo todos los meses que preveas vivir sin ingresos. Si tu alquiler con gastos es de 850 € y el resto de tus gastos asciende a 550 €, cada mes adicional sin ingresos requiere 1.400 €. Aclara también el coste del seguro antes de viajar.",
     },
     en: {
@@ -39,6 +43,9 @@ function moveUpdate(locale: SiteLocale): Update {
       caption: "Example relocation budgets for one person in euros", columns: ["Cost", "Room in a shared flat", "Your own flat"],
       rows: ["First month’s rent with charges", "Full deposit", "Travel and setup", "Separate reserve", "Total with full deposit", "Cash on arrival with first installment"],
       calculator: "Estimate your monthly expenses", note: "Set your own groceries, transport and fixed costs.",
+      cashHeading: "How much cash do you need before your first payday?",
+      cash: "Ask your employer when your first pay will reach you and list every bill due before that date. If the first rent with charges is €550, setup costs are €350 and the first deposit instalment is €400, those three payments come to €1,300. If the next rent and deposit instalment fall before payday, add another €950, plus food, electricity and any other bills for that second month.",
+      overlap: "If ten nights in temporary accommodation at €40 per night overlap with your permanent lease, allow another €400. Check whether the temporary address supports registration before you book.",
       q: "How much should I save to move to Germany without a job?", a: "Set aside enough for each month you expect to have no earnings. If rent including charges is €850 and everything else comes to €550, each additional month costs €1,400. Check your health coverage costs before leaving.",
     },
     de: {
@@ -51,6 +58,9 @@ function moveUpdate(locale: SiteLocale): Update {
       caption: "Zwei Umzugsbudgets für eine Person in Euro", columns: ["Ausgabe", "WG-Zimmer", "Eigene Wohnung"],
       rows: ["Erste Warmmiete", "Volle Kaution", "Anreise und Startkosten", "Separate Rücklage", "Gesamt mit voller Kaution", "Zum Einzug mit erster Kautionsrate"],
       calculator: "Monatliche Ausgaben schätzen", note: "Berechne deine Kosten für Lebensmittel, Verkehr und laufende Verträge.",
+      cashHeading: "Wie viel Geld brauchst du bis zum ersten Gehalt?",
+      cash: "Frag den Arbeitgeber nach dem ersten Auszahlungstermin und schreib auf, welche Zahlungen vorher fällig sind. Bei 550 € Warmmiete, 350 € Startkosten und 400 € erster Kautionsrate brauchst du dafür 1.300 €. Sind die zweite Miete und Kautionsrate vor dem ersten Gehalt fällig, kommen 950 € sowie Einkäufe, Strom und weitere Ausgaben für den zweiten Monat dazu.",
+      overlap: "Überschneiden sich zehn Nächte in einer Übergangsunterkunft zu 40 € pro Nacht mit deinem Mietvertrag, plane 400 € zusätzlich ein. Kläre vor der Buchung auch, ob du dich unter der Adresse anmelden kannst.",
       q: "Wie viel Geld brauche ich für den Umzug ohne Job?", a: "Plane für jeden erwarteten Monat ohne Einkommen Geld ein. Bei 850 € Warmmiete und 550 € für den übrigen Bedarf kostet jeder zusätzliche Monat 1.400 €. Kläre vor der Anreise auch die Kosten für deinen Krankenversicherungsschutz.",
     },
   }[locale];
@@ -64,7 +74,7 @@ function moveUpdate(locale: SiteLocale): Update {
       heading: copy.heading, paragraphs: [copy.intro, copy.installments],
       table: { caption: copy.caption, columns: copy.columns, rows: copy.rows.map((label, index) => [label, ...values.map((example) => euros(locale, example[index]))]) },
       resources: [{ label: copy.calculator, note: copy.note, url: toolUrl(locale, "cost-of-living") }],
-    }],
+    }, { heading: copy.cashHeading, paragraphs: [copy.cash, copy.overlap] }],
     faqs: [{ question: copy.q, answer: copy.a }],
     sources: [{ name: "§ 551 BGB", url: depositLaw }],
     related: ["cities-germany-1800-euros", "jobs-without-german"],
@@ -85,6 +95,9 @@ const jobsUpdate: Record<SiteLocale, Update> = {
         { label: "Buscar vacantes en la Agencia Federal de Empleo", url: jobsPortal, note: "Filtra por puesto, localidad y jornada." },
         { label: "Ofertas para perfiles internacionales", url: internationalJobs, note: "Portal oficial Make it in Germany." },
       ],
+    }, {
+      heading: "Un mensaje para confirmar el idioma antes de aceptar una entrevista",
+      paragraphs: ["Puedes escribir: «Guten Tag, ich interessiere mich für die Stelle. Mein Deutsch ist auf A1-Niveau. Sind die Einarbeitung und die Sicherheitsunterweisung auf Englisch möglich?» Preguntas si pueden hacer la formación inicial y la explicación de seguridad en inglés.", "Si te ofrecen distintos turnos, confirma para cuál vale su respuesta. Antes de comparar ofertas de jornada parcial o de Minijob, pide salario bruto por hora y horas semanales previstas."],
     }],
     faqs: [{ question: "¿Es suficiente el nivel A1 de alemán para un trabajo de almacén?", answer: "Depende del centro y del turno. La empresa debe poder darte instrucciones de seguridad que entiendas. Pide que te confirmen el idioma, el horario y el salario bruto antes de aceptar." }],
   },
@@ -101,6 +114,9 @@ const jobsUpdate: Record<SiteLocale, Update> = {
         { label: "Federal Employment Agency vacancy search", url: jobsPortal, note: "Search by role, location and working hours." },
         { label: "Official job listings for international applicants", url: internationalJobs, note: "Search on Make it in Germany." },
       ],
+    }, {
+      heading: "A German message to check whether the shift is English-speaking",
+      paragraphs: ["Write: “Guten Tag, ich interessiere mich für die Stelle. Mein Deutsch ist auf A1-Niveau. Sind die Einarbeitung und die Sicherheitsunterweisung auf Englisch möglich?” It asks whether training and the safety briefing are available in English.", "Confirm the language for the specific shift. If you are comparing part-time or Minijob offers, ask for the gross hourly rate and expected weekly hours."],
     }],
     faqs: [{ question: "Can I get a warehouse job in Germany with A1 German?", answer: "It depends on the site and the shift. Ask whether the employer can give you safety instructions in a language you understand, and confirm the working hours and gross pay before accepting." }],
   },
@@ -117,6 +133,9 @@ const jobsUpdate: Record<SiteLocale, Update> = {
         { label: "Jobsuche der Bundesagentur für Arbeit", url: jobsPortal, note: "Nach Tätigkeit, Ort und Arbeitszeit filtern." },
         { label: "Stellen für internationale Bewerber", url: internationalJobs, note: "Offizielle Jobbörse von Make it in Germany." },
       ],
+    }, {
+      heading: "Vor dem Probearbeiten nach der Arbeitssprache fragen",
+      paragraphs: ["Schreib zum Beispiel: „Guten Tag, ich interessiere mich für die Stelle. Mein Deutsch ist auf A1-Niveau. Sind die Einarbeitung und die Sicherheitsunterweisung auf Englisch möglich?“", "Bei mehreren Schichten frag für deinen konkreten Einsatz nach. Lass dir auch den Bruttostundenlohn und die geplante Wochenarbeitszeit nennen, damit sich Teilzeit- und Minijobangebote vergleichen lassen."],
     }],
     faqs: [{ question: "Reicht Deutsch auf A1-Niveau für einen Lagerjob?", answer: "Das hängt vom Einsatzort und von der Schicht ab. Kläre vorab, in welcher Sprache die Sicherheitsunterweisung stattfindet, wie die Schichten liegen und was du brutto verdienst." }],
   },
@@ -130,6 +149,7 @@ const probationUpdate: Record<SiteLocale, Update> = {
     sections: [{
       heading: "Quién paga si enfermas durante la Probezeit",
       paragraphs: ["La espera de cuatro semanas se cuenta desde que empieza el contrato, con independencia de cuánto dure el periodo de prueba. Si tienes seguro público con derecho a Krankengeld, pregunta a tu caja qué puede cubrir durante la espera. Si la baja sigue al terminar esas cuatro semanas, puede empezar entonces el pago legal de la empresa.",
+        "Si tu contrato empieza el 1 de diciembre de 2026, las cuatro semanas terminan el 28 de diciembre. Para una baja que empezó el 22 y continúa el 29, la obligación legal de la empresa puede comenzar el 29 si se cumplen los requisitos.",
         "Ejemplo: si enfermas en la segunda semana de un contrato nuevo, avisa a la empresa, obtén el justificante que corresponda y habla con tu aseguradora. Si la baja empieza cuando ya llevas dos meses trabajando, normalmente paga la empresa dentro del límite legal, aunque sigas en periodo de prueba."],
       table: { caption: "Baja durante el periodo de prueba", columns: ["Situación", "Qué hacer y a quién consultar"], rows: [
         ["Primeras 4 semanas de empleo continuo", "Avisa a la empresa y consulta si tu aseguradora reconoce el Krankengeld."],
@@ -149,6 +169,7 @@ const probationUpdate: Record<SiteLocale, Update> = {
     sections: [{
       heading: "Who pays if you get sick during the first four weeks?",
       paragraphs: ["The four-week wait starts when employment begins, regardless of the length of your probation. Ask your statutory insurer about Krankengeld if your coverage includes it. If you are still sick once the four weeks have passed, the employer’s statutory payment may start at that point.",
+        "If employment starts on 1 December 2026, the four-week waiting period ends on 28 December. If you are sick from 22 December and remain off on 29 December, statutory employer pay can start on the 29th if you qualify.",
         "For example, if you fall ill in week two, notify your employer, get the appropriate certificate and contact your insurer. If you first fall ill after two months of employment, the employer normally pays within the statutory limit even if you are still on probation."],
       table: { caption: "Sick leave during probation at a glance", columns: ["Timing", "What to do"], rows: [
         ["First 4 continuous weeks", "Notify your employer and check Krankengeld eligibility with your insurer."],
@@ -168,6 +189,7 @@ const probationUpdate: Record<SiteLocale, Update> = {
     sections: [{
       heading: "Krank in den ersten vier Wochen: Krankengeld oder Lohn?",
       paragraphs: ["Die vierwöchige Wartezeit beginnt mit dem Arbeitsverhältnis. Die vereinbarte Dauer der Probezeit ändert daran nichts. Bist du gesetzlich mit Anspruch auf Krankengeld versichert, frage deine Krankenkasse nach der Leistung in der Wartezeit. Dauert die Arbeitsunfähigkeit über die vier Wochen hinaus an, kann danach die Entgeltfortzahlung einsetzen.",
+        "Beginnt dein Arbeitsverhältnis am 1. Dezember 2026, endet die Wartezeit am 28. Dezember. Bist du ab dem 22. arbeitsunfähig und am 29. noch krank, kann ab dem 29. die gesetzliche Entgeltfortzahlung beginnen, wenn die Voraussetzungen erfüllt sind.",
         "Beispiel: Wirst du in Woche zwei krank, informiere den Arbeitgeber, besorge den nötigen Nachweis und kontaktiere deine Krankenkasse. Beginnt die Arbeitsunfähigkeit erst nach zwei Monaten, zahlt in der Regel der Arbeitgeber, auch wenn deine Probezeit noch läuft."],
       table: { caption: "Krank in der Probezeit im Überblick", columns: ["Situation", "Was zu tun ist"], rows: [
         ["Erste 4 Wochen ununterbrochener Beschäftigung", "Beim Arbeitgeber krankmelden und den Krankengeldanspruch mit der Kasse klären."],
@@ -228,6 +250,7 @@ export function refinePriorityGuide(guide: Guide, slug: string, locale: SiteLoca
         sources: [
           { name: "Bundesagentur für Arbeit", url: jobsPortal },
           { name: "Make it in Germany", url: internationalJobs },
+          { name: "Bundesagentur für Arbeit · Deutschkenntnisse", url: "https://www.arbeitsagentur.de/arbeiten-in-deutschland/deutschkenntnisse" },
           { name: "Anerkennung in Deutschland", url: recognition },
         ],
       };
@@ -237,6 +260,7 @@ export function refinePriorityGuide(guide: Guide, slug: string, locale: SiteLoca
         ...probationUpdate[locale],
         sources: [
           { name: "§ 3 Entgeltfortzahlungsgesetz", url: sickPay },
+          { name: "§ 46 SGB V · Krankengeld", url: sickBenefit },
           { name: "§ 5 Entgeltfortzahlungsgesetz", url: certification },
           { name: "§ 8 Entgeltfortzahlungsgesetz", url: sickDismissal },
           { name: "§ 622 BGB", url: notice },
@@ -247,7 +271,7 @@ export function refinePriorityGuide(guide: Guide, slug: string, locale: SiteLoca
     case "child-benefits-germany":
       update = {
         sections: [familyTriage[locale]],
-        related: ["germany-changes-january-2027"],
+        related: ["kita-childcare-germany-apply", "germany-changes-january-2027"],
         sources: [
           { name: "Familienportal des Bundes · Elterngeld beantragen", url: "https://familienportal.de/familienportal/familienleistungen/elterngeld/faq/wie-kann-ich-elterngeld-beantragen--124762" },
           { name: "Familienportal des Bundes · Höhe des Unterhaltsvorschusses", url: "https://familienportal.de/familienportal/familienleistungen/unterhaltsvorschuss/wieviel-unterhaltsvorschuss-kann-ich-fuer-mein-kind-bekommen--125264" },
@@ -259,7 +283,7 @@ export function refinePriorityGuide(guide: Guide, slug: string, locale: SiteLoca
   }
   return {
     ...guide, ...update,
-    updated: "2026-11-26",
+    updated: "2026-11-27",
     readingMinutes: guide.readingMinutes + 1,
     sections: [...update.sections, ...guide.sections],
     faqs: [...(update.faqs ?? []), ...guide.faqs],

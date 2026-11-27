@@ -12,7 +12,7 @@ export const primarySchoolChildcare = {
   category: "daily-life",
   updated: "2026-11-20",
   readingMinutes: 4,
-  related: ["child-benefits-germany", "elterngeld-germany", "best-cities-germany"],
+  related: ["kita-childcare-germany-apply", "child-benefits-germany", "elterngeld-germany", "best-cities-germany"],
   copy: {
     es: {
       title: "Cuidado escolar en Alemania: quién tiene derecho a 8 horas desde 2026",

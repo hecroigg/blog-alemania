@@ -121,7 +121,7 @@ export function LocalizedGeneralGuidePage({ locale, slug }: { locale: EditorialL
               {section.table && <EditorialTable {...section.table} />}
               {section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
               {section.resources && <div className="resource-grid">{section.resources.map((resource) =>
-                <a href={resource.url} key={resource.url} target="_blank" rel="noopener noreferrer">
+                <a href={resource.url} key={resource.url} target={resource.url.startsWith("/") ? undefined : "_blank"} rel={resource.url.startsWith("/") ? undefined : "noopener noreferrer"}>
                   <span><strong>{resource.label}</strong><small>{resource.note}</small></span>
                   <Icon name="external" size={17} />
                 </a>

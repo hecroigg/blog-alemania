@@ -1,7 +1,9 @@
+import { estimateGrossForNet } from "@/lib/employment-data";
 import { cityBudget, cityBudgetDefaults, cityRentExamples, euros } from "@/lib/budget-scenarios";
 import { cityUrl, toolUrl, type SiteLocale } from "@/lib/locale-paths";
 import { applicationLink as link, guideSources, type AuthoredGuide } from "./authored-guide";
 
+const grossFor1800 = estimateGrossForNet(1800)!;
 const greix = "https://www.kielinstitut.de/de/publikationen/greix-mietpreisindexq32026-mietpreisentwicklung-zeigt-wieder-nach-oben-20306/";
 const sources = guideSources([["GREIX Mietpreisindex Q3 2026 · Kiel Institut für Weltwirtschaft", greix]]);
 
@@ -20,7 +22,7 @@ function examples(locale: SiteLocale, caption: string, columns: string[]) {
 export const cities1800 = {
   slugs: { es: "vivir-alemania-1800-euros-ciudades", en: "cities-germany-1800-euros", de: "mit-1800-euro-netto-leben-staedte" },
   category: "housing",
-  updated: "2026-11-26",
+  updated: "2026-11-27",
   readingMinutes: 5,
   related: ["best-cities-germany", "cost-of-living-germany", "moving-to-germany", "finding-housing-germany"],
   copy: {
@@ -33,6 +35,7 @@ export const cities1800 = {
       sections: [
         { heading: "Cuatro presupuestos con 1.800 € al mes", paragraphs: ["Los alquileres de la tabla son supuestos para comprobar tu presupuesto, no medias de mercado. Los cuatro casos reservan 600 € al mes para comida, luz, internet, transporte y otros gastos, y otros 200 € para ahorro o imprevistos. El seguro habitual de un asalariado ya está descontado del sueldo neto."], table: examples("es", "Escenarios para una persona sin coche", ["Ciudad", "Alquiler con gastos", "Total con margen", "Saldo disponible"]) },
         { heading: "Qué indican los alquileres de los anuncios", paragraphs: ["GREIX registró en el tercer trimestre de 2026 un alquiler anunciado sin gastos de 10,40 €/m² en Leipzig, 15,80 €/m² en Berlín y 23,70 €/m² en Múnich. Para un piso de 40 m² serían unos 416 €, 632 € y 948 € antes de gastos, si el piso tuviera el precio medio por metro cuadrado. El tamaño, el barrio y el tipo de contrato pueden cambiar mucho el precio. En Mannheim, el índice subió un 5,0 % interanual, así que comprueba los precios de los anuncios recientes."], resources: [link("Informe de alquileres GREIX", greix, "Datos de anuncios, no de contratos vigentes.")] },
+        { heading: "Si la oferta dice 1.800 € brutos al mes", paragraphs: [`Pide el salario bruto y las horas semanales por escrito. La comparación de ciudades parte de 1.800 € después de impuestos y cotizaciones. Como referencia para 2026, un asalariado a jornada completa en Berlín, de 30 años, en clase fiscal I, sin hijos ni impuesto religioso y con seguro público, necesitaría alrededor de ${euros("es", grossFor1800)} brutos para llegar a ese neto estimado. Si tus pagos fijos aumentan, descuéntalos primero de tu margen de alquiler.`], resources: [link("Calcula qué bruto necesitas para llegar a 1.800 € netos", toolUrl("es", "salary-calculator") + "#net-to-gross", "Puedes cambiar el neto objetivo.")] },
         { heading: "Cómo decidir entre una ciudad y otra", paragraphs: ["Empieza en Leipzig si puedes elegir dónde trabajar o tienes una oferta allí. En Mannheim, compara trayectos desde los barrios y desde municipios próximos. Para Berlín o Múnich, compara una habitación compartida céntrica con una vivienda más lejos y calcula el trayecto durante tu turno real."], resources: [
           link("Vivir en Leipzig", cityUrl("es", "leipzig")!, "Vivienda, transporte y trámites de la ciudad."),
           link("Vivir en Mannheim", cityUrl("es", "mannheim")!, "Movilidad y trámites para instalarte."),
@@ -52,6 +55,7 @@ export const cities1800 = {
       sections: [
         { heading: "Four city budgets on €1,800 take-home pay", paragraphs: ["The rent amounts in this table are test scenarios, not local averages. The examples use €600 for groceries, electricity, internet, transport and other spending, plus a separate €200 savings or emergency buffer. Standard payroll health contributions have already been deducted from take-home pay."], table: examples("en", "Monthly scenarios for one adult without a car", ["City", "Rent with charges", "Total with buffer", "Balance"]) },
         { heading: "What advertised rents tell you", paragraphs: ["In Q3 2026, GREIX reported asking rents before charges of €10.40 per square metre in Leipzig, €15.80 in Berlin and €23.70 in Munich. For 40 m² at those per-square-metre rates that is roughly €416, €632 and €948 before charges. Small flats, specific neighbourhoods and furnished contracts can differ. Mannheim’s index rose 5.0% year on year, so use current listings when budgeting."], resources: [link("GREIX rental index report", greix, "Asking rents for advertised flats, rather than existing leases.")] },
+        { heading: "What if your job offer says €1,800 gross per month?", paragraphs: [`Ask for the gross pay and work hours in writing. The city comparison uses income after tax and social contributions. For reference, a 30-year-old full-time employee in Berlin in tax class I with no children or church tax and with statutory insurance would need about ${euros("en", grossFor1800)} gross to reach that estimated take-home pay in 2026. Subtract any extra fixed expenses from your rent budget.`], resources: [link("Work backwards from €1,800 take-home pay", toolUrl("en", "salary-calculator") + "#net-to-gross", "Change the take-home target in the calculator.")] },
         { heading: "Choosing a city for your job and budget", paragraphs: ["Start with Leipzig if you can choose where to work or have an offer there. In Mannheim, check tram and regional rail connections from neighbourhoods and nearby towns. In Berlin or Munich, compare a shared flat with a longer commute and include the journey at the actual time of your shift."], resources: [
           link("Leipzig city guide", cityUrl("en", "leipzig")!, "Housing, transport and local administration."),
           link("Mannheim city guide", cityUrl("en", "mannheim")!, "Transport and getting set up."),
@@ -71,6 +75,7 @@ export const cities1800 = {
       sections: [
         { heading: "Vier Monatsbudgets mit 1.800 € netto", paragraphs: ["Die Warmmieten in der Tabelle sind Rechenbeispiele. Die vier Fälle rechnen mit 600 € für Lebensmittel, Strom, Internet, Verkehr und weitere Ausgaben sowie 200 € Rücklage. Die üblichen Sozialabgaben eines Angestellten sind im Nettogehalt bereits berücksichtigt."], table: examples("de", "Monatsbudgets für eine Person ohne Auto", ["Stadt", "Warmmiete", "Gesamt mit Rücklage", "Übrig"]) },
         { heading: "Wie hoch sind die Angebotsmieten?", paragraphs: ["GREIX meldete für das dritte Quartal 2026 Angebotskaltmieten von 10,40 €/m² in Leipzig, 15,80 €/m² in Berlin und 23,70 €/m² in München. Bei 40 m² und diesen Quadratmeterpreisen käme man auf etwa 416 €, 632 € und 948 € kalt. Kleine Wohnungen, einzelne Viertel und möblierte Angebote können stark abweichen. In Mannheim stieg der Index um 5,0 % zum Vorjahr. Prüfe deshalb auch aktuelle Inserate."], resources: [link("GREIX-Mietpreisbericht", greix, "Grundlage sind Wohnungsanzeigen für Neuvermietungen.")] },
+        { heading: "Was gilt bei einem Angebot über 1.800 € brutto?", paragraphs: [`Lass dir Bruttogehalt und Wochenarbeitszeit schriftlich nennen. Der Städtevergleich rechnet mit 1.800 € nach Steuern und Sozialabgaben. Beispiel 2026: Eine 30-jährige Person in Berlin mit Steuerklasse I, ohne Kinder und Kirchensteuer sowie mit gesetzlicher Krankenversicherung braucht bei Vollzeit rund ${euros("de", grossFor1800)} brutto für dieses geschätzte Nettogehalt. Weitere feste Ausgaben senken dein Mietbudget.`], resources: [link("Das passende Bruttogehalt berechnen", toolUrl("de", "salary-calculator") + "#net-to-gross", "Stell dein gewünschtes Netto im Rechner ein.")] },
         { heading: "Welche Stadt passt zu deinem Arbeitsweg?", paragraphs: ["Wenn du ortsunabhängig arbeitest oder ein Stellenangebot vor Ort hast, lohnt sich Leipzig als Ausgangspunkt. In Mannheim vergleiche Straßenbahn und Regionalbahn aus unterschiedlichen Stadtteilen und Umlandgemeinden. In Berlin oder München stelle WG-Angebote und weitere Pendelwege gegenüber. Prüfe die Verbindungen zu deinen konkreten Arbeitszeiten."], resources: [
           link("Stadtführer Leipzig", cityUrl("de", "leipzig")!, "Infos zu Wohnen, Verkehr und Behörden."),
           link("Stadtführer Mannheim", cityUrl("de", "mannheim")!, "Verkehr und die ersten Schritte vor Ort."),

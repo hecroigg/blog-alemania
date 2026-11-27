@@ -1,3 +1,4 @@
+import { kitaChildcare } from "./kita-childcare";
 import { cities1800 } from "./cities-1800";
 import { january2027 } from "./january-2027";
 import { familyBenefits } from "./family-benefits";
@@ -10,6 +11,6 @@ import { taxReturn2022 } from "./tax-return-2022";
 import type { AuthoredGuide } from "./authored-guide";
 
 export const authoredGuides = new Map<string, AuthoredGuide>(
-  [january2027, cities1800, christmasMarkets, deutschlandticket2027, taxReturn2022, familyBenefits, parentalAllowance, parentalAllowanceReform, primarySchoolChildcare]
+  [kitaChildcare, january2027, cities1800, christmasMarkets, deutschlandticket2027, taxReturn2022, familyBenefits, parentalAllowance, parentalAllowanceReform, primarySchoolChildcare]
     .map((article) => [article.slugs.en, article]),
 );

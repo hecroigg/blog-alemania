@@ -229,3 +229,30 @@ export function calculateSalary(inputs: SalaryInputs): SalaryResult {
     belowMinimumWage: hoursMonthly > 0 && grossHourly < employmentFigures.minimumWage[2026],
   };
 }
+
+const grossSearchRange = {
+  min: Math.ceil(employmentFigures.minimumWage[2026] * defaultSalaryInputs.weeklyHours * employmentFigures.monthlyHoursFactor),
+  max: 12_000,
+};
+
+function takeHomeForDefaultProfile(grossMonthly: number) {
+  return calculateSalary({ ...defaultSalaryInputs, grossMonthly }).netMonthly;
+}
+
+export const netTargetRange = {
+  min: Math.ceil(takeHomeForDefaultProfile(grossSearchRange.min)),
+  max: Math.floor(takeHomeForDefaultProfile(grossSearchRange.max)),
+};
+
+// The fixed regular-employment profile has increasing take-home pay at whole-euro gross increments.
+export function estimateGrossForNet(target: number): number | null {
+  if (!Number.isFinite(target) || target < netTargetRange.min || target > netTargetRange.max) return null;
+  let lower: number = grossSearchRange.min;
+  let upper: number = grossSearchRange.max;
+  while (lower < upper) {
+    const gross = Math.floor((lower + upper) / 2);
+    if (takeHomeForDefaultProfile(gross) >= target) upper = gross;
+    else lower = gross + 1;
+  }
+  return lower;
+}

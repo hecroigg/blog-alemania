@@ -52,7 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       record(sectionPath(lang, "tools"), "2026-11-17", .8, (x) => sectionPath(x, "tools"))
     ),
     ...toolIds.flatMap((id) => locales.map((lang) =>
-      record(toolUrl(lang,id), id === "salary-calculator" ? "2026-11-26" : "2026-11-17", .85, (x) => toolUrl(x,id))
+      record(toolUrl(lang,id), id === "salary-calculator" ? "2026-11-27" : "2026-11-17", .85, (x) => toolUrl(x,id))
     )),
     ...(Object.keys(otherPages) as OtherPageId[]).flatMap((id) => locales.map((lang) =>
       record(otherUrl(lang,id), "2026-11-17", .7, (x) => otherUrl(x,id))
